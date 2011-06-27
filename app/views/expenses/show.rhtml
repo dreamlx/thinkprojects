@@ -1,0 +1,41 @@
+<fieldset>
+<p>
+    <label for="Epxense_id">No.</label>
+    <%=h @expense.id %>
+  </p>
+<p>
+    <label for="Epxense_charge_date">Date</label>
+    <%=h @expense.charge_date %>
+  </p>
+  <p>
+    <label for="Epxense_person">Employee</label>
+    <%=h @expense.person.english_name unless @expense.person.nil? %>
+  </p>
+  <p>
+    <label for="Epxense_desc">Description</label>
+    <%=h @expense.desc %>
+  </p>
+  <p>
+    <label>Billable</label>
+    <%=h @expense.billable%>
+  </p>
+  <p>
+    <label for="Epxense_type">Category</label>
+    <%=h @expense.expense_category %>
+  </p>
+    <p>
+    <label for="Epxense_client">Client Name</label>
+    <%=h @expense.project.client.english_name unless @expense.project.client.nil? %>
+  </p>
+    <p>
+    <label for="Epxense_project_id">Project Code</label>
+    <%=h @expense.project.job_code %>
+  </p>
+    <p>
+    <label for="Epxense_fee">Amount</label>
+    <%=h @expense.fee %>
+  </p>
+</fieldset>
+
+<%= link_to 'Edit', edit_expense_path(@expense) unless @expense.state =="approved" %> |
+<%= link_to 'Back', expenses_path %>

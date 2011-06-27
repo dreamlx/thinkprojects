@@ -1,0 +1,20 @@
+<h1>Editing initialDeduction</h1>
+
+<% form_tag  :action => 'update', :id => @deduction  do%>
+  <b>Project:</b><br>
+   <select name="deduction[project_id]">
+    <% @projects.each do |project| %>
+       <option value="<%= project.id %>" 
+         <%= ' selected' if project.id == @deduction.project_id %>>
+         <%=project.job_code %>
+       </option>
+    <% end %>
+   </select>
+  </p> 
+  
+  <%= render :partial => 'form' %>
+  <%= submit_tag 'Edit' %>
+<% end %>
+
+<%= link_to 'Destroy', { :action => 'destroy', :id => @deduction }, :confirm => 'Are you sure?', :post => true %>
+|<%= link_to 'Back', :controller =>'projects', :action => 'show', :id => @deduction.project_id %>

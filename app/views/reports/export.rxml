@@ -1,0 +1,219 @@
+xml.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8" 
+xml.Workbook({
+  'xmlns'      => "urn:schemas-microsoft-com:office:spreadsheet", 
+  'xmlns:o'    => "urn:schemas-microsoft-com:office:office",
+  'xmlns:x'    => "urn:schemas-microsoft-com:office:excel",    
+  'xmlns:html' => "http://www.w3.org/TR/REC-html40",
+  'xmlns:ss'   => "urn:schemas-microsoft-com:office:spreadsheet" 
+  }) do
+
+  xml.Styles do
+   xml.Style 'ss:ID' => 'Default', 'ss:Name' => 'Normal' do
+     xml.Alignment 'ss:Vertical' => 'Bottom'
+     xml.Borders
+     xml.Font 'ss:FontName' => 'Verdana'
+     xml.Interior
+     xml.NumberFormat
+     xml.Protection
+   end
+   xml.Style 'ss:ID' => 's22' do
+     xml.NumberFormat 'ss:Format' => 'General Date'
+   end
+  end
+
+  xml.Worksheet 'ss:Name' => 'time_report' do
+    xml.Table do
+
+      # Header
+      #xml.Row do
+      #  for column in Personalcharge.content_columns do
+      #    xml.Cell do
+      #      xml.Data column.human_name, 'ss:Type' => 'String'
+      #    end
+      #  end
+      #end
+      xml.Row do
+      #  for column in Personalcharge.content_columns do
+          xml.Cell do
+            xml.Data "Client name", 'ss:Type' => 'String'
+          end
+          
+          xml.Cell do
+            xml.Data "Job code", 'ss:Type' => 'String'
+          end
+           
+          xml.Cell do
+            xml.Data "Period", 'ss:Type' => 'String'
+          end
+          xml.Cell do
+            xml.Data "Employee", 'ss:Type' => 'String'
+          end
+          
+          xml.Cell do
+            xml.Data "Hours", 'ss:Type' => 'String'
+          end
+             
+          xml.Cell do
+            xml.Data "Service fee", 'ss:Type' => 'String'
+          end
+           
+          xml.Cell do
+            xml.Data "Reimbursement", 'ss:Type' => 'String'
+          end 
+          
+          xml.Cell do
+            xml.Data "Meal allowance", 'ss:Type' => 'String'
+          end
+           
+          xml.Cell do
+            xml.Data "Travel allowance", 'ss:Type' => 'String'
+          end
+           
+          xml.Cell do
+            xml.Data "expense sum", 'ss:Type' => 'String'
+          end            
+                                                                                      
+      #  end
+      end      
+      #
+
+      # Rows
+      for record in @records
+        xml.Row do
+      #    for column in Personalcharge.content_columns do
+            xml.Cell do
+              xml.Data record.project.client.english_name, 'ss:Type' => 'String'
+            end
+            xml.Cell do
+              xml.Data record.job_code, 'ss:Type' => 'String'
+            end
+          xml.Cell do
+            xml.Data record.period.number, 'ss:Type' => 'String'
+          end
+          
+          xml.Cell do
+            xml.Data record.person.english_name, 'ss:Type' => 'String'
+          end
+          
+          xml.Cell do
+            xml.Data record.hours, 'ss:Type' => 'String'
+          end 
+            
+          xml.Cell do
+            xml.Data record.service_fee, 'ss:Type' => 'String'
+          end 
+          
+          xml.Cell do
+            xml.Data record.reimbursement, 'ss:Type' => 'String'
+          end 
+          
+          xml.Cell do
+            xml.Data record.meal_allowance, 'ss:Type' => 'String'
+          end 
+          
+          xml.Cell do
+            xml.Data record.travel_allowance, 'ss:Type' => 'String'
+          end
+          xml.Cell do
+            xml.Data record.reimbursement + record.meal_allowance + record.travel_allowance, 'ss:Type' => 'String'
+          end                        
+      #    end
+        end
+      end
+###################total ########################
+    xml.Row do
+          xml.Cell do
+            xml.Data "Total", 'ss:Type' => 'String'
+          end    
+    end
+      xml.Row do
+      #  for column in Personalcharge.content_columns do
+          xml.Cell do
+            xml.Data "Client name", 'ss:Type' => 'String'
+          end
+          
+          xml.Cell do
+            xml.Data "Job code", 'ss:Type' => 'String'
+          end
+           
+          xml.Cell do
+            xml.Data "Period", 'ss:Type' => 'String'
+          end
+          xml.Cell do
+            xml.Data "Employee", 'ss:Type' => 'String'
+          end
+          
+          xml.Cell do
+            xml.Data "Hours", 'ss:Type' => 'String'
+          end
+             
+          xml.Cell do
+            xml.Data "Service fee", 'ss:Type' => 'String'
+          end
+           
+          xml.Cell do
+            xml.Data "Reimbursement", 'ss:Type' => 'String'
+          end 
+          
+          xml.Cell do
+            xml.Data "Meal allowance", 'ss:Type' => 'String'
+          end
+           
+          xml.Cell do
+            xml.Data "Travel allowance", 'ss:Type' => 'String'
+          end
+           
+          xml.Cell do
+            xml.Data "expense sum", 'ss:Type' => 'String'
+          end            
+                                                                                      
+      #  end
+      end      
+      #
+
+      # Rows
+        xml.Row do
+      #    for column in Personalcharge.content_columns do
+            xml.Cell do
+              
+            end
+            xml.Cell do
+              
+            end
+          xml.Cell do
+            
+          end
+          
+          xml.Cell do
+
+          end
+          
+          xml.Cell do
+            xml.Data @total.hours, 'ss:Type' => 'String'
+          end 
+            
+          xml.Cell do
+            xml.Data @total.service_fee, 'ss:Type' => 'String'
+          end 
+          
+          xml.Cell do
+            xml.Data @total.reimbursement, 'ss:Type' => 'String'
+          end 
+          
+          xml.Cell do
+            xml.Data @total.meal_allowance, 'ss:Type' => 'String'
+          end 
+          
+          xml.Cell do
+            xml.Data @total.travel_allowance, 'ss:Type' => 'String'
+          end
+          xml.Cell do
+            xml.Data @total.reimbursement + @total.meal_allowance + @total.travel_allowance, 'ss:Type' => 'String'
+          end                        
+      #    end
+      end
+      
+    end
+  end
+
+end

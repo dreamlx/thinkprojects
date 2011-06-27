@@ -1,0 +1,25 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  chinese_name: MyString
+  english_name: MyString
+  employee_number: MyString
+  grade: MyString
+  charge_rate: 9.99
+  employment_date: 2011-06-10
+  address: MyString
+  postalcode: MyString
+  mobile: MyString
+  tel: MyString
+
+two:
+  chinese_name: MyString
+  english_name: MyString
+  employee_number: MyString
+  grade: MyString
+  charge_rate: 9.99
+  employment_date: 2011-06-10
+  address: MyString
+  postalcode: MyString
+  mobile: MyString
+  tel: MyString

@@ -1,0 +1,47 @@
+<%= error_messages_for 'person' %>
+
+<!--[form:person]-->
+<p><label for="person_chinese_name">Chinese Name</label><br/>
+  <%= text_field 'person', 'chinese_name'  %></p>
+
+<p><label for="person_english_name">English Name</label><br/>
+  <%= text_field 'person', 'english_name'  %></p>
+
+<p><label for="person_employee_number">Employee Number</label><br/>
+  <%= text_field 'person', 'employee_number'  %></p>
+
+
+<p><label for="person_charge_rate">Charge Rate</label><br/>
+  <%= text_field 'person', 'charge_rate'  %></p>
+
+<p><label for="person_employment_date">Employment Date</label><br/>
+  <%= text_field 'person', 'employment_date'  %></p>
+
+<p><label for="person_address">Address</label><br/>
+  <%= text_field 'person', 'address'  %></p>
+
+<p><label for="person_postalcode">Postalcode</label><br/>
+  <%= text_field 'person', 'postalcode'  %></p>
+
+<p><label for="person_mobile">Mobile</label><br/>
+  <%= text_field 'person', 'mobile'  %></p>
+
+<p><label for="person_tel">Tel</label><br/>
+  <%= text_field 'person', 'tel'  %></p>
+
+<p><label for="person_grade">Grade</label><br/>
+  <%= text_field 'person', 'grade'  %></p>
+
+<p><label for="person_gender">Gender</label>
+  <%= select "person","gender", [['male','male'],['female','female']], {:include_blank=>false,:selected => @person.gender} %>
+</p>
+<p><label for="Project_department_id">Department:</label>
+  <%= select("person", "department_id",
+    Dict.find(:all,:conditions=>"category='department'").collect {|p| [ p.title, p.id ] }, { :include_blank => "请选择" }) %>
+</p>
+
+
+<p><label for="Project_status_id">State:</label>
+  <%= select("person", "status_id",
+    Dict.find(:all,:conditions=>"category='person_status'").collect {|p| [ p.title, p.id ] }, { :include_blank => "请选择"  }) %>
+</p>

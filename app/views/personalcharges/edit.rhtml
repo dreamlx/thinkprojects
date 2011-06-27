@@ -1,0 +1,11 @@
+<h1>Editing personalcharge</h1>
+<div>don't key [Service fee]</div>
+
+<% form_for(:personalcharge, :url => personalcharge_path(@personalcharge), :html => { :method => :put }) do |f| %>
+
+  <%= render :partial => 'form',:locals => { :f => f } %>
+  <%= submit_tag 'Edit' %>
+<% end %>
+
+<%= link_to 'Show', personalcharge_path(@personalcharge) %> |
+<%= link_to 'Back', personalcharges_path %>

@@ -1,0 +1,8 @@
+<% for column in Ufafee.content_columns %>
+<p>
+  <b><%= column.human_name %>:</b> <%=h @ufafee.send(column.name) %>
+</p>
+<% end %>
+
+<%= link_to 'Edit', :action => 'edit', :id => @ufafee unless @ufafee.project.state == 'closed'%> |
+<%= link_to 'Back', :action => 'list' %>

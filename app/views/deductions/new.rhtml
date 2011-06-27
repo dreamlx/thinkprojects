@@ -1,0 +1,19 @@
+<h1>New Initialdeduction</h1>
+
+<% form_tag  :action => 'create'  do%>
+  <b>Project:<%=params[:id]%></b><input type=hidden name="deduction[project_id]" value="<%= @deduction.project_id%>"><br>
+   <select >
+    <% @projects.each do |project| %>
+       <option value="<%= project.id %>" 
+         <%= ' selected' if project.id == @deduction.project_id %>>
+         <%=project.job_code %>
+       </option>
+    <% end %>
+   </select>
+  </p> 
+   
+  <%= render :partial => 'form' %>
+  <%= submit_tag "Create" %>
+<% end %>
+
+<%= link_to 'Back', :controller =>'projects', :action => 'show', :id => @deduction.project_id %>

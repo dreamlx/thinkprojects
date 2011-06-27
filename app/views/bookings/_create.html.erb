@@ -1,0 +1,19 @@
+<table>
+  <tr>
+    <td>
+      
+    </td>
+    <td>
+      <p>
+
+        Person:<%= select("booking", "person_id",
+          Person.find(:all,:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] }, { :include_blank => false }) %>
+
+        Hours:<%= f.text_field :hours %>
+
+
+      </p></td>
+    <td><%= submit_tag "Add booking" %></td>
+
+  </tr>
+</table>

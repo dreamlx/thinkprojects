@@ -1,0 +1,38 @@
+<h1>Listing ufafees</h1>
+
+<table>
+  <tr>
+    <th>Job code</th>
+    <th>Period</th>
+  <% for column in Ufafee.content_columns %>
+    <th><%= column.human_name %></th>
+  <% end %>
+  </tr>
+  
+<% for ufafee in @ufafees %>
+  <tr>
+    <td><%=h ufafee.project.job_code %></td>
+    <td><%=h ufafee.period.number %></td>
+  <% for column in Ufafee.content_columns %>
+    <td><%=h ufafee.send(column.name) %></td>
+  <% end %>
+    <td><%= link_to 'Show', :action => 'show', :id => ufafee %></td>
+    <td><%= link_to 'Edit', :action => 'edit', :id => ufafee unless ufafee.project.state == 'closed'%></td>
+    <td><%= link_to 'Destroy', { :action => 'destroy', :id => ufafee }, 
+            :confirm => 'Are you sure?', :post => true unless ufafee.project.state == 'closed'%></td>
+  </tr>
+<% end %>
+</table>
+
+<%= link_to 'Previous page', { :page => @ufafee_pages.current.previous } if @ufafee_pages.current.previous %>
+<%= link_to 'Next page', { :page => @ufafee_pages.current.next } if @ufafee_pages.current.next %> 
+
+<br />
+
+<% form_tag   do%>
+UFA number:<%= text_field_with_auto_complete :ufafee,:number,{},
+            {:skip_style=>true}  %>
+  
+    <input id='search_submit' name='search_submit' type="submit" >
+  <% end %>
+<%= link_to 'New ufafee', :action => 'new' %>

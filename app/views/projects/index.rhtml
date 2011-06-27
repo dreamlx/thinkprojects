@@ -1,0 +1,69 @@
+
+<% form_for(:project, :url => projects_path, :html => { :method => :get }) do |f| %>
+
+  <table>
+    <tr>
+      <td>job_code:<%= text_field_with_auto_complete :project,:job_code,{:size=>12},
+          {:skip_style=>true}  %>
+      </td>
+      <td><%= Project.human_attribute_name("client_name") %>
+        <%= text_field_with_auto_complete :client,:english_name,{:size=>20},
+          {:skip_style=>true}  %>
+      </td>
+      <td>
+        Partner:<%= select("project", "partner_id", Person.find(:all,:order=>"english_name",:include=>:status,:conditions=>"dicts.title = 'Employed'").collect {|p| [ p.english_name, p.id ] }, { :include_blank => true }) %>
+      </td>
+      <td>
+        Manager:<%= select("project", "manager_id", Person.find(:all,:order=>"english_name",:include=>:status,:conditions=>"dicts.title = 'Employed'").collect {|p| [ p.english_name, p.id ] }, { :include_blank => true }) %>
+      </td>
+      <td>state:<%= select("", "state", ["pending","approved","disapproved","closed"].collect {|p| [p,p] }, { :include_blank => true }) %>
+</td>
+<td> Order by:<%= select("","order_by",["job_code","created_on","client_name"].collect{|p| [p,p]},{ :include_blank => true }) %></td>
+
+<td><%= submit_tag '查询' %></td>
+    </tr>
+  </table>
+
+<% end %>
+<hr/>
+
+<%= link_to "New Project", new_project_path %>
+<table id="items" class="project_item">
+  <tr id="project_title">
+    <th>Job code</th>
+    <th>Created date</th>
+    <th class="wide_col">Client name</th>
+    <th>Job partner</th>
+    <th>Job manager</th>
+
+    <th>Job state</th>
+    <th  colspan="3">OP</th>
+    <!--
+        <th><%= Project.human_attribute_name("estimated_annual_fee") %></th>
+    <th><%= Project.human_attribute_name("estimated_hours") %></th>
+    <th><%= Project.human_attribute_name("budgeted_expense") %></th>
+    <th><%= Project.human_attribute_name("job_code") %></th>
+    <th><%= Project.human_attribute_name("description") %></th>
+    <th><%= Project.human_attribute_name("starting_date") %></th>
+    <th><%= Project.human_attribute_name("ending_date") %></th>
+    <th><%= Project.human_attribute_name("estimated_annual_fee") %></th>
+    <th><%= Project.human_attribute_name("contracted_service_fee") %></th>
+    <th><%= Project.human_attribute_name("estimated_commision") %></th>
+    <th><%= Project.human_attribute_name("estimated_outsorcing") %></th>
+    <th><%= Project.human_attribute_name("budgeted_service_fee") %></th>
+    <th><%= Project.human_attribute_name("service_PFA") %></th>
+    <th><%= Project.human_attribute_name("expense_PFA") %></th>
+    <th><%= Project.human_attribute_name("contracted_expense") %></th>
+    <th><%= Project.human_attribute_name("budgeted_expense") %></th>
+    -->
+  </tr>
+
+  <% for project in @projects %>
+  <tr id="item_<%= project.id %>" class="project_item">
+    <%= render :partial => 'item', :locals => { :project => project } %>
+  </tr>
+  <% end %>
+</table>
+<%= will_paginate @projects %>
+<br />
+

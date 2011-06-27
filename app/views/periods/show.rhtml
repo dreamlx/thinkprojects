@@ -1,0 +1,23 @@
+<fieldset>
+  <p>
+    <label for="Period_number"><%= Period.human_attribute_name("number") %></label>
+    <%=h @period.number %>
+  </p>
+  <p>
+    <label for="Period_hours"><%= Period.human_attribute_name("work_hours") %></label>
+    <%=h @period.work_hours %>
+  </p>
+  <p>
+    <label for="Period_starting_date"><%= Period.human_attribute_name("starting_date") %></label>
+    <%=h @period.starting_date %>
+  </p>
+
+  <p>
+    <label for="Period_ending_date"><%= Period.human_attribute_name("ending_date") %></label>
+    <%=h @period.ending_date %>
+  </p>
+
+</fieldset>
+
+<%= link_to 'Edit', edit_period_path(@period) %> |
+<%= link_to 'Back', periods_path %>

@@ -1,0 +1,28 @@
+
+
+<% form_for(:dict, :url => dicts_path, :html => { :method => :get }) do |f| %>
+
+ category:<%= text_field("dict", "category") %>
+ title:<%= text_field("dict", "title") %>
+<%= submit_tag '查询' %>
+
+<% end  %>
+
+<hr/>
+ <%= link_to "New Dict", new_dict_path %>
+<table>
+  <tr>
+  <% for column in Dict.content_columns %>
+    <th><%= column.human_name %></th>
+  <% end %>
+    <th colspan="3"></th>
+  </tr>
+  
+<% for dict in @dicts %>
+
+    <%= render :partial => 'item', :locals => { :dict => dict } %>
+
+<% end %>
+</table>
+
+<%= will_paginate @dicts%>

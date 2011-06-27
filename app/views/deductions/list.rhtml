@@ -1,0 +1,29 @@
+<h1>Listing deductions</h1>
+
+<table>
+  <tr>
+    <th>Job code</th>
+  <% for column in Deduction.content_columns %>
+    <th><%= column.human_name %></th>
+  <% end %>
+  </tr>
+  
+<% for deduction in @deductions %>
+  <tr>
+    <td><%=deduction.project.job_code%></td>    
+  <% for column in Deduction.content_columns %>
+    <td><%=h deduction.send(column.name) %></td>
+  <% end %>
+    <td><%= link_to 'Show', :action => 'show', :id => deduction %></td>status.title
+    <td><%= link_to 'Edit', :action => 'edit', :id => deduction unless deduction.project.state == 'closed'%></td>
+    <td><%= link_to 'Destroy', { :action => 'destroy', :id => deduction }, 
+    :confirm => 'Are you sure?', :post => true unless deduction.project.state == 'closed'%></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<%= will_paginate @deductions %>
+<br />
+
+<%#= link_to 'New deduction', :action => 'new' %>

@@ -1,0 +1,52 @@
+<h1>Listing personalcharges</h1>
+<%= render :partial => "search" %>
+<%= link_to 'New personalcharge', :action => 'new', :id=>params[:id], :person_id => params[:person_id]  %>
+|<%= link_to 'Back', :controller =>'homepage' %>
+<% loop_columns =["created_on","updated_on","service_fee"] %>
+<table>
+  <tr>
+    <th>Job code</th>
+    <th>Employee name</th> 
+    <th>Period</th>  
+    <% for column in Personalcharge.content_columns %>
+      <% unless loop_columns.include?(column.name)%>
+        <th><%= column.human_name %></th>
+      <% end %>
+    <% end %>
+    <th colspan="4">OP</th>
+  </tr>
+
+  <% for personalcharge in @personalcharges %>
+    <% unless personalcharge.project.nil? %>
+      <tr>
+        <td><%=personalcharge.project.job_code %></td>
+        <td><%=personalcharge.person.english_name unless personalcharge.person.nil?%></td>
+        <td><%=personalcharge.period.number unless personalcharge.period.nil?%></td>
+
+        <% for column in Personalcharge.content_columns %>
+          <% unless loop_columns.include?(column.name) %>
+            <td <%= h("style='color:red;'") if personalcharge.hours.to_i>8 %>><%=h personalcharge.send(column.name) %></td>
+          <% end %>
+        <% end %>
+        <% if (personalcharge.state != "approved" and personalcharge.project.state != "closed") %>
+
+          <td><%= link_to 'Show', personalcharge_path(personalcharge) %></td>
+          <td><%= link_to 'Edit', edit_personalcharge_path(personalcharge)  %></td>
+          <td>
+            <% unless (current_user.role_symbols.to_s != 'employee' and personalcharge.person_id == current_user.person_id) %>
+              <%= button_to "approval", approval_personalcharge_path(personalcharge), :confirm => 'Are you sure?' if personalcharge.state == 'pending' %>
+              <%= button_to "disapproval", disapproval_personalcharge_path(personalcharge), :confirm => 'Are you sure?' if personalcharge.state == 'pending'%>
+            <% end %>
+          </td>
+          <td><%= link_to 'Destroy', personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :delete%></td>
+        <% else %>
+          <td colspan="4"></td>
+        <% end %>
+      </tr>
+    <% end %>
+  <%end%>
+
+</table>
+
+<%= will_paginate @personalcharges %>
+<br />

@@ -1,0 +1,122 @@
+
+ <font color=red>PERIOD:</font><%=@personalcharge.period.number unless @personalcharge.period.nil?%>
+
+ <table  border="1" width = "80%" cellpadding="0" cellspacing="0">
+  <tr>
+    <th nowrap>Job code</th>
+    <th nowrap>Employee name</th> 
+    <th nowrap width = "10%">Period</th>  
+<!--  <% for column in Personalcharge.content_columns %>
+    <th><%= column.human_name %></th>
+  <% end %>
+  -->
+    <th width = "5%">Hours</th>
+    <th width = "5%">Service fee</th>
+    <th width = "5%">PFA%</th>
+    <th width = "5%">PFA of service fee</th>
+    <th width = "5%">Reimbursement</th>
+    <th width = "5%">Meal allowance</th>
+    <th width = "5%">Travel allowance</th>
+    
+    <th>Expense sum</th>
+  </tr>
+<% odd_or_even = 0 %>  
+<% for personalcharge in @personalcharges %>
+
+<% if personalcharge.project.job_code =~/^\d+/
+     odd_or_even = 1
+     tempfee = 0
+     #@pfa_fee[1] +=tempfee
+     @p_t1.hours            += personalcharge.hours
+     @p_t1.service_fee      += personalcharge.service_fee
+     @p_t1.reimbursement    += personalcharge.reimbursement
+     @p_t1.meal_allowance   += personalcharge.meal_allowance
+     @p_t1.travel_allowance += personalcharge.travel_allowance
+     
+   else 
+     odd_or_even = 0
+     tempfee =personalcharge.service_fee/100 * personalcharge.project.service_PFA
+     @pfa_fee[0] +=tempfee
+     @p_t0.hours            += personalcharge.hours
+     @p_t0.service_fee      += personalcharge.service_fee
+     @p_t0.reimbursement    += personalcharge.reimbursement
+     @p_t0.meal_allowance   += personalcharge.meal_allowance
+     @p_t0.travel_allowance += personalcharge.travel_allowance     
+   end %>
+  <tr class="ListLine<%= odd_or_even %>">
+    <td><%=personalcharge.project.job_code%></td>
+    <td><%=personalcharge.person.english_name %></td>
+    <td nowrap width = "10%"><%=personalcharge.period.number%></td>
+  <!--
+  <% for column in Personalcharge.content_columns %>
+    <td><%=h personalcharge.send(column.name) %></td>
+  <% end %>
+  -->
+    <td><%=personalcharge.hours %></td>
+    <td><%=personalcharge.service_fee %></td>
+    <td><%=personalcharge.project.service_PFA %></td>
+    <td><%= tempfee %>    </td>
+    <td><%=personalcharge.reimbursement %></td>
+    <td><%=personalcharge.meal_allowance %></td>
+    <td><%=personalcharge.travel_allowance %></td>
+    <td><%= personalcharge.reimbursement + personalcharge.meal_allowance + personalcharge.travel_allowance%></td>
+  </tr>
+<% end %>
+
+<tr><td COLSPAN=11><hr></td></tr>
+
+  <tr>
+    <th nowrap>Job code</th>
+    <th nowrap>Employee name</th> 
+    <th nowrap>Period</th>  
+    <th>Hours</th>
+    <th>Service fee</th>
+    <th>PFA%</th>
+    <th>PFA of service fee</th>
+    <th>Reimbursement</th>
+    <th>Meal allowance</th>
+    <th>Travel allowance</th>
+    
+    <th>Expense sum</th>
+  </tr>
+  
+<% odd_or_even = 1 %>
+<tr class="ListLine<%= odd_or_even %>">
+<td COLSPAN=3>subtotal</td>
+<td><%= @p_t1.hours %></td>
+<td><%= @p_t1.service_fee %></td>
+<td />
+<td><%=@pfa_fee[1]%></td>
+<td><%= @p_t1.reimbursement %></td>
+<td><%= @p_t1.meal_allowance %></td>
+<td><%= @p_t1.travel_allowance %></td>
+<td><%= @p_t1.reimbursement + @p_t1.meal_allowance + @p_t1.travel_allowance  if not @p_count ==0 %></td>
+</tr>
+
+<% odd_or_even = 0 %>
+<tr class="ListLine<%= odd_or_even %>">
+<td COLSPAN=3>subtotal</td>
+<td><%= @p_t0.hours %></td>
+<td><%= @p_t0.service_fee %></td>
+<td />
+<td><%=@pfa_fee[0]%></td>
+<td><%= @p_t0.reimbursement %></td>
+<td><%= @p_t0.meal_allowance %></td>
+<td><%= @p_t0.travel_allowance %></td>
+<td><%= @p_t0.reimbursement + @p_t0.meal_allowance + @p_t0.travel_allowance  if not @p_count ==0 %></td>
+</tr>
+
+<tr bgcolor=yellow>
+<td COLSPAN=3>All total</td>
+<td><%= @p_total.hours %></td>
+<td><%= @p_total.service_fee %></td>
+<td />
+<td><%=@pfa_fee[0]%></td>
+<td><%= @p_total.reimbursement %></td>
+<td><%= @p_total.meal_allowance %></td>
+<td><%= @p_total.travel_allowance %></td>
+<td><%= @p_total.reimbursement + @p_total.meal_allowance + @p_total.travel_allowance  if not @p_count ==0 %></td>
+</tr>
+</table>
+
+<%= link_to 'Back',      :controller => 'people',   :action =>'list' %>

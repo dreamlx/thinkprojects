@@ -1,0 +1,8 @@
+<% for column in Dict.content_columns %>
+<p>
+  <b><%= column.human_name %>:</b> <%=h @dict.send(column.name) %>
+</p>
+<% end %>
+
+<%= link_to 'Edit', edit_dict_path(@dict) %>
+<%= link_to 'Back', dicts_path %>

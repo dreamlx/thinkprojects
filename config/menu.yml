@@ -1,0 +1,46 @@
+## YAML Template.
+-
+  title: Home
+  url: /homepage
+    
+-
+  title: Project
+  url: /projects
+
+-
+   title: Billing
+   url: /billings
+-
+   title: Personalcharge
+   url: /Personalcharges
+-
+   title: Expense
+   url: /expenses
+-
+   title: Report
+   url: /reports
+-
+   title: Employee
+   url: /people
+-
+   title: Client
+   url: /clients
+-
+  title: Peferences
+  url: #
+  child:
+    -
+     title: dictionary
+     url: /dicts
+    -
+     title: industry
+     url: /industries
+    -
+     title: period
+     url: /periods
+    -
+     title: user&password
+     url: /users
+    -
+     title: admins
+     url: /admins

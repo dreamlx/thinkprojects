@@ -1,0 +1,10 @@
+  <tr id="item_<%= person.id %>">
+    <td><%= person.chinese_name %></td>
+    <td><%= person.english_name %></td>
+    <td><%= person.employee_number %></td>
+    <td><%= person.department.title unless person.department.nil? %></td>
+    <td><%= person.grade %></td>
+    <td><%= link_to 'Show', person_path(person) %></td>
+    <td><%= link_to 'Edit', edit_person_path(person) %></td>
+    <td> <%= link_to 'Destroy', person_path(person), :confirm => 'Are you sure destroy?', :method => :delete %></td>
+  </tr>

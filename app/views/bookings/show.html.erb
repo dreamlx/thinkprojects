@@ -1,0 +1,18 @@
+<p>
+  <b>Person:</b>
+  <%=h @booking.person_id %>
+</p>
+
+<p>
+  <b>Hours:</b>
+  <%=h @booking.hours %>
+</p>
+
+<p>
+  <b>Other:</b>
+  <%=h @booking.other %>
+</p>
+
+
+<%= link_to 'Edit', edit_booking_path(@booking) %> |
+<%= link_to 'Back', bookings_path %>

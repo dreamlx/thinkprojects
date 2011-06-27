@@ -1,0 +1,12 @@
+Job code : <%=@deduction.project.job_code%>
+
+<hr>
+<% for column in Deduction.content_columns %>
+<p>
+  <b><%= column.human_name %>:</b> <%=h @deduction.send(column.name) %>
+</p>
+<% end %>
+<%= link_to 'Destroy', { :action => 'destroy', :id => @deduction }, 
+    :confirm => 'Are you sure?', :post => true unless @deduction.project.state == 'closed'%>|
+<%= link_to 'Edit', :action => 'edit', :id => @deduction unless @deduction.project.state == 'closed'%> |
+<%= link_to 'Back', :controller =>'projects', :action => 'show', :id => @deduction.project_id %>

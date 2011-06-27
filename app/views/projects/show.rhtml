@@ -1,0 +1,85 @@
+
+<fieldset>
+  <p>
+    <label for="Project_contract_number"><%= Project.human_attribute_name("contract_number") %></label>
+    <%=h @project.contract_number||"--" %>
+  </p>
+
+  <p>
+    <label for="Project_job_code"><%= Project.human_attribute_name("job_code") %></label>
+    <%=h @project.job_code||"--" %>
+  </p>
+
+  <p>
+    <label for="Project_description"><%= Project.human_attribute_name("description") %></label>
+    <%=h @project.description ||"--"%>
+  </p>
+
+  <p>
+    <label for="Project_starting_date"><%= Project.human_attribute_name("starting_date") %></label>
+    <%=h @project.starting_date %>
+  </p>
+
+  <p>
+    <label for="Project_ending_date"><%= Project.human_attribute_name("ending_date") %></label>
+    <%=h @project.ending_date %>
+  </p>
+
+  <p>
+    <label for="Project_estimated_annual_fee" title="预估总体成本"><strong><%= h("Estimated total fee") %></strong></label>
+    <%=h @project.estimated_annual_fee||0 %>
+  </p>
+  <p>
+    <label for="Project_estimated_hours" title="预估人时"><%= Project.human_attribute_name("estimated_hours") %></label>
+    <%=h @project.estimated_hours ||0%>
+  </p>
+
+  <p>
+    <label for="Project_contracted_service_fee"><%= Project.human_attribute_name("contracted_service_fee") %></label>
+    <%=h @project.contracted_service_fee ||0%>
+  </p>
+
+  <p>
+    <label for="Project_budgeted_service_fee"><%= Project.human_attribute_name("budgeted_service_fee") %></label>
+    <%=h @project.budgeted_service_fee ||""%>
+  </p>
+
+
+
+  <p>
+    <label for="Project_contracted_expense"><%= Project.human_attribute_name("contracted_expense") %></label>
+    <%=h @project.contracted_expense ||""%>
+  </p>
+
+  <p>
+    <label for="Project_budgeted_expense" ><%= Project.human_attribute_name("budgeted_expense") %></label>
+    <%=h @project.budgeted_expense ||""%>
+  </p>
+
+
+  <p>
+    <label for="Project_service_PFA"><%= Project.human_attribute_name("service_PFA") %></label>
+    <%=h @project.service_PFA ||""%>
+  </p>
+
+  <p>
+    <label for="Project_expense_PFA"><%= Project.human_attribute_name("expense_PFA") %></label>
+    <%=h @project.expense_PFA ||""%>
+  </p>
+</fieldset>
+
+<%= link_to 'Edit', edit_project_path(@project) if @project.state == "pending" or @project.state == "disapproved"%> |<%= link_to 'Back', projects_path %>
+<br/>
+<br/><br/>
+
+
+<% form_for([@project, @booking]) do |f|%>
+<%  @booking.project_id = @project.id %>
+    <%= render :partial => '/bookings/create',:locals => { :f => f } %>
+<% end  %>
+<%= button_to 'Booking all', bookall_booking_url(:project_id=> @project.id), :confirm => "Are you sure booking all employees?", :method => :post %>
+<div id="booking_list">
+<% unless @project.bookings.empty? %>
+  <%= render :partial => '/bookings/booking', :object=>(@bookings=@project.bookings)%>
+<% end %>
+</div>

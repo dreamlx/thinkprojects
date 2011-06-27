@@ -1,0 +1,28 @@
+<%= error_messages_for 'receive_amount' %>
+
+<!--[form:receive_amount]-->
+<input type='hidden' id="receive_amount_billing_id" name="receive_amount[billing_id]" size="30"  value=<%=@billing.id%> />
+<p><label >Billing Number</label><br/>
+<%= @billing.number %></p>
+
+<p><label for="receive_amount_job_code">Job code</label><br/>
+<input id="receive_amount_job_code" name="receive_amount[job_code]" size="30" type="text" value=<%=@billing.project.job_code%> /></p>
+
+<p><label for="receive_amount_created_on">Created on</label><br/>
+<%= datetime_select 'receive_amount', 'created_on'  %></p>
+
+<p><label for="receive_amount_updated_on">Updated on</label><br/>
+<%= datetime_select 'receive_amount', 'updated_on'  %></p>
+
+<p><label for="receive_amount_invoice_no">Invoice no</label><br/>
+<%= text_field 'receive_amount', 'invoice_no'  %></p>
+
+<p><label for="receive_amount_receive_date">Receive date</label><br/>
+<%= text_field 'receive_amount', 'receive_date'  %></p>
+
+<p><label for="receive_amount_receive_amount">Receive amount</label><br/>
+<%= text_field 'receive_amount', 'receive_amount'  %></p>
+
+
+<!--[eoform:receive_amount]-->
+

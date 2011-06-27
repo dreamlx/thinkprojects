@@ -1,0 +1,28 @@
+<%= error_messages_for 'deduction' %>
+
+<!--[form:deduction]-->
+<p><label for="deduction_created_on">Created on</label><br/>
+<%= datetime_select 'deduction', 'created_on'  %></p>
+
+<p><label for="deduction_updated_on">Updated on</label><br/>
+<%= datetime_select 'deduction', 'updated_on'  %></p>
+
+<p><label for="deduction_service_PFA">Service pfa</label><br/>
+<%= text_field 'deduction', 'service_PFA'  %></p>
+
+<p><label for="deduction_service_UFA">Service ufa</label><br/>
+<%= text_field 'deduction', 'service_UFA'  %></p>
+
+<p><label for="deduction_service_billing">Service billing</label><br/>
+<%= text_field 'deduction', 'service_billing'  %></p>
+
+<p><label for="deduction_expense_PFA">Expense pfa</label><br/>
+<%= text_field 'deduction', 'expense_PFA'  %></p>
+
+<p><label for="deduction_expense_UFA">Expense ufa</label><br/>
+<%= text_field 'deduction', 'expense_UFA'  %></p>
+
+<p><label for="deduction_expense_billing">Expense billing</label><br/>
+<%= text_field 'deduction', 'expense_billing'  %></p>
+<!--[eoform:deduction]-->
+

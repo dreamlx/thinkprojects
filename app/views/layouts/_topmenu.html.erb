@@ -1,0 +1,24 @@
+<% if logged_in? %>
+  <%@menus = YAML.load_file(RAILS_ROOT + "/config/menu.yml")%>
+  <% menu_tree_id = 0 %>
+
+  <ul id="nav" class="dropdown dropdown-horizontal">
+    <% unless current_user.roles =="guest" %>
+      <% @menus.each do |menu|  %>
+        <% menu_tree_id +=1 %>
+        <li id="<%= h('menu_tree_' + menu_tree_id.to_s) %>">
+          <span><a href="<%=h(menu['url']||'#')%>"><%=h(menu['title']) %></a></span>
+          <% unless menu['child'].nil? %>
+            <ul>
+              <% for child in menu['child'] %>
+                <li>
+                  <a href="<%=h(child['url']||'#')%>"><%=h child['title']%></a>
+                </li>
+              <% end %>
+            </ul>
+          <%end %>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+<%end %>

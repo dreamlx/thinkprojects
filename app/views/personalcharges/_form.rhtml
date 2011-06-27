@@ -1,0 +1,34 @@
+<%= error_messages_for 'personalcharge' %>
+<p>
+<b>Person:</b>
+    <%= select("personalcharge","person_id",
+     Person.my_teams(current_user).collect{|p| [p.english_name,p.id ]}, { :include_blank => false }) %>
+</p>
+<p>
+  <b>Project:</b>
+    <%= select("personalcharge", "project_id",
+      Project.my_bookings(current_user).collect {|p| [ p.job_code, p.id ] }, { :include_blank => false }) %>
+</p>
+<p>
+  <b>Period:</b>
+  <%= select("personalcharge","period_id",
+    Period.find(:all,:order=>"number desc").collect{|p|[p.number,p.id]})   %>
+
+</p>
+<!--[form:personalcharge]-->
+<p><label for="personalcharge_created_on">Created on</label><br/>
+<%= datetime_select 'personalcharge', 'created_on'  %></p>
+
+<p><label for="personalcharge_updated_on">Updated on</label><br/>
+<%= datetime_select 'personalcharge', 'updated_on'  %></p>
+
+<p><label for="personalcharge_hours">Hours</label><br/>
+<%= text_field 'personalcharge', 'hours'  %></p>
+
+<p><label for="personalcharge_service_fee">Service fee</label><br/>
+<%= text_field 'personalcharge', 'service_fee'  %></p>
+
+<p><label for="personalcharge_desc">Description</label><br/>
+<%= text_area 'personalcharge', 'desc'  %></p>
+<!--[eoform:personalcharge]-->
+

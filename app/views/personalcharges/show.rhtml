@@ -1,0 +1,16 @@
+<h1>Show personalcharge</h1>
+<span><strong>Job code</strong> : <%=@personalcharge.project.job_code unless @personalcharge.project.nil?%></span><br/>
+
+<span><strong>Employee</strong>:<%=@personalcharge.person.english_name unless @personalcharge.person.nil?%></span><br/>
+
+<span><strong>period</strong> : <%=@personalcharge.period.number unless @personalcharge.period.nil?%></span><br/>
+<hr/>
+<% for column in Personalcharge.content_columns %>
+<p>
+  <b><%= column.human_name %>:</b> <%=h @personalcharge.send(column.name)||"--" %>
+</p>
+
+<% end %>
+
+<%= link_to 'Edit', edit_personalcharge_path(@personalcharge)  if @personalcharge.project.state != 'closed'%> |
+<%= link_to 'Back', personalcharges_path %>

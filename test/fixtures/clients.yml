@@ -1,0 +1,89 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  id: 1
+  chinese_name: MyString
+  english_name: MyString
+  person_id: 1
+  address_1: MyString
+  person1: MyString
+  person2: MyString
+  address_2: MyString
+  city_1: MyString
+  city_2: MyString
+  state_1: MyString
+  state_2: MyString
+  country_1: MyString
+  country_2: MyString
+  postalcode_1: MyString
+  postalcode_2: MyString
+  title_1: MyString
+  title_2: MyString
+  gender1_id: 1
+  gender2_id: 1
+  mobile_1: MyString
+  mobile_2: MyString
+  tel_1: MyString
+  tel_2: MyString
+  fax_1: MyString
+  fax_2: MyString
+  email_1: MyString
+  email_2: MyString
+  description: MyText
+  category_id: 1
+  status_id: 1
+  region_id: 1
+  industry_id: 1
+  client_code: 1
+  person3: MyString
+  title_3: MyString
+  gender3_id: 1
+  tel_3: MyString
+  fax_3: MyString
+  email_3: MyString
+  created_on: 2010-12-02 11:27:54
+  updated_on: 2010-12-02 11:27:54
+
+two:
+  id: 1
+  chinese_name: MyString
+  english_name: MyString
+  person_id: 1
+  address_1: MyString
+  person1: MyString
+  person2: MyString
+  address_2: MyString
+  city_1: MyString
+  city_2: MyString
+  state_1: MyString
+  state_2: MyString
+  country_1: MyString
+  country_2: MyString
+  postalcode_1: MyString
+  postalcode_2: MyString
+  title_1: MyString
+  title_2: MyString
+  gender1_id: 1
+  gender2_id: 1
+  mobile_1: MyString
+  mobile_2: MyString
+  tel_1: MyString
+  tel_2: MyString
+  fax_1: MyString
+  fax_2: MyString
+  email_1: MyString
+  email_2: MyString
+  description: MyText
+  category_id: 1
+  status_id: 1
+  region_id: 1
+  industry_id: 1
+  client_code: 1
+  person3: MyString
+  title_3: MyString
+  gender3_id: 1
+  tel_3: MyString
+  fax_3: MyString
+  email_3: MyString
+  created_on: 2010-12-02 11:27:54
+  updated_on: 2010-12-02 11:27:54

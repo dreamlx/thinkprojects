@@ -1,0 +1,22 @@
+<h1>New billing</h1>
+<%= error_messages_for :billing %>
+<% form_for(:billing, :url => billings_path) do |f| %>
+
+  <p><b>Project:</b><br>
+   <%= select("billing", "project_id",
+          Project.my_bookings(current_user).collect {|p| [ p.job_code, p.id ] }, { :include_blank => true }) %>
+  </p>
+  <p><b>Period:</b><br>
+    <%= select("billing", "period_id",
+          Period.find(:all,:order=>"number").collect {|p| [ p.number, p.id ] }, { :include_blank => true }) %>
+   
+  </p> 
+  <p><b>Prepared_by:</b><br>
+   <%= select("billing", "person_id",
+          Person.find(:all,:order=>"english_name").collect {|p| [ p.english_name, p.id ] }, { :include_blank => true }) %>
+   
+  </p>  
+<%= render :partial => 'form',:locals => { :f => f }%>
+  <%= submit_tag "Create" %>
+<% end %>
+<%= link_to 'Back', billings_path %>

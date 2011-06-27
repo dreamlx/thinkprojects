@@ -1,0 +1,43 @@
+
+<h1>Listing expenses</h1>
+ <font color=red>Period:</font><%=@expense.period.number unless @expense.period.nil? %>
+<table border=1 width = "80%" cellpadding="0" cellspacing="0">
+  <tr>
+    <th>Job code</th> 
+    <th nowrap>Period</th> 
+  <% for column in Expense.content_columns %>
+  <%next if column.human_name == 'Created on' or column.human_name == 'Updated on'%>
+    <th><%= column.human_name %></th>
+  <% end %>
+  </tr>
+  
+<% for expense in @expenses %>
+  <tr nowrap>
+    <td nowrap><%= expense.project.job_code %></td> 
+    <td nowrap width = "10%"><%= expense.period.number %></td>  
+  <% for column in Expense.content_columns %>
+  <%next if column.name == 'created_on' or column.name == 'updated_on'%>
+    <td width = "5%" ><%=h expense.send(column.name) %></td>
+  <% end %>
+</tr>
+<% end %>
+  <tr bgcolor = yellow>
+  <td COLSPAN=2>Total</td>
+  <td><%=@e_total.commission%></td>
+  <td><%=@e_total.outsourcing%></td>
+  <td><%=@e_total.tickets%></td>
+  <td><%= @e_total.courrier%></td>
+  <td><%=@e_total.postage%></td>
+  <td><%=@e_total.stationery%></td>
+  <td><%=@e_total.report_binding%></td>
+  <td><%=@e_total.cash_advance%></td>
+  <td><%=@e_total.payment_on_be_half%></td>
+
+  </tr>
+</table>
+
+<%#= link_to 'Previous page', { :page => @expense_pages.current.previous } if @expense_pages.current.previous %>
+<%#= link_to 'Next page', { :page => @expense_pages.current.next } if @expense_pages.current.next %> 
+
+<br />
+

@@ -1,0 +1,193 @@
+<div>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>GMU</th>
+        <th>Job code</th>
+        <th>Client(Eng)</th>
+        <th>Job Ref</th>
+        <th>Job Ptr</th>
+        <th>Job Mgr</th>
+        <th>contract_number</th>
+        <th>budgeted_service_fee</th>
+        <th>budgeted_expense_fee</th>
+        <th>service_PFA%</th>
+        <th>expense_PFA%</th>
+        <th>estimated_commision</th>
+        <th>stimated_outsorcing</th>
+        <th>contracted_service_fee</th>
+        <th>contracted_expense_fee</th>
+        <th>created_on</th>
+        <th>Service Line</th>
+        <th>Project status</th>
+        <th>Fee Beg</th>
+        <th>Fee Cum</th>
+        <th>Fee Sub</th>
+        <th>PFA rate</th>
+        <th>PFA Beg</th>
+        <th>PFA Cum</th>
+        <th>PFA Sub</th>
+        <th>commission+outsourcing Beg</th>
+        <th>commission</th>
+        <th>outsourcing</th>
+        <th>sub</th>
+        <th>travel</th>
+        <th>meal</th>
+        <th>dium</th>
+        <th>sub</th>
+        <th>Beg_expense</th>
+        <th>Ticket</th>
+        <th>Courrier</th>
+        <th>Stationery</th>
+        <th>Postage</th>
+        <th>Report_binding</th>
+        <th>Payment_on_be_half</th>
+        <th>sub</th>
+        <th>Billing Beg</th>
+        <th>Billing Cum</th>
+        <th>BT</th>
+        <th>Billing Sub</th>
+        <th>UFA Beg</th>
+        <th>UFA Cum</th>
+        <th>UFA Sub</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%for record in @projects%>
+        <tr>
+          <td><%=record.GMU.title%></td>
+          <td><%=record.job_code%></td>
+          <td><%=record.client.english_name%></td>
+          <td><%=record.referring.english_name%></td>
+          <td><%=record.partner.english_name%></td>
+          <td><%=record.manager.english_name%></td>
+          <td><%=record.contract_number%></td>
+          <td><%=record.budgeted_service_fee%></td>
+          <td><%=record.budgeted_expense%></td>
+          <td><%=record.service_PFA%></td>
+          <td><%=record.expense_PFA%></td>
+          <td><%=record.estimated_commision%></td>
+          <td><%=record.estimated_outsorcing%></td>
+          <td><%=record.contracted_service_fee%></td>
+          <td><%=record.contracted_expense%></td>
+          <td><%=record.starting_date%></td>
+          <td><%=record.service_code.code%></td>
+          <td><%=record.status.title%></td>
+          <%@show=0%>
+          <!---fee--->
+          <%for fee in @service_pfa%>
+            <%if record.id.to_s == fee.prj_id.to_s %>
+              <td><%=fee.Beg_service_fee%></td>
+              <td><%=fee.Service_fee%></td>
+              <td>0</td>
+              <td><%=record.service_PFA||0%></td>
+              <td><%=fee.Beg_PFA||0%></td>
+              <td><%=fee.PFA||0%></td>
+              <td>0<%@show=1%></td>
+            <%end%>
+          <%end%>
+          <%if @show == 0 %>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          <%else @show =0%>
+          <%end%>
+          <!---# commission and outsourcing--->
+          <% for co_fee in @co_fees%>
+            <%if record.id.to_s == co_fee.prj_id.to_s%>
+              <td><%=co_fee.CO_Beg||0%></td>
+              <td><%=co_fee.commission||0%></td>
+              <td><%=co_fee.outsourcing||0%></td>
+              <td>0<%@show=1%></td>
+            <%end%>
+          <%end%>
+          <%if @show == 0 %>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+
+          <%else @show =0%>
+          <%end%>
+
+          <!--reimbs-->
+          <%for reimb in @reimbs%>
+            <%if record.id.to_s == reimb.prj_id.to_s%>
+
+              <td><%=reimb.cum_travel||0%></td>
+              <td><%=reimb.cum_meal||0%></td>
+              <td><%=reimb.cum_per_dium||0%></td>
+              <td>0<%@show=1%></td>
+            <%end #if%>
+          <%end #for %>
+          <%if @show == 0 %>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+
+          <%else @show =0%>
+          <%end%>
+          <!--expense-->
+          <%for expense in @expenses%>
+            <% if record.id.to_s == expense.prj_id.to_s%>
+              <td><%=expense.Beg_expense||0%></td>
+              <td><%=expense.Ticket||0%></td>
+              <td><%=expense.Courrier||0%></td>
+              <td><%=expense.Stationery||0%></td>
+              <td><%=expense.Postage||0%></td>
+              <td><%=expense.Report_binding||0%></td>
+              <td><%=expense.Payment_on_be_half||0%></td>
+              <td>0<%@show=1%></td>
+            <% end # if%>
+          <%end #for%>
+          <%if @show == 0 %>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          <%else @show =0%>
+          <%end%>
+          <!--#bill-->
+          <%for billing in @billings%>
+            <%if record.id.to_s == billing.prj_id.to_s%>
+              <td><%=billing.Beg_service||0%></td>
+              <td><%=billing.Service_billing||0%></td>
+              <td><%=billing.BT||0%></td>
+              <td>0<%@show=1%></td>
+            <%end%>
+          <%end%>
+          <%if @show == 0 %>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          <%else @show =0%>
+          <%end%>
+          <!--#########UFA#############-->
+          <%for ufa in @ufas%>
+            <%if record.id.to_s == ufa.prj_id.to_s%>
+              <td><%=ufa.Beg_service||0%></td>
+              <td><%=ufa.Service_UFA||0%></td>
+              <td>0<%@show=1%></td>
+            <%end%>
+          <%end%>
+          <%if @show == 0 %>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          <%else @show =0%>
+          <%end%>
+        </tr>
+      <%end %>
+    </tbody>
+  </table>
+</div>
