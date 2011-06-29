@@ -12,13 +12,13 @@ module Authorization
     
     DEFAULT_DENY = false
     
-    # If attribute_check is set for filter_access_to, decl_auth_context will try to
+    # If attribute_check is set for filter_access_to, decl_auth will try to
     # load the appropriate object from the current controller's model with
     # the id from params[:id].  If that fails, a 404 Not Found is often the
     # right way to handle the error.  If you have additional measures in place
     # that restricts the find scope, handling this error as a permission denied
     # might be a better way.  Set failed_auto_loading_is_not_found to false
-    # for the latter behavior.
+    # for the latter behaviour.
     @@failed_auto_loading_is_not_found = true
     def self.failed_auto_loading_is_not_found?
       @@failed_auto_loading_is_not_found
@@ -52,7 +52,7 @@ module Authorization
       context = object = nil
       if object_or_sym.nil?
         context = self.class.decl_auth_context
-      elsif !object_or_sym.respond_to?(:proxy_reflection) and object_or_sym.is_a?(Symbol)
+      elsif object_or_sym.is_a?(Symbol)
         context = object_or_sym
       else
         object = object_or_sym
@@ -86,17 +86,6 @@ module Authorization
       result
     end
     
-    # Intended to be used where you want to allow users with any single listed role to view 
-    # the content in question
-    def has_any_role?(*roles,&block)
-      user_roles = authorization_engine.roles_for(current_user)
-      result = roles.any? do |role|
-        user_roles.include?(role)
-      end
-      yield if result and block_given?
-      result
-    end
-    
     # As has_role? except checks all roles included in the role hierarchy
     def has_role_with_hierarchy?(*roles, &block)
       user_roles = authorization_engine.roles_with_hierarchy_for(current_user)
@@ -107,15 +96,6 @@ module Authorization
       result
     end
     
-    # As has_any_role? except checks all roles included in the role hierarchy
-    def has_any_role_with_hierarchy?(*roles, &block)
-      user_roles = authorization_engine.roles_with_hierarchy_for(current_user)
-      result = roles.any? do |role|
-        user_roles.include?(role)
-      end
-      yield if result and block_given?
-      result
-    end
     
     protected
     def filter_access_filter # :nodoc:
@@ -214,7 +194,7 @@ module Authorization
       #     end
       #   end
       # 
-      # By default, required privileges are inferred from the action name and
+      # By default, required privileges are infered from the action name and
       # the controller name.  Thus, in UserController :+edit+ requires
       # :+edit+ +users+.  To specify required privilege, use the option :+require+
       #   filter_access_to :new, :create, :require => :create, :context => :users
@@ -276,7 +256,7 @@ module Authorization
       #   to load the object.  Both should return the loaded object.
       #   If a Proc object is given, e.g. by way of
       #   +lambda+, it is called in the instance of the controller.  
-      #   Example demonstrating the default behavior:
+      #   Example demonstrating the default behaviour:
       #     filter_access_to :show, :attribute_check => true,
       #                      :load_method => lambda { User.find(params[:id]) }
       # 
@@ -357,7 +337,7 @@ module Authorization
       #
       # In many cases, the default seven CRUD actions are not sufficient.  As in
       # the resource definition for routing you may thus give additional member,
-      # new and collection methods.  The +options+ allow you to specify the
+      # new and collection methods.  The options allow you to specify the
       # required privileges for each action by providing a hash or an array of
       # pairs.  By default, for each action the action name is taken as privilege
       # (action search in the example below requires the privilege :index
@@ -368,19 +348,7 @@ module Authorization
       #         :additional_member => {:mark_as_key_company => :update}
       #   end
       # The +additional_+* options add to the respective CRUD actions,
-      # the other options (:+member+, :+collection+, :+new+) replace their
-      # respective CRUD actions.
-      #    filter_resource_access :member => { :toggle_open => :update }
-      # Would declare :toggle_open as the only member action in the controller and
-      # require that permission :update is granted for the current user.
-      #    filter_resource_access :additional_member => { :toggle_open => :update }
-      # Would add a member action :+toggle_open+ to the default members, such as :+show+.
-      #
-      # If :+collection+ is an array of method names filter_resource_access will 
-      # associate a permission with the method that is the same as the method 
-      # name and no attribute checks will be performed unless 
-      #   :attribute_check => true
-      # is added in the options.
+      # the other options replace the respective CRUD actions.
       # 
       # You can override the default object loading by implementing any of the
       # following instance methods on the controller.  Examples are given for the
@@ -422,7 +390,7 @@ module Authorization
       #   +nested_in+, attribute check is deactivated for these actions.  By
       #   default, collection is set to :+index+.
       # [:+additional_collection+]
-      #   Allows to add additional collection actions to the default resource +collection+
+      #   Allows to add additional collaction actions to the default resource +collection+
       #   actions.
       # [:+new+]
       #   +new+ methods are actions such as +new+ and +create+, which don't
@@ -454,7 +422,7 @@ module Authorization
       #   +additional_member+ or rather the default member actions (:+show+, :+edit+,
       #   :+update+, :+destroy+).
       # [:+no_attribute_check+]
-      #   Allows to set actions for which no attribute check should be performed.
+      #   Allows to set actions for which no attribute check should be perfomed.
       #   See filter_access_to on details.  By default, with no +nested_in+,
       #   +no_attribute_check+ is set to all collections.  If +nested_in+ is given
       #   +no_attribute_check+ is empty by default.
@@ -475,8 +443,8 @@ module Authorization
           :nested_in  => nil,
         }.merge(options)
 
-        new_actions = actions_from_option( options[:new] ).merge(
-            actions_from_option(options[:additional_new]) )
+        new_actions = actions_from_option(options[:new]).merge(
+            actions_from_option(options[:additional_new]))
         members = actions_from_option(options[:member]).merge(
             actions_from_option(options[:additional_member]))
         collections = actions_from_option(options[:collection]).merge(
@@ -641,7 +609,7 @@ module Authorization
         unless object
           begin
             object = load_object_model.find(contr.params[:id])
-          rescue => e
+          rescue RuntimeError => e
             contr.logger.debug("filter_access_to tried to find " +
                 "#{load_object_model} from params[:id] " +
                 "(#{contr.params[:id].inspect}), because attribute_check is enabled " +

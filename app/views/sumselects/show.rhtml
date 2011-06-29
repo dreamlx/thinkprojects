@@ -1,0 +1,8 @@
+<% for column in Sumselect.content_columns %>
+<p>
+  <b><%= column.human_name %>:</b> <%=h @sumselect.send(column.name) %>
+</p>
+<% end %>
+
+<%= link_to 'Edit', :action => 'edit', :id => @sumselect %> |
+<%= link_to 'Back', :action => 'list' %>

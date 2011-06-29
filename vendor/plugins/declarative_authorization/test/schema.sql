@@ -28,8 +28,7 @@ CREATE TABLE 'test_attr_throughs' (
 CREATE TABLE 'test_model_security_models' (
   'id' INTEGER PRIMARY KEY NOT NULL, 
   'attr' integer default 1, 
-  'attr_2' integer default 1,
-  'test_attr_id' integer
+  'attr_2' integer default 1
 );
 
 CREATE TABLE 'n_way_join_items' (

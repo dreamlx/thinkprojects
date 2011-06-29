@@ -7,9 +7,9 @@
   title: Project
   url: /projects
 
--
-   title: Billing
-   url: /billings
+#-
+#   title: Billing
+#   url: /billings
 -
    title: Personalcharge
    url: /Personalcharges

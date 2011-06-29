@@ -2,22 +2,14 @@ class Person < ActiveRecord::Base
   validates_uniqueness_of :employee_number
   validates_numericality_of :charge_rate
 
+  has_many :projects, :foreign_key=>:manager_id
   has_many :clients
   has_many :personalcharges
   has_many :billings
   has_one  :user
   has_many :bookings
-  has_many  :expenses
 
-  has_many :partner_projects,
-    :class_name=> "Project",
-    :foreign_key => :partner_id
-
-  has_many :manager_projects,
-    :class_name=> "Project",
-    :foreign_key => :manager_id
-
-  belongs_to :GMU,
+  belongs_to :GMU, 
     :class_name => "Dict",
     :foreign_key => "GMU_id",
     :conditions => "category ='GMU'"

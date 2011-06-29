@@ -45,7 +45,9 @@ class Personalcharge < ActiveRecord::Base
     sum_p = self.new
     sum_p.hours = self.sum(:hours,:conditions=>sql,:include=>:period)
     sum_p.service_fee = self.sum(:service_fee,:conditions=>sql,:include=>:period)
-
+    sum_p.reimbursement = self.sum(:reimbursement,:conditions=>sql,:include=>:period)
+    sum_p.meal_allowance = self.sum(:meal_allowance,:conditions=>sql,:include=>:period)
+    sum_p.travel_allowance = self.sum(:travel_allowance,:conditions=>sql,:include=>:period)
     return sum_p
   end
   

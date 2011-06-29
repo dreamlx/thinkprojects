@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110624040922) do
+ActiveRecord::Schema.define(:version => 20110610030642) do
 
   create_table "billings", :force => true do |t|
     t.timestamp "created_on",                                                                    :null => false
@@ -119,7 +119,7 @@ ActiveRecord::Schema.define(:version => 20110624040922) do
     t.integer  "project_id",                                                     :null => false
     t.integer  "department_id",                                                  :null => false
     t.integer  "cost_status_id",                                                 :null => false
-    t.string   "description",                                                    :null => false
+    t.string   "description",                                   :default => "",  :null => false
     t.datetime "created_on",                                                     :null => false
     t.datetime "updated_on",                                                     :null => false
   end
@@ -144,18 +144,42 @@ ActiveRecord::Schema.define(:version => 20110624040922) do
 
   add_index "dicts", ["code"], :name => "code"
 
-  create_table "expenses", :force => true do |t|
-    t.string   "expense_category"
-    t.integer  "fee",              :limit => 10, :precision => 10, :scale => 0
-    t.integer  "project_id"
-    t.date     "charge_date"
-    t.string   "state"
-    t.string   "desc"
+  create_table "expense_items", :force => true do |t|
+    t.integer  "expense_id",                                                     :null => false
+    t.integer  "expensetype_id",                                                 :null => false
+    t.decimal  "fee",            :precision => 12, :scale => 2, :default => 0.0, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "period_id",        :limit => 45
-    t.boolean  "billable",                                                      :default => true
-    t.integer  "person_id"
+  end
+
+  add_index "expense_items", ["expense_id"], :name => "fk_item_expense"
+  add_index "expense_items", ["expensetype_id"], :name => "expensetype"
+
+  create_table "expenses", :force => true do |t|
+    t.timestamp "created_on",                                                           :null => false
+    t.timestamp "updated_on",                                                           :null => false
+    t.decimal   "commission",         :precision => 10, :scale => 2, :default => 0.0,   :null => false
+    t.decimal   "outsourcing",        :precision => 10, :scale => 2, :default => 0.0,   :null => false
+    t.decimal   "tickets",            :precision => 10, :scale => 2, :default => 0.0,   :null => false
+    t.decimal   "courrier",           :precision => 10, :scale => 2, :default => 0.0,   :null => false
+    t.decimal   "postage",            :precision => 10, :scale => 2, :default => 0.0,   :null => false
+    t.decimal   "stationery",         :precision => 10, :scale => 2, :default => 0.0,   :null => false
+    t.decimal   "report_binding",     :precision => 10, :scale => 2, :default => 0.0,   :null => false
+    t.decimal   "cash_advance",       :precision => 10, :scale => 2, :default => 0.0,   :null => false
+    t.integer   "period_id",                                         :default => 0,     :null => false
+    t.integer   "project_id",                                        :default => 0,     :null => false
+    t.decimal   "payment_on_be_half", :precision => 10, :scale => 2, :default => 0.0,   :null => false
+    t.string    "memo"
+    t.boolean   "audit_flag",                                        :default => false
+    t.boolean   "audit_flag1",                                       :default => false
+  end
+
+  add_index "expenses", ["period_id", "project_id"], :name => "expense_id"
+
+  create_table "expensetypes", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "incomes", :force => true do |t|
@@ -164,7 +188,7 @@ ActiveRecord::Schema.define(:version => 20110624040922) do
     t.integer  "department_id",                                                  :null => false
     t.decimal  "amount",         :precision => 10, :scale => 2, :default => 0.0, :null => false
     t.integer  "cost_status_id",                                                 :null => false
-    t.string   "description",                                                    :null => false
+    t.string   "description",                                   :default => "",  :null => false
     t.datetime "created_on",                                                     :null => false
     t.datetime "updated_on",                                                     :null => false
   end
@@ -189,7 +213,7 @@ ActiveRecord::Schema.define(:version => 20110624040922) do
     t.string    "mobile",          :limit => 20
     t.string    "tel",             :limit => 20
     t.string    "extension",       :limit => 10
-    t.string    "gender",          :limit => 10
+    t.string    "gender"
     t.integer   "status_id"
     t.integer   "GMU_id",                                                       :default => 0
   end
@@ -205,15 +229,18 @@ ActiveRecord::Schema.define(:version => 20110624040922) do
   end
 
   create_table "personalcharges", :force => true do |t|
-    t.timestamp "created_on",                                                  :null => false
-    t.timestamp "updated_on",                                                  :null => false
-    t.decimal   "hours",       :precision => 10, :scale => 2, :default => 0.0, :null => false
-    t.decimal   "service_fee", :precision => 10, :scale => 2, :default => 0.0, :null => false
-    t.integer   "project_id",                                 :default => 0,   :null => false
-    t.integer   "period_id",                                  :default => 0,   :null => false
-    t.integer   "person_id",                                  :default => 0,   :null => false
+    t.timestamp "created_on",                                                       :null => false
+    t.timestamp "updated_on",                                                       :null => false
+    t.decimal   "hours",            :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal   "service_fee",      :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal   "reimbursement",    :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal   "meal_allowance",   :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal   "travel_allowance", :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.integer   "project_id",                                      :default => 0,   :null => false
+    t.integer   "period_id",                                       :default => 0,   :null => false
+    t.integer   "person_id",                                       :default => 0,   :null => false
     t.text      "desc"
-    t.string    "state",                                                       :null => false
+    t.string    "state"
   end
 
   add_index "personalcharges", ["project_id", "period_id", "person_id"], :name => "personalchg_id"
@@ -222,40 +249,40 @@ ActiveRecord::Schema.define(:version => 20110624040922) do
     t.integer "prj_id"
     t.integer "expense_id"
     t.integer "period_id"
-    t.string  "other",      :null => false
+    t.string  "other",      :default => "", :null => false
   end
 
   create_table "projects", :force => true do |t|
-    t.timestamp "created_on",                                                                                 :null => false
-    t.timestamp "updated_on",                                                                                 :null => false
-    t.string    "contract_number",        :limit => 50,                                :default => "",        :null => false
-    t.integer   "client_id",                                                           :default => 0,         :null => false
-    t.integer   "GMU_id",                                                              :default => 0,         :null => false
-    t.integer   "service_id",                                                          :default => 0,         :null => false
-    t.string    "job_code",               :limit => 20,                                :default => "",        :null => false
+    t.timestamp "created_on",                                                                           :null => false
+    t.timestamp "updated_on",                                                                           :null => false
+    t.string    "contract_number",        :limit => 50,                                :default => "",  :null => false
+    t.integer   "client_id",                                                           :default => 0,   :null => false
+    t.integer   "GMU_id",                                                              :default => 0,   :null => false
+    t.integer   "service_id",                                                          :default => 0,   :null => false
+    t.string    "job_code",               :limit => 20,                                :default => "",  :null => false
     t.string    "description",                                                         :default => ""
     t.date      "starting_date"
     t.date      "ending_date"
-    t.decimal   "estimated_annual_fee",                 :precision => 10, :scale => 2, :default => 0.0,       :null => false
+    t.decimal   "estimated_annual_fee",                 :precision => 10, :scale => 2, :default => 0.0, :null => false
     t.integer   "risk_id"
     t.integer   "status_id"
     t.integer   "partner_id"
     t.integer   "manager_id"
     t.integer   "referring_id"
-    t.integer   "billing_partner_id",                                                  :default => 0,         :null => false
-    t.integer   "billing_manager_id",                                                  :default => 0,         :null => false
-    t.decimal   "contracted_service_fee",               :precision => 10, :scale => 2, :default => 0.0,       :null => false
-    t.decimal   "estimated_commision",                  :precision => 10, :scale => 2, :default => 0.0,       :null => false
-    t.decimal   "estimated_outsorcing",                 :precision => 10, :scale => 2, :default => 0.0,       :null => false
-    t.decimal   "budgeted_service_fee",                 :precision => 10, :scale => 2, :default => 0.0,       :null => false
-    t.integer   "service_PFA",                                                         :default => 0,         :null => false
-    t.integer   "expense_PFA",                                                         :default => 0,         :null => false
-    t.decimal   "contracted_expense",                   :precision => 10, :scale => 2, :default => 0.0,       :null => false
-    t.decimal   "budgeted_expense",                     :precision => 10, :scale => 2, :default => 0.0,       :null => false
+    t.integer   "billing_partner_id",                                                  :default => 0,   :null => false
+    t.integer   "billing_manager_id",                                                  :default => 0,   :null => false
+    t.decimal   "contracted_service_fee",               :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal   "estimated_commision",                  :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal   "estimated_outsorcing",                 :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal   "budgeted_service_fee",                 :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.integer   "service_PFA",                                                         :default => 0,   :null => false
+    t.integer   "expense_PFA",                                                         :default => 0,   :null => false
+    t.decimal   "contracted_expense",                   :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal   "budgeted_expense",                     :precision => 10, :scale => 2, :default => 0.0, :null => false
     t.integer   "PFA_reason_id"
-    t.integer   "revenue_id",                                                          :default => 0,         :null => false
+    t.integer   "revenue_id",                                                          :default => 0,   :null => false
     t.integer   "estimated_hours",                                                     :default => 0
-    t.string    "state",                                                               :default => "pending", :null => false
+    t.string    "state"
   end
 
   add_index "projects", ["client_id", "GMU_id", "service_id", "risk_id", "status_id", "partner_id", "manager_id", "referring_id", "billing_partner_id", "billing_manager_id", "PFA_reason_id", "revenue_id"], :name => "prj_other_id"

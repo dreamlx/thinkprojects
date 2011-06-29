@@ -1,37 +1,63 @@
-
 <fieldset>
-  <p>
-<b>Person:</b>
-    <%= select("expense","person_id",
-     Person.my_teams(current_user).collect{|p| [p.english_name,p.id ]}, { :include_blank => false }) %>
-</p>
-
-  <p>
-    <label for="Expense_charge_date"><%= Expense.human_attribute_name("charge_date") %></label>
-    <%= f.text_field :charge_date ,{:onfocus=>"HS_setDate(this)"} %>
-  </p>
-
-  <p>
-    <label for="Expense_desc">Description</label>
-    <%= f.text_field :desc %>
-  </p>
-
-  <p>
-    <label>Billable</label>
-    <%= f.check_box :billable   %>
-  </p>
-
-  <p>
-    <label for="Expense_project_id">Project:</label>
+  <p><label for="Expense_project_id">Project:</label>
     <%= select("expense", "project_id",
       Project.my_bookings(current_user).collect {|p| [ p.job_code, p.id ] }, { :include_blank => false }) %>
   </p>
-  <p><label for="Expense_expense_category">Category:</label>
-    <%= select("expense", "expense_category",
-      Dict.expense_types.collect {|p| [ p.title, p.title ] }, { :include_blank => true,:selected => @expense.expense_category }) %>
+
+  <p><label for="Expense_period_id">Period:</label>
+    <%= select("expense", "period_id",
+      Period.find(:all,:order=>"number").collect {|p| [ p.number, p.id ] }, { :include_blank => false }) %>
   </p>
+
+
   <p>
-    <label for="Expense_fee">Amount</label>
-    <%= f.text_field :fee %>
+    <label for="Expense_commission"><%= Expense.human_attribute_name("commission") %></label>
+    <%= f.text_field :commission %>
   </p>
+
+  <p>
+    <label for="Expense_outsourcing"><%= Expense.human_attribute_name("outsourcing") %></label>
+    <%= f.text_field :outsourcing %>
+  </p>
+
+  <p>
+    <label for="Expense_tickets"><%= Expense.human_attribute_name("tickets") %></label>
+    <%= f.text_field :tickets %>
+  </p>
+
+  <p>
+    <label for="Expense_courrier"><%= Expense.human_attribute_name("courrier") %></label>
+    <%= f.text_field :courrier %>
+  </p>
+
+  <p>
+    <label for="Expense_postage"><%= Expense.human_attribute_name("postage") %></label>
+    <%= f.text_field :postage %>
+  </p>
+
+  <p>
+    <label for="Expense_stationery"><%= Expense.human_attribute_name("stationery") %></label>
+    <%= f.text_field :stationery %>
+  </p>
+
+  <p>
+    <label for="Expense_report_binding"><%= Expense.human_attribute_name("report_binding") %></label>
+    <%= f.text_field :report_binding %>
+  </p>
+
+  <p>
+    <label for="Expense_cash_advance"><%= Expense.human_attribute_name("cash_advance") %></label>
+    <%= f.text_field :cash_advance %>
+  </p>
+
+  <p>
+    <label for="Expense_payment_on_be_half"> <%= Expense.human_attribute_name("payment_on_be_half") %></label>
+    <%= f.text_field :payment_on_be_half %>
+  </p>
+
+  <p>
+    <label for="Expense_memo"><%= Expense.human_attribute_name("memo") %></label>
+    <%= f.text_field :memo %>
+  </p>
+
 </fieldset>

@@ -17,7 +17,11 @@
 <td>
   <p> Period from:
   <%= select("", "period_from", Period.find(:all,:order=>"number DESC").collect {|p| [ p.number, p.number ] }, { :include_blank => true }) %>
-to:
+
+  </p>
+</td>
+<td>
+  <p>to:
     <%= select("", "period_to", Period.find(:all,:order=>"number DESC").collect {|p| [ p.number, p.number ] }, { :include_blank => true }) %>
    </p>
 </td>

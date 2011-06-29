@@ -55,14 +55,17 @@ module Authorization
       def self.usages_by_controller
         # load each application controller
         begin
-          Dir.glob(File.join(::Rails.root, 'app', 'controllers', '**', '*_controller\.rb')) do |entry|
-            require entry
+          Dir.foreach(File.join(::Rails.root, %w{app controllers})) do |entry|
+            if entry =~ /^\w+_controller\.rb$/
+              require File.join(::Rails.root, %w{app controllers}, entry)
+            end
           end
         rescue Errno::ENOENT
         end
         controllers = []
         ObjectSpace.each_object(Class) do |obj|
-          controllers << obj if obj.ancestors.include?(ActionController::Base) and obj != ActionController::Base and obj.name.demodulize != 'ApplicationController'
+          controllers << obj if obj.ancestors.include?(ActionController::Base) and
+                                !%w{ActionController::Base ApplicationController}.include?(obj.name)
         end
 
         controllers.inject({}) do |memo, controller|

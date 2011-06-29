@@ -306,7 +306,7 @@ ul.list li a:hover{
     float:right;
     padding:15px 5px 0 0 ;
 }
-label{ display:inline-block; width: 160px;font-weight: bolder;}
+label{ display:block; width: 160px;float: left; font-weight: bolder; }
 .project_item dt{ margin-top: 2px;}
 .project_item span{ width: 80px; display:inline-block}
 .project_item span.wide_col{ width: 200px;}

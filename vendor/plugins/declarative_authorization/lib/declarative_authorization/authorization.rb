@@ -9,7 +9,7 @@ module Authorization
   # NotAuthorized is raised if the current user is not allowed to perform
   # the given operation possibly on a specific object.
   class NotAuthorized < AuthorizationError ; end
-  # AttributeAuthorizationError is more specific than NotAuthorized, signaling
+  # AttributeAuthorizationError is more specific than NotAuthorized, signalling
   # that the access was denied on the grounds of attribute conditions.
   class AttributeAuthorizationError < NotAuthorized ; end
   # AuthorizationUsageError is used whenever a situation is encountered
@@ -122,7 +122,7 @@ module Authorization
     #   The context part of the privilege.
     #   Defaults either to the tableized +class_name+ of the given :+object+, if given.
     #   That is, :+users+ for :+object+ of type User.  
-    #   Raises AuthorizationUsageError if context is missing and not to be inferred.
+    #   Raises AuthorizationUsageError if context is missing and not to be infered.
     # [:+object+] An context object to test attribute checks against.
     # [:+skip_attribute_test+]
     #   Skips those attribute checks in the 
@@ -241,8 +241,8 @@ module Authorization
       raise AuthorizationUsageError, "User object doesn't respond to roles (#{user.inspect})" \
         if !user.respond_to?(:role_symbols) and !user.respond_to?(:roles)
 
-      Rails.logger.info("The use of user.roles is deprecated.  Please add a method " +
-          "role_symbols to your User model.") if defined?(Rails) and Rails.respond_to?(:logger) and !user.respond_to?(:role_symbols)
+      RAILS_DEFAULT_LOGGER.info("The use of user.roles is deprecated.  Please add a method " +
+          "role_symbols to your User model.") if defined?(RAILS_DEFAULT_LOGGER) and !user.respond_to?(:role_symbols)
 
       roles = user.respond_to?(:role_symbols) ? user.role_symbols : user.roles
 

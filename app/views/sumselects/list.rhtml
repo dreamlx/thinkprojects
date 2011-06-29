@@ -1,0 +1,27 @@
+<h1>Listing sumselects</h1>
+
+<table>
+  <tr>
+  <% for column in Sumselect.content_columns %>
+    <th><%= column.human_name %></th>
+  <% end %>
+  </tr>
+  
+<% for sumselect in @sumselects %>
+  <tr>
+  <% for column in Sumselect.content_columns %>
+    <td><%=h sumselect.send(column.name) %></td>
+  <% end %>
+    <td><%= link_to 'Show', :action => 'show', :id => sumselect %></td>
+    <td><%= link_to 'Edit', :action => 'edit', :id => sumselect %></td>
+    <td><%= link_to 'Destroy', { :action => 'destroy', :id => sumselect }, :confirm => 'Are you sure?', :post => true %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= link_to 'Previous page', { :page => @sumselect_pages.current.previous } if @sumselect_pages.current.previous %>
+<%= link_to 'Next page', { :page => @sumselect_pages.current.next } if @sumselect_pages.current.next %> 
+
+<br />
+
+<%= link_to 'New sumselect', :action => 'new' %>

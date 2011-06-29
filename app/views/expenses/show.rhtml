@@ -1,41 +1,74 @@
 <fieldset>
-<p>
-    <label for="Epxense_id">No.</label>
-    <%=h @expense.id %>
+  <p>
+    <label for="Expense_period">Period</label>
+    <%=h @expense.period.number unless @expense.period.nil?%>
   </p>
-<p>
-    <label for="Epxense_charge_date">Date</label>
-    <%=h @expense.charge_date %>
+
+  <p>
+    <label for="Expense_project">Project</label>
+    <%=h @expense.project.job_code unless @expense.project.nil?%>
   </p>
   <p>
-    <label for="Epxense_person">Employee</label>
-    <%=h @expense.person.english_name unless @expense.person.nil? %>
+    <label for="Expense_created_on"><%= Expense.human_attribute_name("created_on") %></label>
+    <%=h (@expense.created_on).strftime("%y-%m-%d %H:%M")%>
   </p>
+
   <p>
-    <label for="Epxense_desc">Description</label>
-    <%=h @expense.desc %>
+    <label for="Expense_updated_on"><%= Expense.human_attribute_name("updated_on") %></label>
+    <%=h (@expense.updated_on).strftime("%y-%m-%d %H:%M") %>
   </p>
+
   <p>
-    <label>Billable</label>
-    <%=h @expense.billable%>
+    <label for="Expense_commission"><%= Expense.human_attribute_name("commission") %></label>
+    <%=h @expense.commission %>
   </p>
+
   <p>
-    <label for="Epxense_type">Category</label>
-    <%=h @expense.expense_category %>
+    <label for="Expense_outsourcing"><%= Expense.human_attribute_name("outsourcing") %></label>
+    <%=h @expense.outsourcing %>
   </p>
-    <p>
-    <label for="Epxense_client">Client Name</label>
-    <%=h @expense.project.client.english_name unless @expense.project.client.nil? %>
+
+  <p>
+    <label for="Expense_tickets"><%= Expense.human_attribute_name("tickets") %></label>
+    <%=h @expense.tickets %>
   </p>
-    <p>
-    <label for="Epxense_project_id">Project Code</label>
-    <%=h @expense.project.job_code %>
+
+  <p>
+    <label for="Expense_courrier"><%= Expense.human_attribute_name("courrier") %></label>
+    <%=h @expense.courrier %>
   </p>
-    <p>
-    <label for="Epxense_fee">Amount</label>
-    <%=h @expense.fee %>
+
+  <p>
+    <label for="Expense_postage"><%= Expense.human_attribute_name("postage") %></label>
+    <%=h @expense.postage %>
   </p>
+
+  <p>
+    <label for="Expense_stationery"><%= Expense.human_attribute_name("stationery") %></label>
+    <%=h @expense.stationery %>
+  </p>
+
+  <p>
+    <label for="Expense_report_binding"><%= Expense.human_attribute_name("report_binding") %></label>
+    <%=h @expense.report_binding %>
+  </p>
+
+  <p>
+    <label for="Expense_cash_advance"><%= Expense.human_attribute_name("cash_advance") %></label>
+    <%=h @expense.cash_advance %>
+  </p>
+
+  <p>
+    <label for="Expense_payment_on_be_half"><%= Expense.human_attribute_name("payment_on_be_half") %></label>
+    <%=h @expense.payment_on_be_half %>
+  </p>
+
+  <p>
+    <label for="Expense_memo"><%= Expense.human_attribute_name("memo") %></label>
+    <%=h @expense.memo %>
+  </p>
+
 </fieldset>
 
-<%= link_to 'Edit', edit_expense_path(@expense) unless @expense.state =="approved" %> |
-<%= link_to 'Back', expenses_path %>
+<%= link_to 'Edit', edit_expense_path(@expense) %> |
+<%= link_to 'Back', :action => 'index', :prj_id => @expense.project_id %>

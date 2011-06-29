@@ -1,6 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :people
 
+
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
   map.register '/register', :controller => 'users', :action => 'create'
@@ -62,11 +63,7 @@ ActionController::Routing::Routes.draw do |map|
     project.resources :bookings
     #project.resources :bookings, :member => { :bookall => :post }
   end
-  
   map.resources :expenses
-  map.resources :expenses, :member => { :close => :post,
-    :approval => :post,
-    :disapproval => :post }
   map.resources :personalcharges
   map.resources :personalcharges, :member=>{:approval=> :post,:disapproval=>:post}
   map.resources :periods
