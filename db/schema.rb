@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110624040922) do
+ActiveRecord::Schema.define(:version => 20110630134044) do
 
   create_table "billings", :force => true do |t|
     t.timestamp "created_on",                                                                    :null => false
@@ -181,7 +181,7 @@ ActiveRecord::Schema.define(:version => 20110624040922) do
     t.string    "english_name",    :limit => 50,                                :default => ""
     t.string    "employee_number", :limit => 10
     t.integer   "department_id"
-    t.string    "grade",           :limit => 50
+    t.string    "position",        :limit => 50
     t.decimal   "charge_rate",                   :precision => 10, :scale => 2, :default => 0.0
     t.date      "employment_date"
     t.string    "address"

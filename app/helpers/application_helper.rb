@@ -1,13 +1,6 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-  def get_role(user_id,tgrade)
-    role = Person.find(user_id).grade||""
-    unless role.blank?
-      return role.downcase ==tgrade.downcase
-    else
-      return false
-    end
-  end
+
 
     def title(page_title, show_title = true)
     @content_for_title = page_title.to_s
