@@ -11,14 +11,19 @@
       <%= f.text_field :email %>
     </p>
     <% if allow_lv %>
-    <p>
-      <%= f.label :roles,"角色" %><br />
-      <%= f.select :roles, [['雇员','employee'],['经理','manager'],['总监','director'],['超级管理员','providence_breaker']], {:include_blank=>"请选择",:selected => @user.roles||0} %>
-    </p>
-    <p><%= f.label :person_id, '关联员工：' %><br/>
-    <%= f.select :person_id, Person.find(:all,:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] }, { :include_blank => false,:selected =>@user.person_id||0} %>
-  </p>
-  <% end %>
+      <p>
+        <%= f.label :roles,"角色" %><br />
+        <%= f.select :roles, [['雇员','employee'],['经理','manager'],['总监','director'],['超级管理员','providence_breaker']], {:include_blank=>"请选择",:selected => @user.roles||0} %>
+      </p>
+      <p><%= f.label :person_id, '关联员工：' %><br/>
+        <%= f.select :person_id, Person.find(:all,:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] }, { :include_blank => false,:selected =>@user.person_id||0} %>
+      </p>
+      <p><%= f.label :password,'密码：' %><br/>
+        <%= f.password_field :password %></p>
+
+      <p><%= f.label :password_confirmation, '确认密码：' %><br/>
+        <%= f.password_field :password_confirmation %></p>
+    <% end %>
     <p>
       <%= f.submit "更新" %>
     </p>
