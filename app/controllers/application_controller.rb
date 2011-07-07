@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :password,:password_confirmation
   before_filter :set_current_user
 
-  before_filter :configure_charsets
+  #before_filter :configure_charsets
   def configure_charsets
     # Set connection charset. MySQL 4.0 doesn��t support this so it
     #will throw an error, MySQL 4.1 needs this
