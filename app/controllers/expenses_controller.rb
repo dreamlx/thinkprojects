@@ -1,49 +1,18 @@
 class ExpensesController < ApplicationController
-  filter_access_to :all
+  #filter_access_to :all
   # GET /expenses
   # GET /expenses.xml
   def index
-    #prj_id = params[:prj_id]
-    @col_lists  = %w[commission outsourcing tickets courrier postage stationery report_binding cash_advance payment_on_be_half ]
-    @col_list   = params[:col_list]
-    
-    @expense = Expense.new(params[:expense])
-    @expense.project_id = params[:prj_id] unless params[:prj_id].blank?
-    @period_from = Expense.new(params[:period_from])
-    @period_to = Expense.new(params[:period_to])
-    @col_list = params[:col_list]
-    
-    #@current_period = get_now_period
-    #["project_id=? and period_id = ?",params[:id], @current_period.id ]
 
-    str_order =" periods.number desc,expenses.updated_on desc "
+    order_str =" expenses.updated_at desc "
     sql =" 1 "
-    #    unless (prj_id.nil? or prj_id.blank?)
-    #      sql += " and project_id = #{prj_id} "
-    #    end
-
-    
-    sql += " and project_id =#{ @expense.project_id} " unless @expense.project_id.nil?
-     sql += " and memo like '%#{ @expense.memo}%' " unless @expense.memo.nil?
-    sql += " and periods.number >='#{ @period_from.period.number}' " unless (@period_from.period_id.nil? or @period_from.period.nil?)
-    sql += " and periods.number <='#{ @period_to.period.number}' " unless (@period_to.period_id.nil? or @period_to.period.nil?)
-    sql += " and not #{@col_list} = 0 " if @col_list != "" and @col_list != nil
-    @temp = sql
-    @sum_expense = Expense.new
-    @sum_expense.cash_advance = Expense.sum(:cash_advance,:include => :period,:conditions=>sql)
-    @sum_expense.commission = Expense.sum(:commission,:include => :period,:conditions=>sql)
-    @sum_expense.courrier = Expense.sum(:courrier,:include => :period,:conditions=>sql)
-    @sum_expense.outsourcing = Expense.sum(:outsourcing,:include => :period,:conditions=>sql)
-    @sum_expense.payment_on_be_half = Expense.sum(:payment_on_be_half,:include => :period,:conditions=>sql)
-    @sum_expense.postage = Expense.sum(:postage,:include => :period,:conditions=>sql)
-    @sum_expense.report_binding = Expense.sum(:report_binding,:include => :period,:conditions=>sql)
-    @sum_expense.stationery = Expense.sum(:stationery,:include => :period,:conditions=>sql)
-    @sum_expense.tickets = Expense.sum(:tickets,:include => :period,:conditions=>sql)
-    @expenses = Expense.paginate  :page => params[:page],
-      :per_page => 20,
-      :order=>str_order,
-      :include => :period,
-      :conditions => sql
+    sql += " and expense_category like '%#{params[:expense_category].strip}%' "  if params[:expense_category].present?
+    sql += " and projects.job_code like '%#{params[:job_code].strip}%' "  if params[:job_code].present?
+    sql += " and clients.english_name like '%#{params[:client_name].strip}%' "  if params[:client_name].present?
+    sql += " and charge_date <= '#{params[:end_date]}'" if params[:end_date].present?
+    sql += " and charge_date >= '#{params[:start_date]}'" if params[:start_date].present?
+    sql += " and expenses.person_id = #{params[:person_id]}" if params[:person_id].present?
+    @expenses = Expense.search_by_sql(sql, params[:page],order_str)
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @expenses.to_xml }
@@ -65,7 +34,7 @@ class ExpensesController < ApplicationController
   def new
     @expense = Expense.new
     @expense.project_id = params[:prj_id]
-    @expense.period_id = Period.find(:first, :order=>" number desc").id
+   
   end
 
   # GET /expenses/1;edit
@@ -94,9 +63,10 @@ class ExpensesController < ApplicationController
   # PUT /expenses/1.xml
   def update
     @expense = Expense.find(params[:id])
-
+@expense.reset
     respond_to do |format|
       if @expense.update_attributes(params[:expense])
+        
         flash[:notice] = 'Expense was successfully updated.'
         format.html { redirect_to expense_url(@expense) }
         format.xml  { head :ok }
@@ -113,9 +83,29 @@ class ExpensesController < ApplicationController
     @expense = Expense.find(params[:id])
     @expense.destroy
 
-    respond_to do |format|
-      format.html { redirect_to expenses_url }
-      format.xml  { head :ok }
+    render :update do |page|
+      page.remove "item_#{params[:id]}"
+      #page.replace_html 'flash_notice', "project was deleted"
+    end
+  end
+
+   def approval
+    expense = Expense.find(params[:id])
+    expense.approval
+    flash[:notice] = "Expense state was changed, current state is '#{expense.state}'"
+    render :update do |page|
+      page.replace_html "item_#{expense.id}", :partial => "item",:locals => { :expense => expense }
+    end
+  end
+
+  def disapproval
+    expense = Expense.find(params[:id])
+    expense.disapproval
+    flash[:notice] = "Expense state was changed, current state is '#{expense.state}'"
+    render :update do |page|
+      page.replace_html "item_#{expense.id}", :partial => "item",:locals => { :expense => expense }
     end
   end
 end
+
+

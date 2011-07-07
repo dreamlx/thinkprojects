@@ -18,7 +18,7 @@
       </td>
       <td>state:<%= select("", "state", ["pending","approved","disapproved","closed"].collect {|p| [p,p] }, { :include_blank => true }) %>
 </td>
-<td> Order by:<%= select("","order_by",["created_on","job_code","client_name"].collect{|p| [p,p]},{ :include_blank => false }) %></td>
+<td> Order by:<%= select("","order_by",["job_code","created_on","client_name"].collect{|p| [p,p]},{ :include_blank => true }) %></td>
 
 <td><%= submit_tag '查询' %></td>
     </tr>
@@ -28,41 +28,42 @@
 <hr/>
 
 <%= link_to "New Project", new_project_path %>
-<dl id="items" class="project_item">
-  <dt id="project_title">
-    <span>Job code</span>
-    <span>Created date</span>
-    <span class="wide_col">Client name</span>
-    <span>Job partner</span>
-    <span>Job manager</span>
+<table id="items" class="project_item">
+  <tr id="project_title">
+    <th>Job code</th>
+    <th>Created date</th>
+    <th class="wide_col">Client name</th>
+    <th>Job partner</th>
+    <th>Job manager</th>
 
-    <span class="wide_col">Job Description</span>
-    <span>Job state</span>
-    <span id="op">OP</span>
+    <th>Job state</th>
+    <th  colspan="3">OP</th>
     <!--
-        <span><%= Project.human_attribute_name("estimated_annual_fee") %></span>
-    <span><%= Project.human_attribute_name("estimated_hours") %></span>
-    <span><%= Project.human_attribute_name("budgeted_expense") %></span>
-    <span><%= Project.human_attribute_name("job_code") %></span>
-    <span><%= Project.human_attribute_name("description") %></span>
-    <span><%= Project.human_attribute_name("starting_date") %></span>
-    <span><%= Project.human_attribute_name("ending_date") %></span>
-    <span><%= Project.human_attribute_name("estimated_annual_fee") %></span>
-    <span><%= Project.human_attribute_name("contracted_service_fee") %></span>
-    <span><%= Project.human_attribute_name("estimated_commision") %></span>
-    <span><%= Project.human_attribute_name("estimated_outsorcing") %></span>
-    <span><%= Project.human_attribute_name("budgeted_service_fee") %></span>
-    <span><%= Project.human_attribute_name("service_PFA") %></span>
-    <span><%= Project.human_attribute_name("expense_PFA") %></span>
-    <span><%= Project.human_attribute_name("contracted_expense") %></span>
-    <span><%= Project.human_attribute_name("budgeted_expense") %></span>
+        <th><%= Project.human_attribute_name("estimated_annual_fee") %></th>
+    <th><%= Project.human_attribute_name("estimated_hours") %></th>
+    <th><%= Project.human_attribute_name("budgeted_expense") %></th>
+    <th><%= Project.human_attribute_name("job_code") %></th>
+    <th><%= Project.human_attribute_name("description") %></th>
+    <th><%= Project.human_attribute_name("starting_date") %></th>
+    <th><%= Project.human_attribute_name("ending_date") %></th>
+    <th><%= Project.human_attribute_name("estimated_annual_fee") %></th>
+    <th><%= Project.human_attribute_name("contracted_service_fee") %></th>
+    <th><%= Project.human_attribute_name("estimated_commision") %></th>
+    <th><%= Project.human_attribute_name("estimated_outsorcing") %></th>
+    <th><%= Project.human_attribute_name("budgeted_service_fee") %></th>
+    <th><%= Project.human_attribute_name("service_PFA") %></th>
+    <th><%= Project.human_attribute_name("expense_PFA") %></th>
+    <th><%= Project.human_attribute_name("contracted_expense") %></th>
+    <th><%= Project.human_attribute_name("budgeted_expense") %></th>
     -->
-  </dt>
+  </tr>
 
   <% for project in @projects %>
+  <tr id="item_<%= project.id %>" class="project_item">
     <%= render :partial => 'item', :locals => { :project => project } %>
+  </tr>
   <% end %>
-</dl>
+</table>
 <%= will_paginate @projects %>
 <br />
 

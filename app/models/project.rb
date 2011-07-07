@@ -1,10 +1,10 @@
 class Project < ActiveRecord::Base
   # human names
-  validates_uniqueness_of :job_code
-  validates_numericality_of :estimated_hours
-  validates_numericality_of  :estimated_annual_fee
-  validates_numericality_of :budgeted_expense
-  validates_numericality_of :budgeted_service_fee
+  validates_uniqueness_of          :job_code
+  validates_numericality_of       :estimated_hours
+  validates_numericality_of       :estimated_annual_fee
+  validates_numericality_of       :budgeted_expense
+  validates_numericality_of       :budgeted_service_fee
   ModelName = "Project"
   ColumnNames ={
     :contract_number => "contract_number",
@@ -26,14 +26,11 @@ class Project < ActiveRecord::Base
   
   has_one :deduction
 
-  
-  has_many :outsourcings
-  has_many :commissions
-  has_many :billings
-  has_many :expeases
-  has_many :personalcharges
-  has_many :ufafees
-  has_many :bookings
+  has_many :billings,         :dependent => :destroy
+  has_many :expeases,         :dependent => :destroy
+  has_many :personalcharges, :dependent => :destroy
+  has_many :ufafees,          :dependent => :destroy
+  has_many :bookings,         :dependent => :destroy
   
   belongs_to :client
   
@@ -110,7 +107,7 @@ class Project < ActiveRecord::Base
   end
 
 
-  def self.search_by_sql(search,page = 1, order_str = "created_on desc")
+  def self.search_by_sql(search,page = 1, order_str = "job_code")
 
     paginate :per_page => 20, :page => page,
       :conditions=>search,
@@ -149,11 +146,11 @@ class Project < ActiveRecord::Base
         myprojects = self.my_bookings(current_user)
     when "manager":
         bookprojects = self.my_bookings(current_user)
-        ownerprojects =self.find(:all, :include =>:status, :conditions=>["manager_id=? and state =?",current_user.person_id,"approved"])
-        myprojects =[]
-        myprojects = ownerprojects
+      ownerprojects =self.find(:all, :include =>:status, :conditions=>["manager_id=? and state =?",current_user.person_id,"approved"])
+      myprojects =[]
+      myprojects = ownerprojects
 
-        bookprojects.each{|book| myprojects << book unless myprojects.include?(book)}
+      bookprojects.each{|book| myprojects << book unless myprojects.include?(book)}
 
     when "director":
         myprojects = self.find(:all, :include =>:status, :conditions=>["state =?","approved"])

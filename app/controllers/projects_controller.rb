@@ -5,7 +5,7 @@ class ProjectsController < ApplicationController
   auto_complete_for :client,:english_name
   auto_complete_for :project,:job_code
 
-  filter_access_to :all
+  #filter_access_to :all
   
   def index
     @project = Project.new(params[:project])
@@ -18,7 +18,7 @@ class ProjectsController < ApplicationController
     sql += " and job_code like '%#{@project.job_code}%' " if @project.job_code.present?
     sql += " and manager_id = #{current_user.person_id} " if current_user.roles =='manager'
     sql += " and state = '#{params[:state]}'" if params[:state].present?
-
+  
     case params[:order_by]
     when "job_code":
         order_str = "projects.job_code"
@@ -42,15 +42,8 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find(params[:id])
     @booking = Booking.new
-    sum_hours = @project.bookings.sum('hours')
-    sum_fee = 0
-    for booking in @project.bookings
-      sum_fee += (booking.hours * booking.person.charge_rate)
-    end
-    if @project.estimated_hours.to_i < sum_hours.to_i or @project.estimated_annual_fee.to_i < sum_fee.to_i
-      flash[:notice] = 'booking超过预算请检查'
-    end
 
+    
     respond_to do |format|
       format.html # show.rhtml
       format.xml  { render :xml => @project.to_xml }
@@ -79,7 +72,7 @@ class ProjectsController < ApplicationController
       if @project.save
        
         flash[:notice] = 'Project was successfully created.'
-        is_approval
+
         format.html { redirect_to project_url(@project) }
         format.xml  { head :created, :location => project_url(@project) }
       else
@@ -114,13 +107,11 @@ class ProjectsController < ApplicationController
   def approval
     project = Project.find(params[:id])
     project.approval
-    
-    flash[:notice] = "Project <#{project.job_code}> state was changed, current state is '#{project.state}'"
-    respond_to do |format|
 
-        format.html { redirect_to projects_url }
-        format.xml  { head :ok }
-      end
+    flash[:notice] = "Project <#{project.job_code}> state was changed, current state is '#{project.state}'"
+    render :update do |page|
+      page.replace_html "item_#{project.id}", :partial => "item",:locals => { :project => project } 
+    end
   end
 
   def disapproval
@@ -128,44 +119,27 @@ class ProjectsController < ApplicationController
     project.disapproval
     flash[:notice] = "Project <#{project.job_code}> state was changed, current state is '#{project.state}'"
     render :update do |page|
-      page.replace_html "item_#{params[:id]}", :partial => "item",:locals => { :project => project }
+      page.replace_html "item_#{project.id}", :partial => "item",:locals => { :project => project }
     end
   end
   
   def close
     project = Project.find(params[:id])
     #需要判断balance是否为0，如果有结余！=0 则无法close
-    #allow_closed = is_balance(Project.find(params[:id]),Period.today_period)
-    #allow_closed = check_closed(params[:id])
    
+    #allow_closed = check_closed(params[:id])
+
     project.close 
 
-     #if allow_closed
-     #   flash[:notice] = "Project <#{project.job_code}> state was changed, current state is '#{project.state}'"
-     # else
-     #   flash[:notice] = billing_number
-     # end
-
+    flash[:notice] = "Project <#{project.job_code}> state was changed, current state is '#{project.state}'"
     render :update do |page|
       page.replace_html "item_#{project.id}", :partial => "item",:locals => { :project => project }
     end
+
   end
   
      
 
-  def transform    
-
-    @project =    Project.find(params[:id])
-    
-    @project.id = nil
-    @project.job_code[0,2] = 'ZY'
-
-    @project.reset
-    respond_to do |format|
-      
-      format.html { render :action => "new" }
-    end
-  end
 
 
   # DELETE /projects/1
