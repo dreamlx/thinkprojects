@@ -29,8 +29,8 @@
 <p><label for="person_tel">Tel</label><br/>
   <%= text_field 'person', 'tel'  %></p>
 
-<p><label for="person_grade">Grade</label><br/>
-  <%= text_field 'person', 'grade'  %></p>
+<p><label for="person_position">Position</label><br/>
+  <%= text_field 'person', 'position'  %></p>
 
 <p><label for="person_gender">Gender</label>
   <%= select "person","gender", [['male','male'],['female','female']], {:include_blank=>false,:selected => @person.gender} %>
