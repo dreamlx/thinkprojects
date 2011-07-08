@@ -1,5 +1,7 @@
 class Personalcharge < ActiveRecord::Base
-
+validates_presence_of :charge_date
+validates_numericality_of :hours
+validates_numericality_of :ot_hours
   belongs_to :project
   belongs_to :period 
   belongs_to :person
@@ -49,7 +51,13 @@ class Personalcharge < ActiveRecord::Base
     otsetup = YAML.load_file(RAILS_ROOT + "/config/overtime_setup.yml")
     hours = 0
     items = self.group_hours(condition)
-    items.each{|i| hours += otsetup["daily_working_hours"].to_f}
+    items.each{|i|
+     if otsetup["working_days"].include?(i.charge_date.to_date.wday) #current day is work day?
+
+        hours += otsetup["daily_working_hours"]
+      end
+
+      }
     return hours
   end
 
