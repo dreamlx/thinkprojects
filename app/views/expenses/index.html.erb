@@ -1,0 +1,43 @@
+
+<% form_for(:expense, :url => expenses_path, :html => { :method => :get }) do |f| %>
+<b>Category</b>:<%= text_field("", "expense_category") %>
+<b> Project code</b>:<%= text_field("", "job_code") %> 
+ <b>Client Name</b>:<%= text_field("", "client_name") %><br/><br/>
+<b>Person:
+   <%= select("", "person_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => true }) %>
+
+  </b>
+ <b>Date</b>: from<%= text_field("","start_date",{:size=>15,:onfocus=>"HS_setDate(this)"}) %> to<%= text_field("","end_date",{:size=>15,:onfocus=>"HS_setDate(this)"}) %>
+<%= submit_tag '查询' %>
+<% end %>
+
+<hr/>
+<%= link_to 'Export data', :controller=>"reports", :action => "expenses_export" %>||
+<%= link_to 'New expense', :action => 'new' %>
+<table>
+  <tr>
+    <th>No</th>
+    <th>Date</th>
+    <th>Employee</th>
+    <th>Billable</th>
+    <th>Category</th>
+    <th>Client Name</th>
+    <th>Project Code</th>
+    <th>Amount</th>
+    <th>State</th>
+    <th colspan="3">OP</th>
+  </tr>
+
+  <% for expense in @expenses %>
+  <tr id="item_<%= expense.id %>" >
+    <%= render :partial => 'item', :locals => { :expense => expense } %>
+  </tr>
+  <% end %>
+  <tr>
+    <td colspan="7">Total</td>
+    <td id="sum_amount"><%= @sum_amount %></td>
+    <td colspan=4"></td>
+  </tr>
+</table>
+<%= will_paginate @expenses %>
+

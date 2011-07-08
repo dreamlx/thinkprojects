@@ -1,18 +1,17 @@
-<h1>Listing personalcharges</h1>
+
 <%= render :partial => "search" %>
 <%= link_to 'New personalcharge', :action => 'new', :id=>params[:id], :person_id => params[:person_id]  %>
-|<%= link_to 'Back', :controller =>'homepage' %>
-<% loop_columns =["created_on","updated_on","service_fee"] %>
+
+<% show_columns =["charge_date","hours","ot_hours","desc","state"] %>
 <table>
   <tr>
     <th>Job code</th>
     <th>Employee name</th> 
-    <th>Period</th>  
-    <% for column in Personalcharge.content_columns %>
-      <% unless loop_columns.include?(column.name)%>
-        <th><%= column.human_name %></th>
-      <% end %>
-    <% end %>
+    <th>Charge date</th>
+    <th>Hours</th>
+    <th>Including OT hours</th>
+    <th>Description</th>
+    <th>State</th>
     <th colspan="4">OP</th>
   </tr>
 
@@ -21,12 +20,12 @@
       <tr>
         <td><%=personalcharge.project.job_code %></td>
         <td><%=personalcharge.person.english_name unless personalcharge.person.nil?%></td>
-        <td><%=personalcharge.period.number unless personalcharge.period.nil?%></td>
-
-        <% for column in Personalcharge.content_columns %>
-          <% unless loop_columns.include?(column.name) %>
-            <td <%= h("style='color:red;'") if personalcharge.hours.to_i>8 %>><%=h personalcharge.send(column.name) %></td>
-          <% end %>
+        <% for column in show_columns %>
+          <td>
+            <%=h personalcharge.send(column) %>
+            <%= "("+ personalcharge.charge_date.to_date.strftime("%A")+")" \
+              if column == 'charge_date' and !personalcharge.charge_date.blank?%>
+          </td>
         <% end %>
         <% if (personalcharge.state != "approved" and personalcharge.project.state != "closed") %>
 
@@ -47,6 +46,8 @@
   <%end%>
 
 </table>
-
+<div><label>Standard Hours:</label><%= @standard_hours %></div>
+<div><label>OT hours:</label><%= @ot_hours %></div>
+<div><label>OT pay hours:</label><%= @ot_pay_hours %></div>
 <%= will_paginate @personalcharges %>
 <br />

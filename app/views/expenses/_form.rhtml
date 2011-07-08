@@ -11,10 +11,6 @@
     <%= f.text_field :charge_date ,{:onfocus=>"HS_setDate(this)"} %>
   </p>
 
-  <p>
-    <label for="Expense_desc">Description</label>
-    <%= f.text_field :desc %>
-  </p>
 
   <p>
     <label>Billable</label>
@@ -34,4 +30,10 @@
     <label for="Expense_fee">Amount</label>
     <%= f.text_field :fee %>
   </p>
+
+    <p>
+    <label for="Expense_desc">Description</label>
+    <%= f.text_area :desc %>
+  </p>
+
 </fieldset>

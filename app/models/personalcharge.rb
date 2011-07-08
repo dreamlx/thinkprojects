@@ -16,25 +16,7 @@ class Personalcharge < ActiveRecord::Base
 
   end
   
-  def self.search_by_sql(search,page,current_user=nil)
-    role = current_user.roles||""
-    case role
-
-    when "employee":
-        search += " and person_id = #{current_user.person_id}" unless current_user.person_id.blank?
-    when "manager":
-        my_teams =  Person.my_teams(current_user) unless current_user.nil?
-        
-      team_ids=" "
-      my_teams.each{|team|  team_ids = team_ids + team.id.to_s + ", " }
-      search = search +" and person_id in(#{team_ids+"-1"})"
-      #    myprojects = self.find(:all, :include =>:status, :conditions=>["manager_id=? and code ==?",current_user.person_id,1])
-    when "director":
-        #    myprojects = self.find(:all, :include =>:status, :conditions=>["code ==?",1])
-    else
-      #search
-    end
-    
+  def self.paginate_by_sql(search,page)
     paginate :per_page => 10, :page => page,
       :conditions=>search,
       :include=>[:period,:project],
@@ -52,5 +34,54 @@ class Personalcharge < ActiveRecord::Base
   def self.search(page)
     paginate :per_page => 10, :page => page,
       :order => 'created_on'
+  end
+
+  def self.group_hours(condition)
+    sql = "select sum(hours) as hours,person_id,charge_date from personalcharges where "
+    sql += condition
+    sql += " group by person_id, charge_date "
+    sql += "having charge_date is not null"
+    items = self.find_by_sql(sql)
+    return items
+  end
+
+  def self.standard_hours(condition)
+    otsetup = YAML.load_file(RAILS_ROOT + "/config/overtime_setup.yml")
+    hours = 0
+    items = self.group_hours(condition)
+    items.each{|i| hours += otsetup["daily_working_hours"].to_f}
+    return hours
+  end
+
+  def self.ot_hours(sql)
+    otsetup = YAML.load_file(RAILS_ROOT + "/config/overtime_setup.yml")
+    hours = 0
+    items = self.group_hours(sql)
+    items.each{|i|
+      if otsetup["working_days"].include?(i.charge_date.to_date.wday) #current day is work day?
+        if i.hours - otsetup["daily_working_hours"] >0
+          hours += (i.hours - otsetup["daily_working_hours"] )
+        end
+      else
+        hours += i.hours
+      end
+    }
+    return hours
+  end
+
+  def self.ot_pay_hours(sql)
+    otsetup = YAML.load_file(RAILS_ROOT + "/config/overtime_setup.yml")
+    hours = 0
+    items = self.group_hours(sql)
+    items.each{|i|
+      if otsetup["working_days"].include?(i.charge_date.to_date.wday) #current day is work day?
+        if i.hours - otsetup["daily_working_hours"] >0
+          hours += ((i.hours - otsetup["daily_working_hours"] )/2)
+        end
+      else
+        hours += i.hours
+      end
+    }
+    return hours
   end
 end

@@ -1,6 +1,6 @@
 
   <td><%= expense.id %></td>
-  <td><%= expense.charge_date %></td>
+  <td><%= expense.charge_date %>(<%= expense.charge_date.to_date.strftime("%A") %>)</td>
   <td><%= expense.person.english_name unless expense.person.nil? %></td>
   <td><%= expense.billable %></td>
   <td><%= expense.expense_category %></td>

@@ -130,49 +130,7 @@ class ReportsController < ApplicationController
     @records = Personalcharge.sum_by_sql(sql_str)
   end
   
-  def expense_export
-    init_set #people period project
-    @expense    = Expense.new
-    @expense.project_id = params[:project]
-    @expense.period_id = params[:period]
-    @col_lists  = %w[commission outsourcing tickets courrier postage stationery report_binding cash_advance payment_on_be_half ]
-    @col_list   = params[:col_list]
-    
-    sql_str = " select D.job_code, C.number, A.* from "+
-      " expenses as A, periods as C, projects as D " +
-      " where A.period_id = C.id and A.project_id = D.id and "
-
-    sql_condition = " 1 "
-  
-    sql_order = " order by D.job_code "
-
-    if not @expense.project_id.nil?
-      sql_condition += " and project_id =#{ @expense.project_id} "
-    end
-    if not @expense.period_id.nil?       
-      sql_condition += " and period_id = #{@expense.period_id} "
-    end    
-    
-    if @col_list != "" and @col_list != nil
-      sql_condition += " and not #{@col_list} = 0 " 
-    end
-      
-    @expenses = Expense.find_by_sql( sql_str + sql_condition + sql_order )
-    @sql = sql_str + sql_condition + sql_order
-    
-    @e_total =Expense.new
-    @e_total.commission = Expense.sum("commission", :conditions => sql_condition)
-    @e_total.outsourcing = Expense.sum("outsourcing", :conditions => sql_condition)
-    @e_total.tickets = Expense.sum("tickets", :conditions => sql_condition)
-    @e_total.courrier = Expense.sum("courrier", :conditions => sql_condition)
-    @e_total.postage = Expense.sum("postage", :conditions => sql_condition)
-    @e_total.stationery = Expense.sum("stationery", :conditions => sql_condition)
-    @e_total.report_binding = Expense.sum("report_binding", :conditions => sql_condition)
-    @e_total.cash_advance = Expense.sum("cash_advance", :conditions => sql_condition)
-    @e_total.payment_on_be_half = Expense.sum("payment_on_be_half", :conditions => sql_condition)
-    @e_count = Expense.count(:conditions =>sql_condition)
-  
-  end
+ 
   
   def personalcharge_export
     personalcharge = Personalcharge.new(params[:personalcharge])
@@ -193,7 +151,33 @@ class ReportsController < ApplicationController
            :filename=>"personalcharges.csv",
            :disposition => 'attachment'
   end
-  
+
+   def expenses_export
+    sum_expenses =Expense.find(:all, :conditions=>session[:expense_sql],
+      :joins=>" left join projects on project_id = projects.id
+                left join clients on client_id = clients.id")
+
+    csv_string = FasterCSV.generate do |csv|
+      csv << ["NO","Date","Employee","Billable","Category","Client Name","Project Code","Amount","State"]
+      sum_expenses.each do |e|
+        csv << [
+          e.id,
+          e.charge_date,
+          e.person.english_name,
+          e.billable,
+          e.expense_category,
+          e.project.client.english_name,
+          e.project.job_code,
+          e.fee,
+          e.state
+        ] if  !e.person.nil? and !e.project.nil?
+      end
+    end
+    send_data csv_string, :type => "text/plain",
+      :filename=>"expenses.csv",
+      :disposition => 'attachment'
+  end
+
   def billing_export
     
     sql_str = params[:p_sql]

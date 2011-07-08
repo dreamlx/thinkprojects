@@ -26,13 +26,12 @@ class Expense < ActiveRecord::Base
     end
   end
 
-  def self.search_by_sql(search,page = 1, order_str = " created_at ")
+  def self.paginate_by_sql(search,page = 1, order_str = " created_at ")
     paginate :per_page => 20, :page => page,
       :conditions=>search,
       :joins=>" left join projects on project_id = projects.id left join clients on client_id = clients.id",
       :order=>order_str
   end
-
 
 
 end
