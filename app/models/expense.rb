@@ -26,13 +26,18 @@ class Expense < ActiveRecord::Base
     end
   end
 
-  def self.search_by_sql(search,page = 1, order_str = " created_at ")
+  def self.paginate_by_sql(search,page = 1, order_str = " created_at ")
     paginate :per_page => 20, :page => page,
       :conditions=>search,
       :joins=>" left join projects on project_id = projects.id left join clients on client_id = clients.id",
       :order=>order_str
   end
 
-
+  def self.my_expenses(person_id,sql="1", order_str="charge_date")
+    sql += " and (projects.partner_id = #{person_id} or projects.manager_id = #{person_id} or expenses.person_id = #{person_id})"
+    self.find(:all, :conditions=> sql,
+      :joins=>" left join projects on project_id = projects.id left join clients on client_id = clients.id",
+      :order=>order_str)
+  end
 
 end

@@ -1,30 +1,4 @@
-
-<% form_for(:project, :url => projects_path, :html => { :method => :get }) do |f| %>
-
-  <table>
-    <tr>
-      <td>job_code:<%= text_field_with_auto_complete :project,:job_code,{:size=>12},
-          {:skip_style=>true}  %>
-      </td>
-      <td><%= Project.human_attribute_name("client_name") %>
-        <%= text_field_with_auto_complete :client,:english_name,{:size=>20},
-          {:skip_style=>true}  %>
-      </td>
-      <td>
-        Partner:<%= select("project", "partner_id", Person.find(:all,:order=>"english_name",:include=>:status,:conditions=>"dicts.title = 'Employed'").collect {|p| [ p.english_name, p.id ] }, { :include_blank => true }) %>
-      </td>
-      <td>
-        Manager:<%= select("project", "manager_id", Person.find(:all,:order=>"english_name",:include=>:status,:conditions=>"dicts.title = 'Employed'").collect {|p| [ p.english_name, p.id ] }, { :include_blank => true }) %>
-      </td>
-      <td>state:<%= select("", "state", ["pending","approved","disapproved","closed"].collect {|p| [p,p] }, { :include_blank => true }) %>
-</td>
-<td> Order by:<%= select("","order_by",["job_code","created_on","client_name"].collect{|p| [p,p]},{ :include_blank => true }) %></td>
-
-<td><%= submit_tag '查询' %></td>
-    </tr>
-  </table>
-
-<% end %>
+<%= render :partial => "search" %>
 <hr/>
 
 <%= link_to "New Project", new_project_path %>

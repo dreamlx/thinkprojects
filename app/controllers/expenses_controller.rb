@@ -12,7 +12,14 @@ class ExpensesController < ApplicationController
     sql += " and charge_date <= '#{params[:end_date]}'" if params[:end_date].present?
     sql += " and charge_date >= '#{params[:start_date]}'" if params[:start_date].present?
     sql += " and expenses.person_id = #{params[:person_id]}" if params[:person_id].present?
-    @expenses = Expense.search_by_sql(sql, params[:page],order_str)
+
+    session[:expense_sql] =sql
+    expenses = Expense.my_expenses(current_user.person_id, sql)
+    @expenses = expenses.paginate(:page=> params[:page]||1)
+    @sum_amount = 0
+    expenses.each{|e| @sum_amount+=e.fee.to_f}
+
+
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @expenses.to_xml }
@@ -63,7 +70,7 @@ class ExpensesController < ApplicationController
   # PUT /expenses/1.xml
   def update
     @expense = Expense.find(params[:id])
-@expense.reset
+    @expense.reset
     respond_to do |format|
       if @expense.update_attributes(params[:expense])
         
@@ -89,7 +96,7 @@ class ExpensesController < ApplicationController
     end
   end
 
-   def approval
+  def approval
     expense = Expense.find(params[:id])
     expense.approval
     flash[:notice] = "Expense state was changed, current state is '#{expense.state}'"
@@ -106,6 +113,9 @@ class ExpensesController < ApplicationController
       page.replace_html "item_#{expense.id}", :partial => "item",:locals => { :expense => expense }
     end
   end
+
+
+
 end
 
 

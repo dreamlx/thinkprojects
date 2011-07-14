@@ -13,10 +13,10 @@ class ProjectsController < ApplicationController
 
     sql = ' 1 '
     sql += " and clients.english_name like '%#{@client.english_name}%' " if @client.english_name.present?
-    sql += " and partner_id = #{@project.partner_id} " unless @project.partner_id == 0 or @project.partner_id.nil?
-    sql += " and manager_id = #{@project.manager_id} " unless @project.manager_id == 0 or @project.manager_id.nil?
+    sql += " and partner_id = #{@project.partner_id} " if @project.partner_id.present?
+    sql += " and manager_id = #{@project.manager_id} " if @project.manager_id.present?
     sql += " and job_code like '%#{@project.job_code}%' " if @project.job_code.present?
-    sql += " and manager_id = #{current_user.person_id} " if current_user.roles =='manager'
+    
     sql += " and state = '#{params[:state]}'" if params[:state].present?
   
     case params[:order_by]
@@ -29,8 +29,11 @@ class ProjectsController < ApplicationController
     else
       order_str = "projects.created_on desc"
     end
-    @projects = Project.search_by_sql(sql,params[:page],order_str)
-        
+
+    projects = Person.find(current_user.person_id).my_projects(sql,order_str)
+
+    @projects = projects.paginate(:page=>params[:page]||1)
+    
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @projects.to_xml }
@@ -42,7 +45,7 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find(params[:id])
     @booking = Booking.new
-
+    #check_sum_hours
     
     respond_to do |format|
       format.html # show.rhtml
@@ -72,7 +75,7 @@ class ProjectsController < ApplicationController
       if @project.save
        
         flash[:notice] = 'Project was successfully created.'
-
+        #is_approval
         format.html { redirect_to project_url(@project) }
         format.xml  { head :created, :location => project_url(@project) }
       else
@@ -138,7 +141,19 @@ class ProjectsController < ApplicationController
 
   end
   
-     
+  def transform
+
+    @project =    Project.find(params[:id])
+
+    @project.id = nil
+    @project.job_code[0,2] = 'ZY'
+
+    @project.reset
+    respond_to do |format|
+
+      format.html { render :action => "new" }
+    end
+  end
 
 
 
@@ -174,8 +189,17 @@ class ProjectsController < ApplicationController
     for item in billings
       billing_number = (billing_number + item.number + " |") if item.status.to_s == 0.to_s
     end
+  end
 
-
+  def check_sum_hours
+    sum_hours = @project.bookings.sum('hours')
+    sum_fee = 0
+    for booking in @project.bookings
+      sum_fee += (booking.hours * booking.person.charge_rate)
+    end
+    if @project.estimated_hours.to_i < sum_hours.to_i or @project.estimated_annual_fee.to_i < sum_fee.to_i
+      flash[:notice] = 'booking超过预算请检查'
+    end
   end
 
 end

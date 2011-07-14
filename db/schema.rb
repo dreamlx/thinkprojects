@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110630134044) do
+ActiveRecord::Schema.define(:version => 20110708054136) do
 
   create_table "billings", :force => true do |t|
     t.timestamp "created_on",                                                                    :null => false
@@ -202,6 +202,8 @@ ActiveRecord::Schema.define(:version => 20110630134044) do
     t.integer  "person_id",   :limit => 11, :default => 0,         :null => false
     t.text     "desc"
     t.string   "state",                     :default => "pending", :null => false
+    t.date     "charge_date"
+    t.decimal  "ot_hours"
   end
 
   create_table "prj_expense_logs", :force => true do |t|

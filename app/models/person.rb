@@ -39,24 +39,49 @@ class Person < ActiveRecord::Base
   end
 
   def self.my_teams(current_user)
-    role = current_user.roles
+    
     teams=[]
-    iam=self.find(:first, :conditions=>["id=?",current_user.person_id])
-    teams << iam
-    case role
-    when "employee"
-      
-    when "manager"
-      #iam.projects.each{|project|
-      #  project.bookings.each{|booking| teams<< booking.person}
-      #}
-    else
-      teams = self.find(:all)
-      
-    end
-    teams=   Hash[*teams.map {|obj| [obj.english_name, obj]}.flatten].values
+    ids=""
+    iam=self.find(current_user.person_id)
+    iam.manager_projects.each{|p|
+      p.bookings.each{|b|
+        ids+=(b.person_id.to_s+",")
+      }
+    }
+    iam.partner_projects.each{|p|
+      p.bookings.each{|b|
+        ids+=(b.person_id.to_s+",")
+      }
+    }
 
+    ids += current_user.person_id.to_s
+
+    teams = self.find(:all, :conditions=> "id in (#{ids})")
+    teams=   Hash[*teams.map {|obj| [obj.english_name, obj]}.flatten].values
     tms = teams.sort_by{|t| t.english_name}
     return tms
   end
+
+  def my_projects(sql="1",order_str="projects.created_on")
+    order_str = "projects.created_on" if order_str.blank?
+    myprojects = Project.find(:all, :conditions=>sql, :order=> order_str, :include =>[:status,:client])
+    all_projects=[]
+    myprojects.each{|p|
+      all_projects << p if p.is_partner?(self.id)
+      all_projects << p if p.is_manager?(self.id)
+      all_projects << p if p.is_booking?(self.id)
+    }
+    return all_projects.compact
+  end
+
+
+  
+  def my_personalcharges(sql="1")
+    Personalcharge.my_personalcharges(self.id,sql)
+  end
+
+  def my_expenses(sql="1")
+    Expense.my_expenses(self.id,sql)
+  end
+  
 end

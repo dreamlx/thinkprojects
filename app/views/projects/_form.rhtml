@@ -4,89 +4,89 @@
     <label for="Project_contract_number"><%= Project.human_attribute_name("contract_number") %></label>
     <%= f.text_field :contract_number %>
   </p>
-  
+
   <p>
     <label for="Project_job_code"><%= Project.human_attribute_name("job_code") %></label>
     <%= f.text_field :job_code %>
   </p>
-  
+
   <p><label for="Project_client">Client:</label>
-    <%= select("project", "client_id", 
+    <%= select("project", "client_id",
       Client.find(:all,:order=>"client_code").collect {|p| [ p.client_code+"||"+p.english_name, p.id ] }, { :include_blank => false }) %>
   </p>
-  
+
   <p><label for="Project_GMU">GMU:</label>
-    <%= select("project", "GMU_id", 
+    <%= select("project", "GMU_id",
       Dict.find(:all,:order=>"code",:conditions =>"category ='GMU'").collect {|p| [ p.code+"||"+p.title, p.id ] }, { :include_blank => false }) %>
   </p>
-  
+
   <p>
     <label for="Project_description"><%= Project.human_attribute_name("description") %></label>
     <%= f.text_field :description %>
   </p>
-  
+
   <p><label><b>Service line code:</b></label><%= select("project", "service_id",
       Dict.find(:all,:order=>"code",:conditions =>"category ='service_code'").collect {|p| [ p.code+"||"+p.title, p.id ] }, { :include_blank => false }) %>
-       
+
   </p>
-  
+
   <p><label><b>Job revenue type</b></label><%= select("project", "revenue_id",
       Dict.find(:all,:order=>"code",:conditions =>"category ='revenue_type'").collect {|p| [ p.code+"||"+p.title, p.id ] }, { :include_blank => false }) %>
-       
+
   </p>
-  
+
   <p>
     <label for="Project_starting_date"><%= Project.human_attribute_name("starting_date") %></label>
     <%= f.date_select :starting_date %>
   </p>
-  
+
   <p>
     <label for="Project_ending_date"><%= Project.human_attribute_name("ending_date") %></label>
     <%= f.date_select :ending_date %>
   </p>
-  
-  
+
+
   <p><label><b>Collection risk:</b></label><%= select("project", "risk_id",
       Dict.find(:all,:order=>"code",:conditions =>"category ='risk'").collect {|p| [ p.code+"||"+p.title, p.id ] }, { :include_blank => false }) %>
-       
+
   </p>
-  
+
   <p><label><b>Job status:</b></label><%= select("project", "status_id",
       Dict.find(:all,:order=>"code desc",:conditions =>"category ='prj_status' and (code =0 or code =1)").collect {|p| [ p.code+"||"+p.title, p.id ] }, { :include_blank => false }) %>
-       
+
   </p>
-  <!------------------------------------------------------>
+
   <hr/>
 
   <p>
-    <label for="Project_estimated_annual_fee" title="预估总成本"><%= h("Estimated total fee") %></label>
-    <%= f.text_field :estimated_annual_fee %>*预估总成本
+    <label for="Project_estimated_annual_fee" title=<%= label_title("estimated_annual_fee") %>><%= h("Estimated total fee") %></label>
+    <%= f.text_field :estimated_annual_fee %><%= label_title("estimated_annual_fee") %>
   </p>
-     <p>
+  <p>
     <label for="Project_estimated_hours"><%= Project.human_attribute_name("estimated_hours") %></label>
-    <%= f.text_field :estimated_hours %>*预估总人时数
+    <%= f.text_field :estimated_hours %><%= label_title("estimated_hours") %>
   </p>
 
   <p>
     <label for="Project_contracted_service_fee"><%= Project.human_attribute_name("contracted_service_fee") %></label>
     <%= f.text_field :contracted_service_fee %>
   </p>
-  
+
   <p>
     <label for="Project_budgeted_service_fee"><%= Project.human_attribute_name("budgeted_service_fee") %></label>
     <%= f.text_field :budgeted_service_fee %>
   </p>
-  
+
 
 
   <p>
     <label for="Project_contracted_expense"><%= Project.human_attribute_name("contracted_expense") %></label>
     <%= f.text_field :contracted_expense %>
   </p>
-  
+
   <p>
-    <label for="Project_budgeted_expense"><%= Project.human_attribute_name("budgeted_expense") %></label>
-    <%= f.text_field :budgeted_expense %>
+    <label for="Project_budgeted_expense" title=<%= label_title("budgeted_expense") %>><%= Project.human_attribute_name("budgeted_expense") %></label>
+    <%= f.text_field :budgeted_expense %><%= label_title("budgeted_expense") %>
   </p>
 
   <p>
@@ -99,41 +99,14 @@
     <%= f.text_field :expense_PFA %>
   </p>
 
-  <!--p>
-    <label for="Project_estimated_commision"><%= Project.human_attribute_name("estimated_commision") %></label>
-    <%= f.text_field :estimated_commision %>
-  </p>
-
-  <p>
-    <label for="Project_estimated_outsorcing"><%= Project.human_attribute_name("estimated_outsorcing") %></label>
-    <%= f.text_field :estimated_outsorcing %>
-  </p-->
-
-  <!--br/>
-  Billing Responsibility    
   <hr/>
-  <p><b>Partner:</b><%= select("project", "billing_partner_id", 
-      Person.find(:all,:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] }, { :include_blank => false }) %>
-       
-  </p>    
-  <p><b>Manager:</b><%= select("project", "billing_manager_id", 
-      Person.find(:all,:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] }, { :include_blank => false }) %>
-       
-  </p-->
-  <hr/>
-  <p><label><b>Engagement partner:</b></label><%= select("project", "partner_id",
-      Person.find(:all,:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] }, { :include_blank => false }) %>
+  <p><label><b>Project partner:</b></label>
+    <%= select_partner("project", "partner_id") %>
 
   </p>
 
-  <p> <label><b>Engagement manager:</b></label><%= select("project", "manager_id",
-      Person.find(:all,:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] }, { :include_blank => false }) %>
-
+  <p><label><b>Project manager:</b></label>
+    <%= select_employee("project", "manager_id", current_user) %>
   </p>
 
-  <p><label><b>Job source:</b></label><%= select("project", "referring_id",
-      Person.find(:all,:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] }, { :include_blank => false }) %>
-
-  </p>
-  
 </fieldset>

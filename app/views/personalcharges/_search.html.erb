@@ -1,37 +1,36 @@
-<% form_for(:personalcharge, :url => personalcharges_path, :html => { :method => :get }) do |f| %>
+
 <table style="text-align: left">
-<tr>
-  <td>
-  <p>Project:
-    <%= select("", "prj_id", Project.my_projects(current_user).collect {|p| [ p.job_code, p.id ] }, { :include_blank => true }) %>
+  <tr>
+    <td>
+      <p>Project:
+        <%= select_my_projects("", "prj_id") %>
+      </p>
+    </td>
+    <td>
+      <p>Person:
+        <%= select("", "person_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => true }) %>
+      </p>
+    </td>
 
-  </p>
-</td>
-<td>
-   <p>Person:
-   <%= select("", "person_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => true }) %>
-
-  </p>
-</td>
-
-<td>
-  <p> Period from:
-  <%= select("", "period_from", Period.find(:all,:order=>"number DESC").collect {|p| [ p.number, p.number ] }, { :include_blank => true }) %>
-to:
-    <%= select("", "period_to", Period.find(:all,:order=>"number DESC").collect {|p| [ p.number, p.number ] }, { :include_blank => true }) %>
-   </p>
-</td>
-<td>
-   <p>State:
-   <%= select("", "state", ["pending","approved","disapproved"].collect {|p| [p,p] }, { :include_blank => true }) %>
-
-  </p>
-</td>
-<td>
- <input type="submit" value="Search" />
-</td>
+    <td>
+      <p> Period from:
+        <%= select_period("","period_from") %>
+        to:
+        <%= select_period("","period_to") %>
+      </p>
+    </td>
+    <td>
+      <p>State:
+        <%= select("", "state", ["pending","approved","disapproved"].collect {|p| [p,p] }, { :include_blank => true }) %>
+      </p>
+    </td>
+    <td>
+      I am:<%= select("", "role", ["Member","Manager","Director"].collect {|p| [p,p] }, { :include_blank => true }) %>
+    </td>
+    <td>
+      <input type="submit" value="Search" />
+    </td>
 
 
-</tr>
+  </tr>
 </table>
-<% end %>
