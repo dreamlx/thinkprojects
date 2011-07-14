@@ -1,6 +1,8 @@
 class Project < ActiveRecord::Base
   # human names
   validates_uniqueness_of          :job_code
+  validates_presence_of :partner_id
+  validates_presence_of :manager_id
   validates_numericality_of       :estimated_hours
   validates_numericality_of       :estimated_annual_fee
   validates_numericality_of       :budgeted_expense
@@ -27,7 +29,7 @@ class Project < ActiveRecord::Base
   has_one :deduction
 
   has_many :billings,         :dependent => :destroy
-  has_many :expeases,         :dependent => :destroy
+  has_many :expenses,         :dependent => :destroy
   has_many :personalcharges, :dependent => :destroy
   has_many :ufafees,          :dependent => :destroy
   has_many :bookings,         :dependent => :destroy
@@ -107,59 +109,31 @@ class Project < ActiveRecord::Base
   end
 
 
-  def self.search_by_sql(search,page = 1, order_str = "job_code")
-
-    paginate :per_page => 20, :page => page,
-      :conditions=>search,
-      :include =>[:status,:client],
-      :order=>order_str
-  end
-
-  def self.search(page)
-    paginate :per_page => 10, :page => page,
-      :order => 'created_on desc'
-  end
-
   def self. my_bookings(current_user)
-    mybookings = Booking.find(:all,:conditions=>["person_id=?",current_user.person_id])
+    mybookings = Booking.find(:all,:conditions=>["person_id=?",current_user.person_id], :select=>"distinct project_id")
     myprojects=[]
-
-    role = current_user.roles||""
-    case role
-    when "providence_breaker":
-        myprojects = self.find(:all, :conditions=>"state='approved'")
-    else   
-      for mybooking in mybookings
-        myproject = mybooking.project
-        myprojects << myproject if myproject.state =="approved"
-      end
+    for mybooking in mybookings
+      myprojects << mybooking.project if mybooking.project.state =="approved"
     end
+
     prjs =myprojects.sort_by{|p| p.job_code}
     return prjs
   end
   
-  def self.my_projects(current_user=nil)
-    role = current_user.roles||""
-
-    case role
-    when "employee":
-        myprojects = self.my_bookings(current_user)
-    when "manager":
-        bookprojects = self.my_bookings(current_user)
-      ownerprojects =self.find(:all, :include =>:status, :conditions=>["manager_id=? and state =?",current_user.person_id,"approved"])
-      myprojects =[]
-      myprojects = ownerprojects
-
-      bookprojects.each{|book| myprojects << book unless myprojects.include?(book)}
-
-    when "director":
-        myprojects = self.find(:all, :include =>:status, :conditions=>["state =?","approved"])
-    else
-      myprojects = self.find(:all)
-    end
 
 
-    return myprojects.compact
+  def is_booking?(id)
+    flag = false
+    self.bookings.each{|b| flag =true if b.person_id == id}
+    return flag
   end
 
+  def is_partner?(id)
+    self.partner_id == id ? true : false
+  end
+
+  def is_manager?(id)
+    self.manager_id == id ? true : false
+  end
+  
 end

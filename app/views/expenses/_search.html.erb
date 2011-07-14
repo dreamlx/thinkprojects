@@ -1,0 +1,38 @@
+<table><tr>
+    <td>
+      Category:<%= text_field("", "expense_category") %>
+    </td>
+    <td>
+      <p>Project:
+        <%= select_my_projects("", "prj_id") %>
+      </p>
+    </td>
+      <td>
+        <b>Person:
+          <%= select("", "person_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => true }) %>
+
+        </b>
+      </td>
+  </tr>
+  <tr>
+    <td>
+      Client Name:<%= select("", "client_name",
+        Client.find(:all,:order=>"english_name").collect {|p| [ p.english_name, p.english_name ] },
+        { :include_blank => true })
+      %>
+      </td>
+
+      <td>
+        Date: from<%= text_field("","start_date",{:size=>10,:onfocus=>"HS_setDate(this)"}) %> to<%= text_field("","end_date",{:size=>10,:onfocus=>"HS_setDate(this)"}) %>
+      </td>
+      <td>
+      <p>State:
+        <%= select("", "state", ["pending","approved","disapproved"].collect {|p| [p,p] }, { :include_blank => true }) %>
+      </p>
+    </td>
+
+
+    </tr>
+  </table>
+
+        <%= submit_tag '查询' %>

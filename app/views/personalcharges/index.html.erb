@@ -1,5 +1,7 @@
-
+<% form_for(:personalcharge, :url => personalcharges_path, :html => { :method => :get }) do |f| %>
 <%= render :partial => "search" %>
+<% end %>
+<%= link_to 'Export data', :controller=>"reports", :action => "personalcharges_export" %>||
 <%= link_to 'New personalcharge', :action => 'new', :id=>params[:id], :person_id => params[:person_id]  %>
 
 <% show_columns =["charge_date","hours","ot_hours","desc","state"] %>
@@ -48,6 +50,6 @@
 </table>
 <div><label>Standard Hours:</label><%= @standard_hours %></div>
 <div><label>OT hours:</label><%= @ot_hours %></div>
-<div><label>OT pay hours:</label><%= @ot_pay_hours %></div>
+<!--div><label>OT pay hours:</label><%= @ot_pay_hours %></div-->
 <%= will_paginate @personalcharges %>
 <br />

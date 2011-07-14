@@ -4,7 +4,7 @@
 <% form_for(:personalcharge, :url => personalcharge_path(@personalcharge), :html => { :method => :put }) do |f| %>
 
   <%= render :partial => 'form',:locals => { :f => f } %>
-  <%= submit_tag 'Edit' %>
+  <%= submit_tag 'Update' %>
 <% end %>
 
 <%= link_to 'Show', personalcharge_path(@personalcharge) %> |

@@ -12,8 +12,7 @@
       </td>
       <td>
         <b>Project:</b><br/>
-        <%= select("billing", "project_id",
-          Project.my_projects(current_user).collect {|p| [ p.job_code, p.id ] }, { :include_blank => true }) %>
+        <%= select_my_projects("billing", "project_id") %>
 
       </td>
       <td>

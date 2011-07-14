@@ -6,20 +6,34 @@ class PersonalchargesController < ApplicationController
 
   def index
 
-    sql =" 1 "
-    sql+=" and person_id=#{params[:person_id]}"     if params[:person_id].present?
-    sql+=" and project_id=#{params[:prj_id]}"       if params[:prj_id].present?
+    sql = " 1 "
+    sql += " and person_id=#{params[:person_id]}"     if params[:person_id].present?
     sql += " and state = '#{params[:state]}'"       if params[:state].present?
     sql += " and periods.starting_date >= '#{params[:period_from]}' "   if params[:period_from].present?
     sql += " and periods.ending_date   <= '#{params[:period_to]}' "     if params[:period_to].present?
-    
-
-    @personalcharges = Personalcharge.paginate_by_sql(sql,params[:page]||1)
+    sql += " and project_id=#{params[:prj_id]}"       if params[:prj_id].present?
+    if params[:role].present?
+      case params[:role]
+      when "Director":
+          projects = Project.find(:all, :conditions=>"partner_id = #{current_user.person_id}")
+        managers_id =""
+        projects.each{|p| managers_id += (p.manager.id.to_s + ",") unless p.manager.nil?}
+        managers_id += "0"
+        sql += " and personalcharges.person_id in (#{managers_id})"
+      when "Manager":
+          sql += " and projects.manager_id = #{current_user.person_id}"
+      when "Member":
+          sql += " and personalcharges.person_id = #{current_user.person_id}"
+      end
+    end
+    personalcharges = Person.find(current_user.person_id).my_personalcharges(sql)
+    session[:personalcharge_sql] =sql
+    @personalcharges = personalcharges.paginate(:page=>params[:page]||1)
 
     #OT
-    @standard_hours = Personalcharge.standard_hours(sql)
-    @ot_hours       = Personalcharge.ot_hours(sql)
-    @ot_pay_hours   = Personalcharge.ot_pay_hours(sql)
+    @standard_hours = Personalcharge.standard_hours(current_user.person_id,sql)
+    @ot_hours       = Personalcharge.ot_hours(current_user.person_id,sql)
+    @ot_pay_hours   = Personalcharge.ot_pay_hours(current_user.person_id,sql)
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @personalcharges.to_xml }

@@ -1,8 +1,7 @@
 <%= error_messages_for 'personalcharge' %>
 <p>
   <b>Person:</b>
-  <%= select("personalcharge","person_id",
-    Person.my_teams(current_user).collect{|p| [p.english_name,p.id ]}, { :include_blank => false }) %>
+  <%= select_employee("personalcharge","person_id",current_user) %>
 </p>
 <p>
   <b>Project:</b>

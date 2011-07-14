@@ -12,13 +12,12 @@ class ExpensesController < ApplicationController
     sql += " and charge_date <= '#{params[:end_date]}'" if params[:end_date].present?
     sql += " and charge_date >= '#{params[:start_date]}'" if params[:start_date].present?
     sql += " and expenses.person_id = #{params[:person_id]}" if params[:person_id].present?
+
     session[:expense_sql] =sql
-    @expenses = Expense.paginate_by_sql(sql, params[:page],order_str)
-    @sum_expenses =Expense.find(:all, :conditions=>sql,
-      :joins=>" left join projects on project_id = projects.id left join clients on client_id = clients.id",
-      :order=>order_str)
+    expenses = Expense.my_expenses(current_user.person_id, sql)
+    @expenses = expenses.paginate(:page=> params[:page]||1)
     @sum_amount = 0
-    @sum_expenses.each{|e| @sum_amount+=e.fee.to_f}
+    expenses.each{|e| @sum_amount+=e.fee.to_f}
 
 
     respond_to do |format|
