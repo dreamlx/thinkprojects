@@ -47,7 +47,7 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find(params[:id])
     @booking = Booking.new
-    check_sum_hours
+    #check_sum_hours
     
     respond_to do |format|
       format.html # show.rhtml
