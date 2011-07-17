@@ -67,14 +67,21 @@ class Person < ActiveRecord::Base
     myprojects = Project.find(:all, :conditions=>sql, :order=> order_str, :include =>[:status,:client])
     all_projects=[]
     myprojects.each{|p|
-      all_projects << p if p.is_partner?(self.id)
-      all_projects << p if p.is_manager?(self.id)
-      all_projects << p if p.is_booking?(self.id)
+      all_projects << p if p.is_partner?(self.id) or p.is_manager?(self.id) or p.is_booking?(self.id)
     }
     return all_projects.compact
   end
 
+def my_bookings
+    mybookings = Booking.find(:all,:conditions=>["person_id=?",self.id], :select=>"distinct project_id")
+    myprojects=[]
+    for mybooking in mybookings
+      myprojects << mybooking.project if mybooking.project.state =="approved"
+    end
 
+    prjs =myprojects.sort_by{|p| p.job_code}
+    return prjs
+  end
   
   def my_personalcharges(sql="1")
     Personalcharge.my_personalcharges(self.id,sql)

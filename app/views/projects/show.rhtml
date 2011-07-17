@@ -26,12 +26,12 @@
   </p>
 
   <p>
-    <label for="Project_estimated_annual_fee" title="预估总体成本"><strong><%= h("Estimated total fee") %></strong></label>
-    <%=h @project.estimated_annual_fee||0 %>
+    <label for="Project_estimated_annual_fee" ><strong><%= h("Estimated total fee") %></strong></label>
+    <%=h @project.estimated_annual_fee||0 %><%= label_title("estimated_annual_fee") %>
   </p>
   <p>
-    <label for="Project_estimated_hours" title="预估人时"><%= Project.human_attribute_name("estimated_hours") %></label>
-    <%=h @project.estimated_hours ||0%>
+    <label for="Project_estimated_hours" ><%= Project.human_attribute_name("estimated_hours") %></label>
+    <%=h @project.estimated_hours ||0%><%= label_title("estimated_hours") %>
   </p>
 
   <p>
@@ -52,8 +52,8 @@
   </p>
 
   <p>
-    <label for="Project_budgeted_expense" title="硬体成本"><%= Project.human_attribute_name("budgeted_expense") %></label>
-    <%=h @project.budgeted_expense ||""%>
+    <label for="Project_budgeted_expense" ><%= Project.human_attribute_name("budgeted_expense") %></label>
+    <%=h @project.budgeted_expense ||""%><%= label_title("budgeted_expense") %>
   </p>
 
 

@@ -34,7 +34,7 @@ module ApplicationHelper
   def select_employee(model,id,current_user)
     case current_user.roles
     when "providence_breaker":
-      select_people(model,id)
+        select_people(model,id)
     else
       select_person(model,id)
     end
@@ -68,6 +68,22 @@ module ApplicationHelper
   end
 
   def select_my_projects(model,id)
-    select( model,id , Person.find(current_user.person_id).my_projects("","").collect {|p| [ p.job_code, p.id ] }, { :include_blank => true })
+    case current_user.roles
+    when "providence_breaker":
+        select( model,id , Project.find(:all).collect {|p| [ p.job_code, p.id ] }, { :include_blank => false })
+    else
+      select( model,id , Person.find(current_user.person_id).my_projects.collect {|p| [ p.job_code, p.id ] }, { :include_blank => true })
+    end
   end
+
+  def select_booked_project(model,id)
+    case current_user.roles
+    when "providence_breaker":
+        select( model,id , Project.alive.collect {|p| [ p.job_code, p.id ] }, { :include_blank => false })
+    else
+      select(model,id,
+        Project.my_bookings(current_user.person_id).collect {|p| [ p.job_code, p.id ] }, { :include_blank => false })
+    end
+  end
+
 end

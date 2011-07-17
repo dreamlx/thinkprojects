@@ -59,12 +59,12 @@
   <hr/>
 
   <p>
-    <label for="Project_estimated_annual_fee" title="预估总成本"><%= h("Estimated total fee") %></label>
-    <%= f.text_field :estimated_annual_fee %>*预估总成本
+    <label for="Project_estimated_annual_fee" title=<%= label_title("estimated_annual_fee") %>><%= h("Estimated total fee") %></label>
+    <%= f.text_field :estimated_annual_fee %><%= label_title("estimated_annual_fee") %>
   </p>
   <p>
     <label for="Project_estimated_hours"><%= Project.human_attribute_name("estimated_hours") %></label>
-    <%= f.text_field :estimated_hours %>*预估总人时数
+    <%= f.text_field :estimated_hours %><%= label_title("estimated_hours") %>
   </p>
 
   <p>
@@ -85,8 +85,8 @@
   </p>
 
   <p>
-    <label for="Project_budgeted_expense" title="硬体成本"><%= Project.human_attribute_name("budgeted_expense") %></label>
-    <%= f.text_field :budgeted_expense %>
+    <label for="Project_budgeted_expense" title=<%= label_title("budgeted_expense") %>><%= Project.human_attribute_name("budgeted_expense") %></label>
+    <%= f.text_field :budgeted_expense %><%= label_title("budgeted_expense") %>
   </p>
 
   <p>

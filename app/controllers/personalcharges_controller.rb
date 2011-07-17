@@ -27,6 +27,12 @@ class PersonalchargesController < ApplicationController
       end
     end
     personalcharges = Person.find(current_user.person_id).my_personalcharges(sql)
+    personalcharges.collect{|p|
+      if  !p.period.nil? and p.charge_date.nil?
+        p.charge_date = p.period.number
+        p.save
+      end
+    }
     session[:personalcharge_sql] =sql
     @personalcharges = personalcharges.paginate(:page=>params[:page]||1)
 

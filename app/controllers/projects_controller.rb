@@ -29,9 +29,11 @@ class ProjectsController < ApplicationController
     else
       order_str = "projects.created_on desc"
     end
-
-    projects = Person.find(current_user.person_id).my_projects(sql,order_str)
-
+    if current_user.roles == 'providence_breaker'
+      projects = Project.find(:all, :conditions=>sql, :order=> order_str)
+    else
+      projects = Person.find(current_user.person_id).my_projects(sql,order_str)
+    end
     @projects = projects.paginate(:page=>params[:page]||1)
     
     respond_to do |format|
@@ -45,14 +47,7 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find(params[:id])
     @booking = Booking.new
-    sum_hours = @project.bookings.sum('hours')
-    sum_fee = 0
-    for booking in @project.bookings
-      sum_fee += (booking.hours * booking.person.charge_rate)
-    end
-    if @project.estimated_hours.to_i < sum_hours.to_i or @project.estimated_annual_fee.to_i < sum_fee.to_i
-      flash[:notice] = 'booking超过预算请检查'
-    end
+    check_sum_hours
     
     respond_to do |format|
       format.html # show.rhtml
@@ -196,8 +191,17 @@ class ProjectsController < ApplicationController
     for item in billings
       billing_number = (billing_number + item.number + " |") if item.status.to_s == 0.to_s
     end
+  end
 
-
+  def check_sum_hours
+    sum_hours = @project.bookings.sum('hours')
+    sum_fee = 0
+    for booking in @project.bookings
+      sum_fee += (booking.hours * booking.person.charge_rate)
+    end
+    if @project.estimated_hours.to_i < sum_hours.to_i or @project.estimated_annual_fee.to_i < sum_fee.to_i
+      flash[:notice] = 'booking超过预算请检查'
+    end
   end
 
 end
