@@ -1,6 +1,7 @@
 class Expense < ActiveRecord::Base
 
   validates_presence_of :charge_date
+  validates_presence_of :person_id
   validates_presence_of :type
   validates_numericality_of :fee
 

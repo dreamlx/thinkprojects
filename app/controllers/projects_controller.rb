@@ -29,9 +29,11 @@ class ProjectsController < ApplicationController
     else
       order_str = "projects.created_on desc"
     end
-
-    projects = Person.find(current_user.person_id).my_projects(sql,order_str)
-
+    if current_user.roles == 'providence_breaker'
+      projects = Project.find(:all, :conditions=>sql, :order=> order_str)
+    else
+      projects = Person.find(current_user.person_id).my_projects(sql,order_str)
+    end
     @projects = projects.paginate(:page=>params[:page]||1)
     
     respond_to do |format|

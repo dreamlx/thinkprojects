@@ -5,12 +5,6 @@
   <% if logged_in? %>
 <div>
   我的项目:<%= h(@projects.size) %>
-  <table>
-    <% unless current_user.roles == "providence_breaker" %>
-  <% for project in @projects %>
-    <%= render :partial => 'projects/item', :locals => { :project => project } %>
-  <% end %>
-    <% end %>
-  </table>
+  
 </div>
 <% end %>

@@ -1,10 +1,14 @@
 
 <fieldset>
   <p>
-<b>Person:</b>
-    <%= select("expense","person_id",
-     Person.my_teams(current_user).collect{|p| [p.english_name,p.id ]}, { :include_blank => false }) %>
-</p>
+    <b>Person:</b>
+    <%= select_employee("expense","person_id",current_user) %>
+  </p>
+
+  <p>
+    <label for="Expense_project_id">Project:</label>
+    <%= select_booked_project("expense", "project_id") %>
+  </p>
 
   <p>
     <label for="Expense_charge_date"><%= Expense.human_attribute_name("charge_date") %></label>
@@ -17,11 +21,6 @@
     <%= f.check_box :billable   %>
   </p>
 
-  <p>
-    <label for="Expense_project_id">Project:</label>
-    <%= select("expense", "project_id",
-      Project.my_bookings(current_user).collect {|p| [ p.job_code, p.id ] }, { :include_blank => false }) %>
-  </p>
   <p><label for="Expense_expense_category">Category:</label>
     <%= select("expense", "expense_category",
       Dict.expense_types.collect {|p| [ p.title, p.title ] }, { :include_blank => true,:selected => @expense.expense_category }) %>
@@ -31,7 +30,7 @@
     <%= f.text_field :fee %>
   </p>
 
-    <p>
+  <p>
     <label for="Expense_desc">Description</label>
     <%= f.text_area :desc %>
   </p>

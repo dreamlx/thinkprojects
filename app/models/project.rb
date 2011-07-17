@@ -108,20 +108,10 @@ class Project < ActiveRecord::Base
 
   end
 
-
-  def self. my_bookings(current_user)
-    mybookings = Booking.find(:all,:conditions=>["person_id=?",current_user.person_id], :select=>"distinct project_id")
-    myprojects=[]
-    for mybooking in mybookings
-      myprojects << mybooking.project if mybooking.project.state =="approved"
-    end
-
-    prjs =myprojects.sort_by{|p| p.job_code}
-    return prjs
+  def self.my_bookings(person_id)
+    Person.find(person_id).my_bookings
   end
   
-
-
   def is_booking?(id)
     flag = false
     self.bookings.each{|b| flag =true if b.person_id == id}

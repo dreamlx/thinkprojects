@@ -5,8 +5,7 @@
 </p>
 <p>
   <b>Project:</b>
-  <%= select("personalcharge", "project_id",
-    Project.my_bookings(current_user).collect {|p| [ p.job_code, p.id ] }, { :include_blank => false }) %>
+  <%=  select_booked_project("personalcharge","project_id") %>
 </p>
 <p>
   <b>Period:</b>

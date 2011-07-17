@@ -8,7 +8,8 @@
 <table>
   <tr>
     <th>Job code</th>
-    <th>Employee name</th> 
+    <th>Employee name</th>
+    <th>Period</th>
     <th>Charge date</th>
     <th>Hours</th>
     <th>Including OT hours</th>
@@ -20,9 +21,10 @@
   <% for personalcharge in @personalcharges %>
     <% unless personalcharge.project.nil? %>
       <tr>
-        <td><%=personalcharge.project.job_code %></td>
-        <td><%=personalcharge.person.english_name unless personalcharge.person.nil?%></td>
-        <% for column in show_columns %>
+        <td><%=  personalcharge.project.job_code    unless personalcharge.project.nil?%></td>
+        <td><%=  personalcharge.person.english_name unless personalcharge.person.nil?%></td>
+        <td><%=  personalcharge.period.number       unless personalcharge.period.nil? %></td>
+    <% for column in show_columns %>
           <td>
             <%=h personalcharge.send(column) %>
             <%= "("+ personalcharge.charge_date.to_date.strftime("%A")+")" \

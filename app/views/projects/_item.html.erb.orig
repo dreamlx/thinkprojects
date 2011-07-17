@@ -13,8 +13,13 @@
     <%= link_to 'Edit', edit_project_path(project) if (project.state !="closed"  ) %>
   </td>
   <td>
+<<<<<<< HEAD
+    <% if current_user.roles != "employee" %>
+      <%= button_to_remote 'Approval', :url=>approval_project_path(project), :confirm => check_message(project)+" Are you sure approval?", :method => :post if project.state =="pending" %>
+=======
     <% if current_user.roles == "director" or current_user.roles == "providence_breaker" and current_user.person_id != project.manager_id %>
       <%= button_to_remote 'Approval',    :url=>approval_project_path(project), :confirm => check_message(project)+" Are you sure approval?", :method => :post if project.state =="pending" %>
+>>>>>>> texel
       <%= button_to_remote 'Disapproval', :url=>disapproval_project_path(project), :confirm => check_message(project)+" Are you sure disapproval?",:method => :post if project.state =="pending" %>
       <%= link_to 'Transform', transform_project_path(project), :confirm => 'Are you sure transform?',:method => :post if project.state =="approved" and project.job_code[0,2] == 'PT'%>
       <%= button_to_remote 'Close', :url=>close_project_path(project), :confirm => 'Are you sure close?',:method => :post if project.state !="closed" %>
