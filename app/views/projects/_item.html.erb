@@ -7,7 +7,7 @@
 
   <td><%=h project.state%></td>
   <td>
-    <%= link_to 'View', project_path(project) %>
+    <%= link_to 'View', project_path(project) if current_user.person_id == project.partner_id or current_user.person_id == project.manager_id%>
   </td>
   <td>
     <%= link_to 'Edit', edit_project_path(project) if (project.state !="closed"  ) %>

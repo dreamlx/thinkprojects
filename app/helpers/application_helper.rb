@@ -70,7 +70,7 @@ module ApplicationHelper
   def select_my_projects(model,id)
     case current_user.roles
     when "providence_breaker":
-        select( model,id , Project.find(:all).collect {|p| [ p.job_code, p.id ] }, { :include_blank => false })
+        select( model,id , Project.find(:all).collect {|p| [ p.job_code, p.id ] }, { :include_blank => true })
     else
       select( model,id , Person.find(current_user.person_id).my_projects.collect {|p| [ p.job_code, p.id ] }, { :include_blank => true })
     end
