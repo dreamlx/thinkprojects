@@ -25,5 +25,10 @@ module ProjectsHelper
     return ""
     #return str
   end
-
+  
+  def allow_project_op(project)
+    flag = false
+    flag = true if current.person_id == project.partner_id or current_user.person_id == project.manager_id or current_user.roles =="providence_breaker"
+    return flag
+  end
 end

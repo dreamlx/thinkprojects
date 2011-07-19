@@ -72,7 +72,7 @@
 <br/>
 <br/><br/>
 
-<% if current_user.person_id == @project.manager_id or current_user.person_id == @project.partner_id %>
+<% if current_user.person_id == @project.manager_id or current_user.person_id == @project.partner_id or current_user.roles == 'providence_breaker' %>
 <% form_for([@project, @booking]) do |f|%>
 <%  @booking.project_id = @project.id %>
     <%= render :partial => '/bookings/create',:locals => { :f => f } %>

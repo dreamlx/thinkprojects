@@ -7,10 +7,10 @@
 
   <td><%=h project.state%></td>
   <td>
-    <%= link_to 'View', project_path(project) if current_user.person_id == project.partner_id or current_user.person_id == project.manager_id%>
+    <%= link_to 'View', project_path(project) if allow_project_op(project)%>
   </td>
   <td>
-    <%= link_to 'Edit', edit_project_path(project) if (project.state !="closed"  ) %>
+    <%= link_to 'Edit', edit_project_path(project) if (project.state !="closed"  ) and allow_project_op(project) %>
   </td>
   <td>
     <% if current_user.roles == "director" or current_user.roles == "providence_breaker" and current_user.person_id != project.manager_id %>
