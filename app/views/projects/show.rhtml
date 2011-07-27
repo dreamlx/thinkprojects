@@ -12,7 +12,7 @@
 
   <p>
     <label for="Project_description"><%= Project.human_attribute_name("description") %></label>
-    <%=h @project.description ||"--"%>
+    <%= @project.description ||"--"%>
   </p>
 
   <p>

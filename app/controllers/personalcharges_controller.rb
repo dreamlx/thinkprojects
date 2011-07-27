@@ -26,8 +26,12 @@ class PersonalchargesController < ApplicationController
           sql += " and personalcharges.person_id = #{current_user.person_id}"
       end
     end
-    personalcharges = Person.find(current_user.person_id).my_personalcharges(sql)
-    personalcharges.collect{|p|
+    if current_user.roles == "providence_breaker"
+      personalcharges = Personalcharge.find(:all,:conditions=>sql, :order=>"projects.job_code", :include=>:project)
+    else
+      personalcharges = Person.find(current_user.person_id).my_personalcharges(sql)
+    end
+      personalcharges.collect{|p|
       if  !p.period.nil? and p.charge_date.nil?
         p.charge_date = p.period.number
         p.save
