@@ -88,7 +88,7 @@ class Project < ActiveRecord::Base
 
 
   named_scope :alive, :conditions =>"state = 'approved'", :order=>'job_code'
-
+  
   state_machine :initial => :pending do
     event :approval do
       transition all =>:approved

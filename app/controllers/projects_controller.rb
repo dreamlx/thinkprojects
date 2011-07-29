@@ -133,8 +133,11 @@ class ProjectsController < ApplicationController
     #需要判断balance是否为0，如果有结余！=0 则无法close
    
     #allow_closed = check_closed(params[:id])
-
-    project.close 
+    if project.state == 'approved'
+      project.close
+    else
+      project.approval
+    end
 
     flash[:notice] = "Project <#{project.job_code}> state was changed, current state is '#{project.state}'"
     render :update do |page|
@@ -146,15 +149,34 @@ class ProjectsController < ApplicationController
   def transform
 
     @project =    Project.find(params[:id])
+    if params[:zy_project][:id].present?
+      @zy_project = Project.find(params[:zy_project][:id])
+    
+      @t_message = "<h3>Begin transfer</h3><br/>"
+      @t_message +="==from #{@project.job_code} to #{@zy_project.job_code}==<hr/>"
 
-    @project.id = nil
-    @project.job_code[0,2] = 'ZY'
+      @project.bookings.each{|b|
+        @zy_project.bookings<<b
+        @t_message += " =>booking:No-#{b.id}, name-#{b.person.english_name}, hours-#{b.hours}<br/>"
+      }
 
-    @project.reset
-    respond_to do |format|
+      @t_message +="<hr/>"
+      @project.personalcharges.each{|p|
+        @zy_project.personalcharges << p
+        @t_message += " =>persnalcharges: No-#{p.id}, name-#{p.person.english_name}, hours-#{p.hours}, including ot hours-#{p.ot_hours}<br/>"
+      }
 
-      format.html { render :action => "new" }
+      @t_message +="<hr/>"
+      @project.expenses.each{|e|
+        @zy_project.expenses << e
+        @t_message += " =>expenses No-#{e.id}, category-#{e.expense_category}, fee -#{e.fee}<br/>"
+      }
+      @project.description += @t_message
+    else
+      @zy_project = nil
     end
+
+    @project.close
   end
 
 

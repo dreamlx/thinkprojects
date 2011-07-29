@@ -5,6 +5,7 @@
 <%= link_to 'New personalcharge', :action => 'new', :id=>params[:id], :person_id => params[:person_id]  %>
 
 <% show_columns =["charge_date","hours","ot_hours","desc","state"] %>
+<%#= session[:personalcharge_sql] %>
 <table>
   <tr>
     <th>Job code</th>
