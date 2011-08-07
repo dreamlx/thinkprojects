@@ -30,7 +30,7 @@ class ProjectsController < ApplicationController
       order_str = "projects.created_on desc"
     end
     if current_user.roles == 'providence_breaker'
-      projects = Project.find(:all, :conditions=>sql, :order=> order_str)
+      projects = Project.find(:all, :conditions=>sql, :order=> order_str, :include=>:client)
     else
       projects = Person.find(current_user.person_id).my_projects(sql,order_str)
     end
@@ -47,7 +47,7 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find(params[:id])
     @booking = Booking.new
-    #check_sum_hours
+    check_sum_hours
     
     respond_to do |format|
       format.html # show.rhtml
@@ -77,7 +77,7 @@ class ProjectsController < ApplicationController
       if @project.save
        
         flash[:notice] = 'Project was successfully created.'
-        #is_approval
+        is_approval
         format.html { redirect_to project_url(@project) }
         format.xml  { head :created, :location => project_url(@project) }
       else
@@ -185,7 +185,7 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1.xml
   def destroy
     @project = Project.find(params[:id])
-    @project.destroy
+    @project.destroy if @project.state == "pending"
     
     #respond_to do |format|
     #  format.html { redirect_to projects_url }
@@ -197,6 +197,29 @@ class ProjectsController < ApplicationController
     end
   end
   
+
+  def batch_actions
+    items = params[:check_items]
+    unless items.nil?
+      items.each{|key,value|
+        project = Project.find(value)
+        case params[:do_action]
+        when "approval":
+            project.approval
+        when "disapproval":
+            project.disapproval
+        when "destroy":
+            project.destroy if project.state == "pending"
+        when "close":
+            project.close
+        else
+    
+        end
+      }
+    end
+
+    redirect_to(:action=>"index")
+  end
 
   private
 

@@ -1,29 +1,30 @@
-
-<td><b><%= h project.job_code%></b></td>
-<td><%=h project.created_on.strftime('%Y-%m-%d') %></td>
-<td class="wide_col"><%=h project.client.english_name||"" unless project.client.nil?%></td>
-<td><%=h project.partner.english_name||"" unless project.partner.nil?%></td>
-<td><%=h project.manager.english_name||"" unless project.manager.nil?%></td>
-
-<td><%=h project.state%></td>
-<td>
-  <%= link_to 'View', project_path(project) if allow_project_op(project)%>
-</td>
-<td>
-  <%= link_to 'Edit', edit_project_path(project) if (project.state !="closed"  ) and allow_project_op(project) %>
-</td>
-<td>
-  <% if allow_project_op(project) %>
-    <%= button_to_remote 'Approval',    :url=>approval_project_path(project), :confirm => check_message(project)+" Are you sure approval?", :method => :post if approval_op(project) and project.state == 'pending' %>
-    <%= button_to_remote 'Disapproval', :url=>disapproval_project_path(project), :confirm => check_message(project)+" Are you sure disapproval?",:method => :post if approval_op(project) and project.state == 'pending' %>
-    <% if project.state =="approved" and project.job_code[0,2] == 'PT' %>
-      <% form_for(:project, :url => transform_project_path(project), :html => { :method => :post }) do |f| %>
-        <%= select("zy_project","id",Project.find(:all,:conditions=>" job_code like 'ZY%' and state == 'approved' ", :order=>"job_code").collect {|p| [ p.job_code, p.id ] }, { :include_blank => true }) %>
-        <input type="submit" value="Transfer" onclick="return confirm('Are you sure transfer this project?');"/>
+<tr id="item_<%= project.id %>" class="project_item">
+  <td><%= check_box_tag "check_items[#{project.id}]", project.id if project.state == "pending"%> <b><%= h project.job_code%></b></td>
+  <td><%=h project.created_on.strftime('%Y-%m-%d') %></td>
+  <td class="wide_col"><%=h project.client.english_name||"" unless project.client.nil?%></td>
+  <td><%=h project.partner.english_name||"" unless project.partner.nil?%></td>
+  <td><%=h project.manager.english_name||"" unless project.manager.nil?%></td>
+  <td><%=h truncate(project.description,40) %></td>
+  <td><%=h project.state%></td>
+  <td>
+    <%= link_to 'View', project_path(project) if allow_project_op(project)%>
+  </td>
+  <td>
+    <%= link_to 'Edit', edit_project_path(project) if (project.state !="closed"  ) and allow_project_op(project) %>
+  </td>
+  <td>
+    <% if allow_project_op(project) %>
+      <%= button_to_remote 'Approval',    :url=>approval_project_path(project), :confirm => check_message(project)+" Are you sure approval?", :method => :post if approval_op(project) and project.state == 'pending' %>
+      <%= button_to_remote 'Disapproval', :url=>disapproval_project_path(project), :confirm => check_message(project)+" Are you sure disapproval?",:method => :post if approval_op(project) and project.state == 'pending' %>
+      <% if project.state =="approved" and project.job_code[0,2] == 'PT' %>
+        <% form_for(:project, :url => transform_project_path(project), :html => { :method => :post }) do |f| %>
+          <%= select("zy_project","id",Project.find(:all,:conditions=>" job_code like 'ZY%' and state == 'approved' ", :order=>"job_code").collect {|p| [ p.job_code, p.id ] }, { :include_blank => true }) %>
+          <input type="submit" value="Transfer" onclick="return confirm('Are you sure transfer this project?');"/>
+        <% end %>
       <% end %>
+      <%= button_to_remote 'Close', :url=>close_project_path(project), :confirm => 'Are you sure close?',:method => :post if project.state !="closed" %>
+      <%= button_to_remote 'ReOpen', :url=>close_project_path(project), :confirm => 'Are you sure reopen it ?',:method => :post if project.state =="closed" and current_user.roles == 'providence_breaker'%>
+      <%= button_to_remote 'Destroy', :update=> 'projects',:url=>project, :confirm => 'Are you sure destroy?', :method => :delete if current_user.roles == 'providence_breaker' and project.state =="pending"%>
     <% end %>
-    <%= button_to_remote 'Close', :url=>close_project_path(project), :confirm => 'Are you sure close?',:method => :post if project.state !="closed" %>
-    <%= button_to_remote 'ReOpen', :url=>close_project_path(project), :confirm => 'Are you sure reopen it ?',:method => :post if project.state =="closed" and current_user.roles == 'providence_breaker'%>
-    <%= button_to_remote 'Destroy', :update=> 'projects',:url=>project, :confirm => 'Are you sure destroy?', :method => :delete if current_user.roles == 'providence_breaker' and project.state =="pending"%>
-  <% end %>
-</td>
+  </td>
+</tr>

@@ -46,7 +46,7 @@ class Personalcharge < ActiveRecord::Base
   
   def self.my_personalcharges(person_id,sql)
     sql += " and (projects.partner_id = #{person_id} or projects.manager_id = #{person_id} or person_id = #{person_id})"
-    self.find(:all, :conditions=> sql, :include=>:project)
+    self.find(:all, :conditions=> sql, :include=>:project,:order=>"personalcharges.state desc")
   end
 
   def self.my_group_hours(person_id,condition)

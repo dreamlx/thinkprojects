@@ -317,3 +317,5 @@ dt#project_title span{ text-align:center; font-weight:bolder; }
 .errorExplanation{color: red;}
 
 #middle_area p{ margin-bottom: 5px;}
+.all_op ul{ width: 300px; padding: 1px; margin: 5px;}
+.all_op ul li{display:inline-block; margin-right: 10px;}
