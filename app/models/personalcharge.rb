@@ -36,7 +36,7 @@ class Personalcharge < ActiveRecord::Base
   end
 
   def self.group_hours(condition)
-    sql = "select sum(hours) as hours,person_id,charge_date from personalcharges where "
+    sql = "select sum(hours) as hours,person_id,charge_date from personalcharges left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id where "
     sql += condition
     sql += " group by person_id, charge_date "
     sql += "having charge_date is not null"
@@ -46,12 +46,13 @@ class Personalcharge < ActiveRecord::Base
   
   def self.my_personalcharges(person_id,sql)
     sql += " and (projects.partner_id = #{person_id} or projects.manager_id = #{person_id} or person_id = #{person_id})"
-    self.find(:all, :conditions=> sql, :include=>:project,:order=>"personalcharges.state desc")
+    self.find(:all, :conditions=> sql,  :joins=>"left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id",
+      :order=>"personalcharges.state desc")
   end
 
   def self.my_group_hours(person_id,condition)
     condition += " and (projects.partner_id = #{person_id} or projects.manager_id = #{person_id} or person_id = #{person_id})"
-    sql = "select sum(hours) as hours,person_id,charge_date from personalcharges left join projects on projects.id = personalcharges.project_id where "
+    sql = "select sum(hours) as hours,person_id,charge_date from personalcharges left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id where "
     sql += condition
     sql += " group by personalcharges.person_id, charge_date "
     sql += "having charge_date is not null"

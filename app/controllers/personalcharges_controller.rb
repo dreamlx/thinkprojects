@@ -27,7 +27,8 @@ class PersonalchargesController < ApplicationController
       end
     end
     if current_user.roles == "providence_breaker"
-      personalcharges = Personalcharge.find(:all,:conditions=>sql, :order=>"personalcharges.state desc,projects.job_code", :include=>:project)
+      personalcharges = Personalcharge.find(:all,:conditions=>sql, 
+        :order=>"personalcharges.state desc,projects.job_code", :include=>[:project,:period])
     else
       personalcharges = Person.find(current_user.person_id).my_personalcharges(sql)
     end
@@ -132,7 +133,7 @@ class PersonalchargesController < ApplicationController
   end
 
   def destroy
-    Personalcharge.find(params[:id]).destroy if p.state == "pending"
+    Personalcharge.find(params[:id]).destroy 
     render :update do |page|
       page.remove "item_#{params[:id]}"
     end

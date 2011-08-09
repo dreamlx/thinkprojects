@@ -22,12 +22,10 @@
       <% end %>
     </td>
     <td>
-      <%= button_to_remote 'Destroy',
+      <%= button_to_remote 'Destroy',        
         :update=> 'personalcharges',
-        :url=>personalcharge,
-        :confirm => 'Are you sure destroy?',
-        :method => :delete \
-        if  personalcharge.state =="pending"%>
+        :url=>personalcharge,        :confirm => 'Are you sure destroy this item?',
+        :method => :delete if  personalcharge.state =="pending"%>
 
     </td>
   <% else %>

@@ -2,14 +2,15 @@
   <h3>check& auto insert Self study</h3>
 
   <% form_for(:admin, :url => {:action=>"auto_complete_hours"}, :html => { :method => :get }) do |f| %>
-  <p>
-    Period:<%= select("", "period_id",
-      Period.find(:all,:order=>"number desc").collect {|p| [ p.number, p.id ] }, { :include_blank => false }) %>
-  Project:
-    <%= select("", "prj_id", Project.find(:all, :conditions=>"job_code like '%SEF%'").collect {|p| [ p.job_code, p.id ] }, { :include_blank => false }) %>
- <%= submit_tag '提交' %>
-  </p>
- 
+    <p>
+      Period:<%= select("", "period_id",
+        Period.find(:all,:order=>"number desc").collect {|p| [ p.number, p.id ] }, { :include_blank => false }) %>
+      Project:
+      <%= select("", "prj_id", Project.find(:all, :conditions=>"job_code like '%SEF%'").collect {|p| [ p.job_code, p.id ] }, { :include_blank => false }) %>
+      Period hours: <%= text_field_tag "period_hours","0" %>
+      <%= submit_tag '提交' %>
+    </p>
+
   <% end %>
 </div>
 <hr/>
@@ -17,12 +18,12 @@
   <h3>check OT</h3>
 
   <% form_for(:admin, :url => {:action=>"check_ot"}, :html => { :method => :get }) do |f| %>
-  <p>
-    Period:<%= select("", "period_id",
-      Period.find(:all,:order=>"number desc").collect {|p| [ p.number, p.id ] }, { :include_blank => false }) %>
-  
- <%= submit_tag '提交' %>
-  </p>
+    <p>
+      Period:<%= select("", "period_id",
+        Period.find(:all,:order=>"number desc").collect {|p| [ p.number, p.id ] }, { :include_blank => false }) %>
+      Period hours: <%= text_field_tag "period_hours","0" %>
+      <%= submit_tag '提交' %>
+    </p>
 
   <% end %>
 </div>

@@ -8,7 +8,11 @@
     </td>
     <td>
       <p>Person:
-        <%= select("", "person_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => true }) %>
+        <% if current_user.roles =="providence_breaker" %>
+          <%= select_people("","person_id")  %>
+        <% else %>
+          <%= select("", "person_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => true }) %>
+        <% end %>
       </p>
     </td>
 

@@ -10,16 +10,17 @@ class ExpensesController < ApplicationController
     #sql += " and projects.job_code like '%#{params[:job_code].strip}%' "  if params[:job_code].present?
     sql += " and project_id=#{params[:prj_id]}"       if params[:prj_id].present?
     sql += " and clients.english_name like '%#{params[:client_name].strip}%' "  if params[:client_name].present?
-    sql += " and charge_date <= '#{params[:end_date]}'" if params[:end_date].present?
-    sql += " and charge_date >= '#{params[:start_date]}'" if params[:start_date].present?
+    sql += " and expenses.charge_date <= '#{format_date(params[:end_date])}'" if params[:end_date].present?
+    sql += " and expenses.charge_date >= '#{format_date(params[:start_date])}'" if params[:start_date].present?
     sql += " and expenses.person_id = #{params[:person_id]}" if params[:person_id].present?
     sql += " and expenses.state = '#{params[:state]}'" if params[:state].present?
     session[:expense_sql] =sql
 
-     if current_user.roles == "providence_breaker"
-      expenses = Expense.find(:all,:conditions=>sql, :order=>"expenses.state, projects.job_code", :include=>:project)
+    if current_user.roles == "providence_breaker"
+      expenses = Expense.find(:all,:conditions=>sql, :order=>"expenses.state, projects.job_code",
+        :joins=>" left join projects on project_id = projects.id left join clients on client_id = clients.id")
     else
-       expenses = Expense.my_expenses(current_user.person_id, sql)
+      expenses = Expense.my_expenses(current_user.person_id, sql)
     end
    
     @expenses = expenses.paginate(:page=> params[:page]||1)
@@ -121,7 +122,7 @@ class ExpensesController < ApplicationController
     end
   end
 
-def batch_actions
+  def batch_actions
     items = params[:check_items]
     unless items.nil?
       items.each{|key,value|
@@ -143,7 +144,19 @@ def batch_actions
 
     redirect_to(:action=>"index")
   end
-  
+
+  def format_date(get_date)
+    if get_date.length <10
+      arr = get_date.split('-')
+      fdate = arr[0]
+      (arr[1].length == 2) ? (fdate += "-#{arr[1]}") : (fdate += "-0#{arr[1]}")
+      (arr[2].length == 2) ? (fdate += "-#{arr[2]}") : (fdate += "-0#{arr[2]}")
+    else
+      fdate= get_date
+    end
+
+    return fdate
+  end
 end
 
 
