@@ -37,5 +37,5 @@
   </p>
 </fieldset>
 
-<%= link_to 'Edit', edit_expense_path(@expense) unless @expense.state =="approved" %> |
+<%= link_to 'Edit', edit_expense_path(@expense) if @expense.state !="approved" and @expense.person_id == current_user.person_id %> |
 <%= link_to 'Back', expenses_path %>

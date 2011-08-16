@@ -20,12 +20,9 @@ module ApplicationHelper
   end
 
   def allow_lv
-    level = Authorization.current_user.role_symbols.to_s
-    flag_lv = false
-
-    flag_lv = true if level =='manager'
-    flag_lv = true if level =='director'
-    flag_lv = true if level =='providence_breaker'
+    level = current_user.roles
+   
+    (level =='providence_breaker')? flag_lv = true : flag_lv = false
 
     return flag_lv
   end

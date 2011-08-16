@@ -13,22 +13,20 @@
     </td>
   <% end %>
     <td><%= link_to 'Show', personalcharge_path(personalcharge) %></td>
-  <% if (personalcharge.state != "approved" and personalcharge.project.state != "closed") %>
-    <td><%= link_to 'Edit', edit_personalcharge_path(personalcharge)  if  personalcharge.state !="approved"%></td>
+
+    <td><%= link_to 'Edit', edit_personalcharge_path(personalcharge)  if  personalcharge.state !="approved" and (current_user.roles =="providence_breaker" or current_user.person_id == personalcharge.person_id)%></td>
     <td>
-      <% unless (current_user.role_symbols.to_s != 'employee' and personalcharge.person_id == current_user.person_id) %>
-        <%= button_to_remote "approval", :url=>approval_personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :post if personalcharge.state == 'pending' %>
-        <%= button_to_remote "disapproval", :url=>disapproval_personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :post if personalcharge.state == 'pending'%>
+      <% if (personalcharge.person_id != current_user.person_id and personalcharge.state == 'pending') %>
+        <%= button_to_remote "approval", :url=>approval_personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :post %>
+        <%= button_to_remote "disapproval", :url=>disapproval_personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :post %>
       <% end %>
     </td>
     <td>
       <%= button_to_remote 'Destroy',        
         :update=> 'personalcharges',
         :url=>personalcharge,        :confirm => 'Are you sure destroy this item?',
-        :method => :delete if  personalcharge.state =="pending"%>
+        :method => :delete if  personalcharge.state =="pending" and (current_user.roles =="providence_breaker" or current_user.person_id == personalcharge.person_id)%>
 
     </td>
-  <% else %>
-    <td colspan="3"></td>
-  <% end %>
+
 </tr>

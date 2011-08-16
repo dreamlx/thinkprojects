@@ -47,7 +47,7 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find(params[:id])
     @booking = Booking.new
-    #check_sum_hours
+    check_sum_hours
     
     respond_to do |format|
       format.html # show.rhtml
@@ -69,15 +69,13 @@ class ProjectsController < ApplicationController
   # POST /projects.xml
   def create
     @project = Project.new(params[:project])
-    if @project.job_code == nil or @project.job_code ==""                       
-      @project.job_code =@project.client.client_code+@project.GMU.code+@project.service_code.code
-    end
+    @project = format_jobcode(@project)
     
     respond_to do |format|
       if @project.save
        
         flash[:notice] = 'Project was successfully created.'
-        #is_approval
+        is_approval
         format.html { redirect_to project_url(@project) }
         format.xml  { head :created, :location => project_url(@project) }
       else
@@ -91,9 +89,7 @@ class ProjectsController < ApplicationController
   # PUT /projects/1.xml
   def update
     @project = Project.find(params[:id])
-    if @project.job_code.nil? or @project.job_code.blank?                      
-      @project.job_code =@project.client.client_code+@project.GMU.code+@project.service_code.code
-    end
+    @project = format_jobcode(@project)
     
     respond_to do |format|
       if @project.update_attributes(params[:project])
@@ -249,4 +245,13 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def format_jobcode(project)
+    unless project.job_code.present?
+      project.job_code =project.client.client_code+project.GMU.code+project.service_code.code
+    end
+
+    project.job_code = project.job_code.upcase
+
+    return project
+  end
 end

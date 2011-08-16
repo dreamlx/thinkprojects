@@ -8,8 +8,8 @@ module ProjectsHelper
   def check_message(project)
     profit = project.estimated_annual_fee - project.budgeted_service_fee - project.budgeted_expense
     subfee = project.estimated_annual_fee*25/100 - profit
-    #return "Project profit=#{profit},cost=#{subfee}"
-    return ""
+    return "Project profit=#{profit},cost=#{subfee}"
+    #return ""
   end
 
   def label_title(title)
@@ -22,23 +22,17 @@ module ProjectsHelper
     when "estimated_hours":
         str = " -预估总人时数"
     end
-    #return str
-    return ""
-    
+    #return ""
+    return str
   end
   
   def allow_project_op(project)
-    flag = false
-    flag = true if current_user.person_id == project.partner_id or current_user.person_id == project.manager_id 
-    flag = true if current_user.roles =="providence_breaker"
+    flag = (current_user.person_id == project.partner_id or current_user.roles =="providence_breaker" or project.manager_id == current_user.person_id)
     return flag
   end
 
   def approval_op(project)
-    flag = allow_project_op(project)
-    flag = false if current_user.person_id == project.manager_id
-    flag = true if current_user.person_id == project.partner_id
-
+    flag = (allow_project_op(project) and project.state == 'pending' and project.manager_id != current_user.person_id)
     return flag
   end
 end

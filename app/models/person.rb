@@ -73,10 +73,10 @@ class Person < ActiveRecord::Base
   end
 
 def my_bookings
-    mybookings = Booking.find(:all,:conditions=>["person_id=?",self.id], :select=>"distinct project_id")
+    mybookings = Booking.find(:all,:conditions=>["person_id=?",self.id], :select=>"distinct project_id,job_code, state, person_id", :joins=>" left join projects on projects.id = bookings.project_id")
     myprojects=[]
     for mybooking in mybookings
-      myprojects << mybooking.project if mybooking.project.state =="approved"
+      myprojects << mybooking.project if mybooking.state == "approved"
     end
 
     prjs =myprojects.sort_by{|p| p.job_code}
