@@ -1,6 +1,6 @@
 
 class PersonalchargesController < ApplicationController
-  filter_access_to :all
+  #filter_access_to :all
 
   # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
 
@@ -8,7 +8,7 @@ class PersonalchargesController < ApplicationController
 
     sql = " 1 "
     sql += " and person_id=#{params[:person_id]}"     if params[:person_id].present?
-    sql += " and state = '#{params[:state]}'"       if params[:state].present?
+    sql += " and personalcharges.state = '#{params[:state]}'"       if params[:state].present?
     sql += " and periods.starting_date >= '#{params[:period_from]}' "   if params[:period_from].present?
     sql += " and periods.ending_date   <= '#{params[:period_to]}' "     if params[:period_to].present?
     sql += " and project_id=#{params[:prj_id]}"       if params[:prj_id].present?
@@ -27,11 +27,12 @@ class PersonalchargesController < ApplicationController
       end
     end
     if current_user.roles == "providence_breaker"
-      personalcharges = Personalcharge.find(:all,:conditions=>sql, :order=>"projects.job_code", :include=>:project)
+      personalcharges = Personalcharge.find(:all,:conditions=>sql, 
+        :order=>"personalcharges.state desc,projects.job_code", :include=>[:project,:period])
     else
       personalcharges = Person.find(current_user.person_id).my_personalcharges(sql)
     end
-      personalcharges.collect{|p|
+    personalcharges.collect{|p|
       if  !p.period.nil? and p.charge_date.nil?
         p.charge_date = p.period.number
         p.save
@@ -73,22 +74,23 @@ class PersonalchargesController < ApplicationController
   end
 
   def approval
-    @personalcharge = Personalcharge.find(params[:id])
-    @personalcharge.state= "pending" if @personalcharge.state.nil?
-    @personalcharge.approval
+    personalcharge = Personalcharge.find(params[:id])
+    personalcharge.state= "pending" if personalcharge.state.nil?
+    personalcharge.approval
 
-    respond_to do |format|
-      format.html { redirect_to personalcharges_path }
+    flash[:notice] = " state was changed, current state is '#{personalcharge.state}'"
+    render :update do |page|
+      page.replace_html "item_#{personalcharge.id}", :partial => "item",:locals => { :personalcharge => personalcharge }
     end
   end
 
   def disapproval
-    @personalcharge = Personalcharge.find(params[:id])
-    @personalcharge.state= "pending" if @personalcharge.state.nil?
-    @personalcharge.disapproval
-
-    respond_to do |format|
-      format.html { redirect_to personalcharges_path }
+    personalcharge = Personalcharge.find(params[:id])
+    personalcharge.state= "pending" if personalcharge.state.nil?
+    personalcharge.disapproval
+    flash[:notice] = " state was changed, current state is '#{personalcharge.state}'"
+    render :update do |page|
+      page.replace_html "item_#{personalcharge.id}", :partial => "item",:locals => { :personalcharge => personalcharge }
     end
   end
   
@@ -131,14 +133,32 @@ class PersonalchargesController < ApplicationController
   end
 
   def destroy
-    Personalcharge.find(params[:id]).destroy
+    Personalcharge.find(params[:id]).destroy 
+    render :update do |page|
+      page.remove "item_#{params[:id]}"
+    end
+  end
 
+  def batch_actions
+    items = params[:check_items]
+    unless items.nil?
+      items.each{|key,value|
+        p = Personalcharge.find(value)
+        case params[:do_action]
+        when "approval":
+            p.approval
+        when "disapproval":
+            p.disapproval
+        when "destroy":
+            p.destroy if p.state == "pending"
 
-    respond_to do |format|
-      format.html { redirect_to personalcharges_url }
-      format.xml  { head :ok }
+        else
+
+        end
+      }
     end
 
+    redirect_to(:action=>"index")
   end
   
   private

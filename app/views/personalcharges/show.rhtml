@@ -12,5 +12,5 @@
 
 <% end %>
 
-<%= link_to 'Edit', edit_personalcharge_path(@personalcharge)  if @personalcharge.project.state != 'closed'%> |
+<%= link_to 'Edit', edit_personalcharge_path(@personalcharge)  if @personalcharge.project.state != 'closed' and current_user.person_id == @personalcharge.person_id%> |
 <%= link_to 'Back', personalcharges_path %>

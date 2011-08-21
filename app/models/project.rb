@@ -26,13 +26,13 @@ class Project < ActiveRecord::Base
     :client_name =>"client name"
   }
   
-  has_one :deduction
+
 
   has_many :billings,         :dependent => :destroy
   has_many :expenses,         :dependent => :destroy
-  has_many :personalcharges, :dependent => :destroy
-  has_many :ufafees,          :dependent => :destroy
+  has_many :personalcharges,  :dependent => :destroy
   has_many :bookings,         :dependent => :destroy
+  has_many :members,          :through => :bookings, :source => :person
   
   belongs_to :client
   
@@ -40,12 +40,7 @@ class Project < ActiveRecord::Base
     :class_name => "Dict",
     :foreign_key => "GMU_id",
     :conditions => "category ='GMU'"
-  
-  belongs_to :status,
-    :class_name => "Dict",
-    :foreign_key => "status_id",
-    :conditions => "category = 'prj_status'"
-  
+
   belongs_to :service_code,
     :class_name => "Dict",
     :foreign_key => "service_id",

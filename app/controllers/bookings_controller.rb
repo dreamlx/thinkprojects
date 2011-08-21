@@ -58,7 +58,7 @@ class BookingsController < ApplicationController
   end
 
   def bookall
-    employees = Person.find(:all, :order =>"english_name")
+    employees = Person.workings
     
     for employee in employees
       book= Booking.new

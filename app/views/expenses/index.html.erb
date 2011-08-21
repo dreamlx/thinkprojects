@@ -2,10 +2,13 @@
 <% form_for(:expense, :url => expenses_path, :html => { :method => :get }) do |f| %>
   <%= render :partial => "search" %>
 <% end %>
-
+<%= session[:expense_sql] %>
 <hr/>
 <%= link_to 'Export data', :controller=>"reports", :action => "expenses_export" %>||
 <%= link_to 'New expense', :action => 'new' %>
+
+<%= form_tag 'expenses/batch_actions', :method => :post  %>
+<%= render :partial => 'homepage/all_op' %>
 <table>
   <tr>
     <th>No</th>
@@ -21,9 +24,7 @@
   </tr>
 
   <% for expense in @expenses %>
-    <tr id="item_<%= expense.id %>" >
-      <%= render :partial => 'item', :locals => { :expense => expense } %>
-    </tr>
+    <%= render :partial => 'item', :locals => { :expense => expense } %>
   <% end %>
   <tr>
     <td colspan="7">Total</td>
@@ -31,5 +32,6 @@
     <td colspan=4"></td>
   </tr>
 </table>
+</form>
 <%= will_paginate @expenses %>
 

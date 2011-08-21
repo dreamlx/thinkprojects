@@ -1,0 +1,32 @@
+
+<% show_columns =["charge_date","hours","ot_hours","desc","state"] %>
+<tr id="item_<%= personalcharge.id %>" class="personalcharge_item">
+  <td><%=h personalcharge.id %></td>
+  <td><%= check_box_tag "check_items[#{personalcharge.id}]", personalcharge.id if personalcharge.state == "pending"%> <%=  personalcharge.project.job_code    unless personalcharge.project.nil?%></td>
+  <td><%=  personalcharge.person.english_name unless personalcharge.person.nil?%></td>
+  <td><%=  personalcharge.period.number       unless personalcharge.period.nil? %></td>
+  <% for column in show_columns %>
+    <td>
+      <%=h personalcharge.send(column) %>
+      <%= "("+ personalcharge.charge_date.to_date.strftime("%A")+")" \
+        if column == 'charge_date' and !personalcharge.charge_date.blank?%>
+    </td>
+  <% end %>
+    <td><%= link_to 'Show', personalcharge_path(personalcharge) %></td>
+
+    <td><%= link_to 'Edit', edit_personalcharge_path(personalcharge)  if  personalcharge.state !="approved" or (current_user.roles =="providence_breaker" or current_user.person_id == personalcharge.person_id)%></td>
+    <td>
+      <% if (personalcharge.person_id != current_user.person_id and personalcharge.state == 'pending') %>
+        <%= button_to_remote "approval", :url=>approval_personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :post %>
+        <%= button_to_remote "disapproval", :url=>disapproval_personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :post %>
+      <% end %>
+    </td>
+    <td>
+      <%= button_to_remote 'Destroy',        
+        :update=> 'personalcharges',
+        :url=>personalcharge,        :confirm => 'Are you sure destroy this item?',
+        :method => :delete if  personalcharge.state =="pending" and (current_user.roles =="providence_breaker" or current_user.person_id == personalcharge.person_id)%>
+
+    </td>
+
+</tr>

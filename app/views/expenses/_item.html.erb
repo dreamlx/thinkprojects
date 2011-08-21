@@ -1,5 +1,5 @@
-
-  <td><%= expense.id %></td>
+<tr id="item_<%= expense.id %>" >
+  <td><%= check_box_tag "check_items[#{expense.id}]", expense.id if expense.state == "pending"%><%= expense.id %></td>
   <td><%= expense.charge_date %>(<%= expense.charge_date.to_date.strftime("%A") %>)</td>
   <td><%= expense.person.english_name unless expense.person.nil? %></td>
   <td><%= expense.billable %></td>
@@ -9,11 +9,9 @@
   <td><%= expense.fee %></td>
   <td><%= expense.state %></td>
   <td><%= link_to 'Show', expense_path(expense) %></td>
-  <td><%= link_to 'Edit', edit_expense_path(expense) unless expense.state =="approved" %></td>
-
+  <td><%= link_to 'Edit', edit_expense_path(expense) if expense.state !="approved" and expense.person_id == current_user.person_id %></td>
   <td><%= button_to_remote 'Approval', :url=>approval_expense_path(expense), :confirm => " Are you sure approval?", :method => :post if expense.state =="pending" and expense.person_id != current_user.person_id %>
     <%= button_to_remote 'Disapproval', :url=>disapproval_expense_path(expense), :confirm => "Are you sure disapproval?",:method => :post if expense.state =="pending" and expense.person_id != current_user.person_id %>
-
-  <%= button_to_remote 'Destroy', :update=> 'expenses',:url=>expense, :confirm => 'Are you sure destroy?', :method => :delete %>
-
+    <%= button_to_remote 'Destroy', :update=> 'expenses',:url=>expense, :confirm => 'Are you sure destroy?', :method => :delete if expense.state =="pending" and (expense.person_id == current_user.person_id or current_user.roles =="providence_breaker")%>
   </td>
+</tr>

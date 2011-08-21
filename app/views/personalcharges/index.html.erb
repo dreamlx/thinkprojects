@@ -1,58 +1,39 @@
 <% form_for(:personalcharge, :url => personalcharges_path, :html => { :method => :get }) do |f| %>
-<%= render :partial => "search" %>
+  <%= render :partial => "search" %>
 <% end %>
 <%= link_to 'Export data', :controller=>"reports", :action => "personalcharges_export" %>||
 <%= link_to 'New personalcharge', :action => 'new', :id=>params[:id], :person_id => params[:person_id]  %>
 
-<% show_columns =["charge_date","hours","ot_hours","desc","state"] %>
 <%#= session[:personalcharge_sql] %>
-<table>
-  <tr>
-    <th>Job code</th>
-    <th>Employee name</th>
-    <th>Period</th>
-    <th>Charge date</th>
-    <th>Hours</th>
-    <th>Including OT hours</th>
-    <th>Description</th>
-    <th>State</th>
-    <th colspan="4">OP</th>
-  </tr>
+<form name="myform" action="personalcharges/batch_actions" method="post">
+  <%= render :partial => 'homepage/all_op' %>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th width="75px">Job code</th>
+      <th>Employee name</th>
+      <th>Period</th>
+      <th>Charge date</th>
+      <th>Hours</th>
+      <th>Including OT hours</th>
+      <th>Description</th>
+      <th>State</th>
+      <th colspan="4">OP</th>
+    </tr>
 
-  <% for personalcharge in @personalcharges %>
-    <% unless personalcharge.project.nil? %>
-      <tr>
-        <td><%=  personalcharge.project.job_code    unless personalcharge.project.nil?%></td>
-        <td><%=  personalcharge.person.english_name unless personalcharge.person.nil?%></td>
-        <td><%=  personalcharge.period.number       unless personalcharge.period.nil? %></td>
-    <% for column in show_columns %>
-          <td>
-            <%=h personalcharge.send(column) %>
-            <%= "("+ personalcharge.charge_date.to_date.strftime("%A")+")" \
-              if column == 'charge_date' and !personalcharge.charge_date.blank?%>
-          </td>
-        <% end %>
-        <% if (personalcharge.state != "approved" and personalcharge.project.state != "closed") %>
+    <% for personalcharge in @personalcharges %>
 
-          <td><%= link_to 'Show', personalcharge_path(personalcharge) %></td>
-          <td><%= link_to 'Edit', edit_personalcharge_path(personalcharge)  %></td>
-          <td>
-            <% unless (current_user.role_symbols.to_s != 'employee' and personalcharge.person_id == current_user.person_id) %>
-              <%= button_to "approval", approval_personalcharge_path(personalcharge), :confirm => 'Are you sure?' if personalcharge.state == 'pending' %>
-              <%= button_to "disapproval", disapproval_personalcharge_path(personalcharge), :confirm => 'Are you sure?' if personalcharge.state == 'pending'%>
-            <% end %>
-          </td>
-          <td><%= link_to 'Destroy', personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :delete%></td>
-        <% else %>
-          <td colspan="4"></td>
-        <% end %>
-      </tr>
-    <% end %>
-  <%end%>
+      <%= render :partial => 'item', :locals => {
+        :personalcharge => personalcharge
+      } unless personalcharge.project.nil?%>
 
-</table>
+    <%end%>
+
+  </table>
+
+</form>
 <div><label>Standard Hours:</label><%= @standard_hours %></div>
-<div><label>OT hours:</label><%= @ot_hours %></div>
-<div><label>OT pay hours:</label><%= @ot_pay_hours %></div>
+<!--div><label>OT hours:</label><%= @ot_hours %></div>
+<div><label>OT pay hours:</label><%= @ot_pay_hours %></div-->
 <%= will_paginate @personalcharges %>
 <br />

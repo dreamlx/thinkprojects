@@ -1,4 +1,5 @@
 class Client < ActiveRecord::Base
+
   belongs_to :industry
   has_many :projects
 

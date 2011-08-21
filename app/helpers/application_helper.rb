@@ -20,12 +20,9 @@ module ApplicationHelper
   end
 
   def allow_lv
-    level = Authorization.current_user.role_symbols.to_s
-    flag_lv = false
-
-    flag_lv = true if level =='manager'
-    flag_lv = true if level =='director'
-    flag_lv = true if level =='providence_breaker'
+    level = current_user.roles
+   
+    (level =='providence_breaker')? flag_lv = true : flag_lv = false
 
     return flag_lv
   end
@@ -59,6 +56,16 @@ module ApplicationHelper
   def select_partner(model,id)
     select(model, id,
       Person.find(:all,:conditions=>"position like '%director%' or position like 'partner' ",:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
+      { :include_blank => true }
+    )
+  end
+  
+  def select_manager(model,id)
+    select(model, id,
+      Project.find(:all,
+        :select=>"distinct manager_id,people.english_name , employee_number",
+        :joins=>" left join people on projects.manager_id = people.id",
+        :order=>"people.english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.manager_id ]},
       { :include_blank => true }
     )
   end

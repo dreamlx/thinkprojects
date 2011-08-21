@@ -16,7 +16,7 @@ class ClientsController < ApplicationController
       #                      :conditions => ['client_code like ?', @client.client_code])
       @clients = Client.find(:all,:conditions=>sql).paginate :page => params[:page], :per_page => 20, :order => 'client_code'
     else
-      @clients  = Client.paginate :page => params[:page], :per_page => 20, :order => 'client_code'
+      @clients  = Client.paginate :page => params[:page], :per_page => 20, :order => 'english_name,client_code'
     end
     
     respond_to do |format|

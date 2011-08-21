@@ -30,7 +30,7 @@ class ProjectsController < ApplicationController
       order_str = "projects.created_on desc"
     end
     if current_user.roles == 'providence_breaker'
-      projects = Project.find(:all, :conditions=>sql, :order=> order_str)
+      projects = Project.find(:all, :conditions=>sql, :order=> order_str, :include=>:client)
     else
       projects = Person.find(current_user.person_id).my_projects(sql,order_str)
     end
@@ -48,7 +48,9 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
     @booking = Booking.new
     #check_sum_hours
-    
+
+    @bookings=@project.bookings
+
     respond_to do |format|
       format.html # show.rhtml
       format.xml  { render :xml => @project.to_xml }
@@ -69,9 +71,7 @@ class ProjectsController < ApplicationController
   # POST /projects.xml
   def create
     @project = Project.new(params[:project])
-    if @project.job_code == nil or @project.job_code ==""                       
-      @project.job_code =@project.client.client_code+@project.GMU.code+@project.service_code.code
-    end
+    @project = format_jobcode(@project)
     
     respond_to do |format|
       if @project.save
@@ -91,9 +91,7 @@ class ProjectsController < ApplicationController
   # PUT /projects/1.xml
   def update
     @project = Project.find(params[:id])
-    if @project.job_code.nil? or @project.job_code.blank?                      
-      @project.job_code =@project.client.client_code+@project.GMU.code+@project.service_code.code
-    end
+    @project = format_jobcode(@project)
     
     respond_to do |format|
       if @project.update_attributes(params[:project])
@@ -185,7 +183,7 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1.xml
   def destroy
     @project = Project.find(params[:id])
-    @project.destroy
+    @project.destroy if @project.state == "pending"
     
     #respond_to do |format|
     #  format.html { redirect_to projects_url }
@@ -197,6 +195,29 @@ class ProjectsController < ApplicationController
     end
   end
   
+
+  def batch_actions
+    items = params[:check_items]
+    unless items.nil?
+      items.each{|key,value|
+        project = Project.find(value)
+        case params[:do_action]
+        when "approval":
+            project.approval
+        when "disapproval":
+            project.disapproval
+        when "destroy":
+            project.destroy if project.state == "pending"
+        when "close":
+            project.close
+        else
+    
+        end
+      }
+    end
+
+    redirect_to(:action=>"index")
+  end
 
   private
 
@@ -226,4 +247,13 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def format_jobcode(project)
+    unless project.job_code.present?
+      project.job_code =project.client.client_code+project.GMU.code+project.service_code.code
+    end
+
+    project.job_code = project.job_code.upcase
+
+    return project
+  end
 end
