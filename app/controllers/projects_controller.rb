@@ -47,8 +47,10 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find(params[:id])
     @booking = Booking.new
-    #check_sum_hours
-    
+    check_sum_hours
+
+    @bookings=@project.bookings
+
     respond_to do |format|
       format.html # show.rhtml
       format.xml  { render :xml => @project.to_xml }
@@ -75,7 +77,7 @@ class ProjectsController < ApplicationController
       if @project.save
        
         flash[:notice] = 'Project was successfully created.'
-        #is_approval
+        is_approval
         format.html { redirect_to project_url(@project) }
         format.xml  { head :created, :location => project_url(@project) }
       else

@@ -59,6 +59,16 @@ module ApplicationHelper
       { :include_blank => true }
     )
   end
+  
+  def select_manager(model,id)
+    select(model, id,
+      Project.find(:all,
+        :select=>"distinct manager_id,people.english_name , employee_number",
+        :joins=>" left join people on projects.manager_id = people.id",
+        :order=>"people.english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.manager_id ]},
+      { :include_blank => true }
+    )
+  end
 
   def select_period(model,id)
     select(model, id, Period.find(:all,:order=>"number DESC").collect {|p| [ p.number, p.number ] }, { :include_blank => true })

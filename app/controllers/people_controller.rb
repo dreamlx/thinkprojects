@@ -1,5 +1,5 @@
 class PeopleController < ApplicationController
-
+filter_access_to :all
   def index
     person = Person.new(params[:person])
     sql = ' 1 '

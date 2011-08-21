@@ -14,7 +14,7 @@
   <% end %>
     <td><%= link_to 'Show', personalcharge_path(personalcharge) %></td>
 
-    <td><%= link_to 'Edit', edit_personalcharge_path(personalcharge)  if  personalcharge.state !="approved" and (current_user.roles =="providence_breaker" or current_user.person_id == personalcharge.person_id)%></td>
+    <td><%= link_to 'Edit', edit_personalcharge_path(personalcharge)  if  personalcharge.state !="approved" or (current_user.roles =="providence_breaker" or current_user.person_id == personalcharge.person_id)%></td>
     <td>
       <% if (personalcharge.person_id != current_user.person_id and personalcharge.state == 'pending') %>
         <%= button_to_remote "approval", :url=>approval_personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :post %>

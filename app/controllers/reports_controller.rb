@@ -1,10 +1,10 @@
 require 'fastercsv' 
 class ReportsController < ApplicationController
-  layout "layouts/application" ,  :except => [:export, :time_report,:expense_export, :personalcharge_export, :billing_export]
+  layout "layouts/application" ,  :except => [:export, :time_report,:expense_export, :personalcharges_export, :billing_export]
 
 
   def index
-    redirect_to :action => 'print'
+    
   end
 
 
@@ -118,20 +118,39 @@ class ReportsController < ApplicationController
  
   
   def personalcharges_export
+    if request.post?
+      sql = '1'
+      sql += " and project_id = #{params[:project_id]}"           if params[:project_id].present?
+      sql += " and projects.state = '#{params[:project_state]}' "  if params[:project_state].present?
+      sql += " and manager_id = #{params[:manager_id]}"           if params[:manager_id].present?
+      sql += " and partner_id = #{params[:partner_id]}"           if params[:partner_id].present?
+      sql += " and periods.id = #{params[:period_id]}"            if params[:period_id].present?
+    else
+      sql = session[:personalcharge_sql]
+    end
 
-    personalcharges = Person.find(current_user.person_id).my_personalcharges(session[:personalcharge_sql])
+    if current_user.roles == "providence_breaker"
+      personalcharges = Personalcharge.find(:all,:conditions=>sql,
+        :order=>"personalcharges.state desc,projects.job_code", :include=>[:project,:period])
+    else
+      personalcharges = Person.find(current_user.person_id).my_personalcharges(sql)
+    end
+
 
     csv_string = FasterCSV.generate do |csv|
-      csv << ["NO","job_code","period","Date","employee","hours","Including OT hours","service_fee","description","state"]
+      csv << ["NO","job_code","employee","period","Date","charge rate","hours","Including OT hours","service_fee","description","state"]
       personalcharges.each do |e|
         csv << [
           e.id,
           e.project.job_code,
+
+          e.person.english_name,
           e.period.number,
           e.charge_date,
-          e.person.english_name,
+          e.person.charge_rate,
           e.hours,
           e.ot_hours,
+          e.service_fee,
           e.desc,
           e.state] if  !e.person.nil? and !e.period.nil? and !e.project.nil?
       end

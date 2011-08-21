@@ -22,7 +22,7 @@ class ExpensesController < ApplicationController
     else
       expenses = Expense.my_expenses(current_user.person_id, sql)
     end
-   
+
     @expenses = expenses.paginate(:page=> params[:page]||1)
     @sum_amount = 0
     expenses.each{|e| @sum_amount+=e.fee.to_f}

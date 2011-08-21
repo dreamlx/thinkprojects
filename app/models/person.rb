@@ -7,6 +7,7 @@ class Person < ActiveRecord::Base
   has_many :billings
   has_one  :user
   has_many :bookings
+  has_many :projects, :through => :bookings
   has_many  :expenses
 
   has_many :partner_projects,
@@ -32,6 +33,7 @@ class Person < ActiveRecord::Base
     :foreign_key => "department_id",
     :conditions => "category = 'department'"
 
+  named_scope :workings, :conditions =>"dicts.title <> 'Resigned' and dicts.category = 'person_status' ", :include=>:status,:order =>"english_name"
 
   def self.search_by_sql(search,page = 1)
     paginate :per_page => 20, :page => page,
@@ -72,7 +74,7 @@ class Person < ActiveRecord::Base
     return all_projects.compact
   end
 
-def my_bookings
+  def my_bookings
     mybookings = Booking.find(:all,:conditions=>["person_id=?",self.id], :select=>"distinct project_id,job_code, state, person_id", :joins=>" left join projects on projects.id = bookings.project_id")
     myprojects=[]
     for mybooking in mybookings

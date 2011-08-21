@@ -5,11 +5,7 @@ class AdminsController < ApplicationController
   
   def auto_complete_hours
     period = Period.find(params[:period_id])
-
-    person_status = Dict.find_by_title_and_category("Resigned","person_status")
-    @people = Person.find(:all,
-      :conditions => "status_id != '#{person_status.id}' ",
-      :order => 'english_name')
+    @people = Person.workings
     @sum_records =[]
     period_hours =  params[:period_hours]
     @message_items =""
@@ -17,10 +13,11 @@ class AdminsController < ApplicationController
     @people.each do|p|
       sum_personalcharge = Personalcharge.sum("hours",:conditions=>"period_id =#{period.id} and person_id = #{p.id}")
       sum_ot_hours = Personalcharge.sum("ot_hours",:conditions=>"period_id =#{period.id} and person_id = #{p.id}")
+      sum_self_study = Personalcharge.sum("hours",:conditions=>"period_id =#{period.id} and person_id = #{p.id} and project_id = #{params[:prj_id]}")
       self_study = Personalcharge.new
       self_study.project_id = params[:prj_id]
  
-      self_study.hours= period_hours.to_f - sum_personalcharge - sum_ot_hours
+      self_study.hours= period_hours.to_f - (sum_personalcharge - sum_ot_hours) - sum_self_study
       self_study.period_id = period.id
       self_study.person_id = p.id
       self_study.desc=" auto complete by admin"
@@ -43,10 +40,8 @@ class AdminsController < ApplicationController
   def check_ot
     period = Period.find(params[:period_id])
     period_hours =  params[:period_hours]
-    person_status = Dict.find_by_title_and_category("Resigned","person_status")
-    @people = Person.find(:all,
-      :conditions => "status_id != '#{person_status.id}' ",
-      :order => 'english_name')
+
+    @people = Person.workings
    
     @messages="<table><tr><td>epmloyee</td><td>personalcharge hours</td> <td>work hours </td><td>OT</td></tr>"
     @people.each do|p|
