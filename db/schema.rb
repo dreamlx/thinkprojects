@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110708054136) do
+ActiveRecord::Schema.define(:version => 20110821084141) do
 
   create_table "billings", :force => true do |t|
     t.timestamp "created_on",                                                                    :null => false
@@ -116,18 +116,6 @@ ActiveRecord::Schema.define(:version => 20110708054136) do
     t.datetime "updated_on",                                                                   :null => false
   end
 
-  create_table "deductions", :force => true do |t|
-    t.timestamp "created_on",                                                                    :null => false
-    t.timestamp "updated_on",                                                                    :null => false
-    t.decimal   "service_PFA",                   :precision => 10, :scale => 2, :default => 0.0, :null => false
-    t.decimal   "service_UFA",                   :precision => 10, :scale => 2, :default => 0.0, :null => false
-    t.decimal   "service_billing",               :precision => 10, :scale => 2, :default => 0.0, :null => false
-    t.decimal   "expense_PFA",                   :precision => 10, :scale => 2, :default => 0.0, :null => false
-    t.decimal   "expense_UFA",                   :precision => 10, :scale => 2, :default => 0.0, :null => false
-    t.decimal   "expense_billing",               :precision => 10, :scale => 2, :default => 0.0, :null => false
-    t.integer   "project_id",      :limit => 11,                                :default => 0,   :null => false
-  end
-
   create_table "dicts", :force => true do |t|
     t.string "category", :limit => 50
     t.string "code",     :limit => 50
@@ -226,7 +214,6 @@ ActiveRecord::Schema.define(:version => 20110708054136) do
     t.date     "ending_date"
     t.decimal  "estimated_annual_fee",                 :default => 0.0,       :null => false
     t.integer  "risk_id",                :limit => 11
-    t.integer  "status_id",              :limit => 11
     t.integer  "partner_id",             :limit => 11
     t.integer  "manager_id",             :limit => 11
     t.integer  "referring_id",           :limit => 11
@@ -254,17 +241,6 @@ ActiveRecord::Schema.define(:version => 20110708054136) do
     t.string   "receive_date",   :limit => 30,                                 :default => ""
     t.decimal  "receive_amount",                :precision => 10, :scale => 2, :default => 0.0,  :null => false
     t.string   "job_code",       :limit => 20
-  end
-
-  create_table "ufafees", :force => true do |t|
-    t.timestamp "created_on",                                                                :null => false
-    t.timestamp "updated_on",                                                                :null => false
-    t.string    "number"
-    t.decimal   "amount",                    :precision => 10, :scale => 2, :default => 0.0, :null => false
-    t.integer   "project_id",  :limit => 11
-    t.integer   "period_id",   :limit => 11
-    t.decimal   "service_UFA",               :precision => 10, :scale => 2, :default => 0.0
-    t.decimal   "expense_UFA",               :precision => 10, :scale => 2, :default => 0.0
   end
 
   create_table "users", :force => true do |t|

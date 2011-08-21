@@ -35,13 +35,13 @@
 <p><label for="person_gender">Gender</label>
   <%= select "person","gender", [['male','male'],['female','female']], {:include_blank=>false,:selected => @person.gender} %>
 </p>
-<p><label for="Project_department_id">Department:</label>
+<p><label for="person_department_id">Department:</label>
   <%= select("person", "department_id",
     Dict.find(:all,:conditions=>"category='department'").collect {|p| [ p.title, p.id ] }, { :include_blank => "请选择" }) %>
 </p>
 
 
-<p><label for="Project_status_id">State:</label>
+<p><label for="person_status_id">State:</label>
   <%= select("person", "status_id",
     Dict.find(:all,:conditions=>"category='person_status'").collect {|p| [ p.title, p.id ] }, { :include_blank => "请选择"  }) %>
 </p>

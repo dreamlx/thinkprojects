@@ -48,13 +48,7 @@
 
   <!--p><label><b>Collection risk:</b></label><%= select("project", "risk_id",
     Dict.find(:all,:order=>"code",:conditions =>"category ='risk'").collect {|p| [ p.code+"||"+p.title, p.id ] }, { :include_blank => false }) %>
-
-  </p>
-
-  <p><label><b>Job status:</b></label><%= select("project", "status_id",
-    Dict.find(:all,:order=>"code desc",:conditions =>"category ='prj_status' and (code =0 or code =1)").collect {|p| [ p.code+"||"+p.title, p.id ] }, { :include_blank => false }) %>
-
-  </p-->
+</p-->
 
   <hr/>
 

@@ -36,27 +36,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def add_expense_observer(job_code,price=100,msg="")
-    now_period = Period.today_period
-    prj_status = Dict.find_by_title_and_category("Active","prj_status")
-    prj = Project.find(:first,
-      :conditions=>" 1 and (job_code like '%"+job_code+"%') and status_id =#{prj_status.id}")
-    #需要判断项目是否已经关闭
-    unless prj.nil?
-      @expense = Expense.new
-      @expense.project_id = prj.id
-      @expense.period_id = now_period.id
-      @expense.report_binding = price
-      @expense.memo = msg
-      @expense.save
-      log = PrjExpenseLog.new
-      log.period_id = now_period.id
-      log.prj_id = prj.id
-      log.expense_id = @expense.id
-      log.other =( prj.job_code + "|" + msg)
-      log.save
-    end
-  end
 
   def redirect_to_index(msg = nil)
     flash[:notice] = msg if msg

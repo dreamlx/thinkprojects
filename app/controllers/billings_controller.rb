@@ -55,7 +55,7 @@ class BillingsController < ApplicationController
   end
 
   def new
-    init_set
+
     billing_number_set
     @type = Dict.find(:all, :conditions => "category ='billing_type'")
     @billing = Billing.new
@@ -97,7 +97,7 @@ class BillingsController < ApplicationController
   end
 
   def edit
-    init_set
+
     @type = Dict.find(:all, :conditions => "category ='billing_type'")
     
     @billing = Billing.find(params[:id])

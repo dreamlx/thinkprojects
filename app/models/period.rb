@@ -1,15 +1,11 @@
 class Period < ActiveRecord::Base
   validates_numericality_of :work_hours
 
-  has_many :deductions
   has_many :expenses
   has_many :personalcharges
-  has_many :outsourcings
-  has_many :commissions
+
   has_many :billings
-  has_many :ufafees
-  
-  has_many :limit_fees
+
   def self.search_by_sql(search,page)
     
     paginate :per_page => 20, :page => page,
