@@ -31,6 +31,7 @@ authorization do
     includes :director
     has_permission_on [:users,:people,:clients,:personalcharges], :to => :manage
     has_permission_on [:projects],:to=>[:close,:transform,:manage]
+    has_permission_on [:people],:to=>[:manage]
   end
 end
 
