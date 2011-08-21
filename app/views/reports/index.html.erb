@@ -1,0 +1,30 @@
+<div>
+  <% form_tag('/reports/personalcharges_export', :method => :post) do %>
+    <h3>Personalcharge fee</h3>
+    <dl>
+      <dt>Projects:<br/>
+
+        <%= select("", "project_id",
+          Project.find(:all,
+            :order=>'job_code').collect {|p| [ p.job_code, p.id ] }, { :include_blank => true }) %>
+      </dt>
+      <dt>Project State:<br/>
+        <%= select("","project_state",[["approved","approved"],["pending","pending"],["disapproved","disapproved"]], { :include_blank => true }) %>
+      </dt>
+      <dt>
+        Manager:<br/>
+        <%= select_manager("", "manager_id") %>
+      </dt>
+
+      <dt>
+        Partner:<br/>
+        <%= select_partner("","partner_id")%>
+      </dt>
+      <dt>
+        Period:<br/>
+        <%= select_period("","period_id") %>
+      </dt>
+    </dl>
+    <input type="submit" value="export" />
+  <% end %>
+</div>
