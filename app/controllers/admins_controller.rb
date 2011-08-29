@@ -11,6 +11,9 @@ class AdminsController < ApplicationController
     @message_items =""
     @messages="<table><tr><th>epmloyee</th><th>personalcharge hours</th> <th>work hours - charge hours</th></tr>"
     @people.each do|p|
+
+      need_delete_items = Personalcharge.find(:all, :conditions=>"period_id =#{period.id} and person_id = #{p.id} and desc like '%auto complete by admin%'")
+      need_delete_items.each{|item| Personalcharge.find(item).destroy}
       sum_personalcharge = Personalcharge.sum("hours",:conditions=>"period_id =#{period.id} and person_id = #{p.id}")
       sum_ot_hours = Personalcharge.sum("ot_hours",:conditions=>"period_id =#{period.id} and person_id = #{p.id}")
       sum_self_study = Personalcharge.sum("hours",:conditions=>"period_id =#{period.id} and person_id = #{p.id} and project_id = #{params[:prj_id]}")

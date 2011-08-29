@@ -20,6 +20,7 @@
         <%= button_to_remote "approval", :url=>approval_personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :post %>
         <%= button_to_remote "disapproval", :url=>disapproval_personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :post %>
       <% end %>
+      <%= button_to_remote "pay", :url=>pay_personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :post if personalcharge.state == 'approved' and personalcharge.ot_hours >0 and current_user.roles =="providence_breaker"%>
     </td>
     <td>
       <%= button_to_remote 'Destroy',        

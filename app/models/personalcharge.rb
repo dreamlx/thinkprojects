@@ -14,6 +14,9 @@ class Personalcharge < ActiveRecord::Base
     event :disapproval do
       transition all => :disapproved
     end
+        event :pay do
+      transition :approved => :paid
+    end
     event :reset do
       transition all => :pending
     end
@@ -47,7 +50,7 @@ class Personalcharge < ActiveRecord::Base
   def self.my_personalcharges(person_id,sql)
     sql += " and (projects.partner_id = #{person_id} or projects.manager_id = #{person_id} or person_id = #{person_id})"
     self.find(:all, :conditions=> sql,  :joins=>"left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id",
-      :order=>"personalcharges.state desc")
+      :order=>"personalcharges.state desc, personalcharges.updated_on")
   end
 
   def self.my_group_hours(person_id,condition)

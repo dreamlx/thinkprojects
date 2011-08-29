@@ -8,10 +8,18 @@ class PersonalchargesController < ApplicationController
 
     sql = " 1 "
     sql += " and person_id=#{params[:person_id]}"     if params[:person_id].present?
-    sql += " and personalcharges.state = '#{params[:state]}'"       if params[:state].present?
+
     sql += " and periods.starting_date >= '#{params[:period_from]}' "   if params[:period_from].present?
     sql += " and periods.ending_date   <= '#{params[:period_to]}' "     if params[:period_to].present?
     sql += " and project_id=#{params[:prj_id]}"       if params[:prj_id].present?
+    if params[:state].present?
+      case params[:state]
+      when "should_pay":
+          sql += " and personalcharges.state = 'approved' and ot_hours >0"
+      else
+        sql += " and personalcharges.state = '#{params[:state]}'"
+      end
+    end
     if params[:role].present?
       case params[:role]
       when "Director":
@@ -28,7 +36,7 @@ class PersonalchargesController < ApplicationController
     end
     if current_user.roles == "providence_breaker"
       personalcharges = Personalcharge.find(:all,:conditions=>sql, 
-        :order=>"personalcharges.state desc,projects.job_code", :include=>[:project,:period])
+        :order=>"personalcharges.state desc,personalcharges.updated_on", :include=>[:project,:period])
     else
       personalcharges = Person.find(current_user.person_id).my_personalcharges(sql)
     end
@@ -77,6 +85,17 @@ class PersonalchargesController < ApplicationController
     personalcharge = Personalcharge.find(params[:id])
     personalcharge.state= "pending" if personalcharge.state.nil?
     personalcharge.approval
+
+    flash[:notice] = " state was changed, current state is '#{personalcharge.state}'"
+    render :update do |page|
+      page.replace_html "item_#{personalcharge.id}", :partial => "item",:locals => { :personalcharge => personalcharge }
+    end
+  end
+
+  def pay
+    personalcharge = Personalcharge.find(params[:id])
+
+    personalcharge.pay
 
     flash[:notice] = " state was changed, current state is '#{personalcharge.state}'"
     render :update do |page|
