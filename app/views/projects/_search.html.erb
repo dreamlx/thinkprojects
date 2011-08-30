@@ -16,7 +16,7 @@
       <td>
         Manager:<%= select_people("project","manager_id")%>
       </td>
-      <td>state:<%= select("", "state", ["pending","approved","disapproved","closed"].collect {|p| [p,p] }, { :include_blank => true }) %>
+      <td>Status:<%= select("", "state", ["pending","approved","disapproved","closed"].collect {|p| [p.humanize,p] }, { :include_blank => true }) %>
 </td>
 <td> Order by:<%= select("","order_by",["job_code","created_on","client_name"].collect{|p| [p,p]},{ :include_blank => true }) %></td>
 

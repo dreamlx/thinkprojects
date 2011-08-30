@@ -7,7 +7,7 @@
   <td><%= expense.project.client.english_name unless expense.project.client.nil?%></td>
   <td><%= expense.project.job_code %></td>
   <td><%= expense.fee %></td>
-  <td><%= expense.state %></td>
+  <td><%= expense.state.humanize %></td>
   <td><%= link_to 'Show', expense_path(expense) %></td>
   <td><%= link_to 'Edit', edit_expense_path(expense) if expense.state !="approved" and expense.person_id == current_user.person_id %></td>
   <td><%= button_to_remote 'Approval', :url=>approval_expense_path(expense), :confirm => " Are you sure approval?", :method => :post if expense.state =="pending" and expense.person_id != current_user.person_id %>

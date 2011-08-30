@@ -1,5 +1,5 @@
 
-<% show_columns =["charge_date","hours","ot_hours","desc","state"] %>
+<% show_columns =["charge_date","hours","ot_hours","desc"] %>
 <tr id="item_<%= personalcharge.id %>" class="personalcharge_item">
   <td><%=h personalcharge.id %></td>
   <td><%= check_box_tag "check_items[#{personalcharge.id}]", personalcharge.id if personalcharge.state == "pending"%> <%=  personalcharge.project.job_code    unless personalcharge.project.nil?%></td>
@@ -12,6 +12,7 @@
         if column == 'charge_date' and !personalcharge.charge_date.blank?%>
     </td>
   <% end %>
+    <td><%=h personalcharge.state.humanize %></td>
     <td><%= link_to 'Show', personalcharge_path(personalcharge) %></td>
 
     <td><%= link_to 'Edit', edit_personalcharge_path(personalcharge)  if  personalcharge.state !="approved" or (current_user.roles =="providence_breaker" or current_user.person_id == personalcharge.person_id)%></td>
@@ -20,7 +21,6 @@
         <%= button_to_remote "approval", :url=>approval_personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :post %>
         <%= button_to_remote "disapproval", :url=>disapproval_personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :post %>
       <% end %>
-      <%= button_to_remote "pay", :url=>pay_personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :post if personalcharge.state == 'approved' and personalcharge.ot_hours >0 and current_user.roles =="providence_breaker"%>
     </td>
     <td>
       <%= button_to_remote 'Destroy',        

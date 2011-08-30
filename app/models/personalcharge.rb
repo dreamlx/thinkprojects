@@ -14,9 +14,6 @@ class Personalcharge < ActiveRecord::Base
     event :disapproval do
       transition all => :disapproved
     end
-        event :pay do
-      transition :approved => :paid
-    end
     event :reset do
       transition all => :pending
     end

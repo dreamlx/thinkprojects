@@ -11,15 +11,9 @@ class ApplicationController < ActionController::Base
   helper_method :current_user, :logged_in?
   filter_parameter_logging :password,:password_confirmation
   before_filter :set_current_user
+  #before_fiter :set_language
 
-  #before_filter :configure_charsets
-  def configure_charsets
-    # Set connection charset. MySQL 4.0 doesn��t support this so it
-    #will throw an error, MySQL 4.1 needs this
-    suppress(ActiveRecord::StatementInvalid) do
-      ActiveRecord::Base.connection.execute 'SET NAMES utf8'
-    end
-  end
+
 
 
   protected
@@ -113,4 +107,13 @@ class ApplicationController < ActionController::Base
     Authorization.current_user = current_user
   end
 
+  def set_language
+
+    request_language = request.env['HTTP_ACCEPT_LANGUAGE']
+
+    request_language = request_language.nil? ? nil : request_language[/[^,;]+/]
+
+    I18n.locale = request_language if request_language && File.exist?("#{RAILS_ROOT}/config/locales/#{request_language}.yml")
+
+  end
 end

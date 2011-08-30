@@ -5,7 +5,7 @@
   <td><%=h project.partner.english_name||"" unless project.partner.nil?%></td>
   <td><%=h project.manager.english_name||"" unless project.manager.nil?%></td>
   <td><%=h truncate(project.description,40) %></td>
-  <td><%=h project.state%></td>
+  <td><%=h project.state.humanize%></td>
   <td>
     <%= link_to 'View', project_path(project) if allow_project_op(project)  %>
   </td>

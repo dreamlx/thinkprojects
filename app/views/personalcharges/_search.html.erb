@@ -24,8 +24,8 @@
       </p>
     </td>
     <td>
-      <p>State:
-        <%= select("", "state", ["pending","approved","disapproved","should_pay","paid"].collect {|p| [p,p] }, { :include_blank => true }) %>
+      <p>Status:
+        <%= select("", "state", ["pending","approved","disapproved","should_pay"].collect {|p| [p.humanize,p] }, { :include_blank => true }) %>
       </p>
     </td>
     <td>
