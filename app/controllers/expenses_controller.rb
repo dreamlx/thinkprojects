@@ -129,13 +129,12 @@ class ExpensesController < ApplicationController
         p = Expense.find(value)
         case params[:do_action]
         when "approval":
-            p.approval
+            p.approval if p.state == "pending"
         when "disapproval":
-            p.disapproval
+            p.disapproval if p.state == "pending"
         when "destroy":
             p.destroy if p.state == "pending"
-        when "close":
-            p.close
+
         else
 
         end

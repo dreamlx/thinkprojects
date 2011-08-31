@@ -2,7 +2,7 @@
 <% form_for(:expense, :url => expenses_path, :html => { :method => :get }) do |f| %>
   <%= render :partial => "search" %>
 <% end %>
-<%= session[:expense_sql] %>
+
 <hr/>
 <%= link_to 'Export data', :controller=>"reports", :action => "expenses_export" %>||
 <%= link_to 'New expense', :action => 'new' %>

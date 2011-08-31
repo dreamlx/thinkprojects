@@ -1,6 +1,6 @@
 
 class PersonalchargesController < ApplicationController
-  #filter_access_to :all
+  filter_access_to :all
 
   # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
 
@@ -148,9 +148,9 @@ class PersonalchargesController < ApplicationController
         p = Personalcharge.find(value)
         case params[:do_action]
         when "approval":
-            p.approval
+            p.approval if p.state == "pending"
         when "disapproval":
-            p.disapproval
+            p.disapproval if p.state == "pending"
         when "destroy":
             p.destroy if p.state == "pending"
 

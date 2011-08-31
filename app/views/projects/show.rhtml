@@ -34,38 +34,16 @@
     <%=h @project.estimated_hours ||0%><%= label_title("estimated_hours") %>
   </p>
 
-  <!--p>
-    <label for="Project_contracted_service_fee"><%= Project.human_attribute_name("contracted_service_fee") %></label>
-    <%=h @project.contracted_service_fee ||0%>
-  </p-->
-
   <p>
     <label for="Project_budgeted_service_fee"><%= Project.human_attribute_name("budgeted_service_fee") %></label>
     <%=h @project.budgeted_service_fee ||""%>
   </p>
-
-
-
-  <!--p>
-    <label for="Project_contracted_expense"><%= Project.human_attribute_name("contracted_expense") %></label>
-    <%=h @project.contracted_expense ||""%>
-  </p-->
 
   <p>
     <label for="Project_budgeted_expense" ><%= Project.human_attribute_name("budgeted_expense") %></label>
     <%=h @project.budgeted_expense ||""%><%= label_title("budgeted_expense") %>
   </p>
 
-
-  <!--p>
-    <label for="Project_service_PFA"><%= Project.human_attribute_name("service_PFA") %></label>
-    <%=h @project.service_PFA ||""%>
-  </p>
-
-  <p>
-    <label for="Project_expense_PFA"><%= Project.human_attribute_name("expense_PFA") %></label>
-    <%=h @project.expense_PFA ||""%>
-  </p-->
 </fieldset>
 
 <%= link_to 'Edit', edit_project_path(@project) if @project.state == "pending" or @project.state == "disapproved"%> |<%= link_to 'Back', projects_path %>

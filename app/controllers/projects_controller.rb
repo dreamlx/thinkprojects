@@ -5,7 +5,7 @@ class ProjectsController < ApplicationController
   auto_complete_for :client,:english_name
   auto_complete_for :project,:job_code
 
-  #filter_access_to :all
+  filter_access_to :all
   
   def index
     @project = Project.new(params[:project])
@@ -203,13 +203,13 @@ class ProjectsController < ApplicationController
         project = Project.find(value)
         case params[:do_action]
         when "approval":
-            project.approval
+            project.approval if project.state == "pending"
         when "disapproval":
-            project.disapproval
+            project.disapproval if project.state == "pending"
         when "destroy":
             project.destroy if project.state == "pending"
         when "close":
-            project.close
+            project.close if project.state == "approved"
         else
     
         end
