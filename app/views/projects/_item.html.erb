@@ -23,7 +23,7 @@
 		<% end %>
 		<% end %>
 		<%= button_to_remote 'Close', :url=>close_project_path(project), :confirm => 'Are you sure close?',:method => :post if permitted_to? :close, project %>
-		<%= button_to_remote 'ReOpen', :url=>close_project_path(project), :confirm => 'Are you sure reopen it ?',:method => :post if project.state =="closed" and current_user.roles == 'providence_breaker'%>
+		<%= button_to_remote 'ReOpen', :url=>close_project_path(project), :confirm => 'Are you sure reopen it ?',:method => :post if project.state =="closed" and current_user.roles == 'providence_breaker' %>
 		<%= button_to_remote 'Destroy', :update=> 'projects',:url=>project, :confirm => 'Are you sure destroy?', :method => :delete if current_user.roles == 'providence_breaker' and project.state =="pending"%>
 
 	</td>

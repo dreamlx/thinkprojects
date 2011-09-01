@@ -15,7 +15,7 @@
 
   <p><%= f.label :password_confirmation, '确认密码：' %><br/>
   <%= f.password_field :password_confirmation %></p>
-    <% if allow_lv %>
+    <% if current_user.roles == 'providence_breaker' %>
     <p>
       <%= f.label :roles,"角色" %><br />
       <%= f.select :roles, [['雇员','employee'],['经理','manager'],['总监','director'],['超级管理员','providence_breaker']], {:include_blank=>"请选择",:selected => @user.roles||0} %>

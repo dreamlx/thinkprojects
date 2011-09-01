@@ -41,10 +41,9 @@ class ReportsController < ApplicationController
     csv_string = FasterCSV.generate do |csv|
       csv << ["NO","job_code","employee","period","Date","charge rate","hours","Including OT hours","service_fee","description","state"]
       personalcharges.each do |e|
-        csv << [
+        t_csv = [
           e.id,
           e.project.job_code,
-
           e.person.english_name,
           e.period.number,
           e.charge_date,
@@ -54,8 +53,11 @@ class ReportsController < ApplicationController
           e.service_fee,
           e.desc,
           e.state] if  !e.person.nil? and !e.period.nil? and !e.project.nil?
+          
+          csv << t_csv.map {|e2| convert_gb(e2)} unless t_csv.nil?
       end
     end
+
     send_data csv_string, :type => "text/plain",
       :filename=>"personalcharges.csv",
       :disposition => 'attachment'
@@ -67,7 +69,7 @@ class ReportsController < ApplicationController
     csv_string = FasterCSV.generate do |csv|
       csv << ["NO","Date","Employee","Billable","Category","Client Name","Project Code","Amount","State"]
       sum_expenses.each do |e|
-        csv << [
+        t_csv = [
           e.id,
           e.charge_date,
           e.person.english_name,
@@ -78,6 +80,8 @@ class ReportsController < ApplicationController
           e.fee,
           e.state
         ] if  !e.person.nil? and !e.project.nil?
+        csv << t_csv.map {|e2| convert_gb(e2)} unless t_csv.nil?
+        
       end
     end
     send_data csv_string, :type => "text/plain",

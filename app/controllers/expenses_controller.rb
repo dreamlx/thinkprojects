@@ -1,5 +1,5 @@
 class ExpensesController < ApplicationController
-  #filter_access_to :all
+  filter_access_to :all
   # GET /expenses
   # GET /expenses.xml
   def index

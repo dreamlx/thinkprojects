@@ -44,3 +44,4 @@ end
 
 require "will_paginate"
 require 'state_machine'
+require 'iconv'

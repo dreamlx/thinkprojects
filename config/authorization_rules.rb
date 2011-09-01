@@ -41,7 +41,7 @@ authorization do
 
   role :providence_breaker do
     includes :director
-    has_permission_on [:projects,:personalcharges, :expenses], :to => [:manage] 
+    has_permission_on [:projects,:personalcharges, :expenses, :users, :clients, :people], :to => [:manage] 
 
   end
 end

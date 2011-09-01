@@ -116,4 +116,10 @@ class ApplicationController < ActionController::Base
     I18n.locale = request_language if request_language && File.exist?("#{RAILS_ROOT}/config/locales/#{request_language}.yml")
 
   end
+  
+  def convert_gb(str)  
+    Iconv.iconv("GBK","UTF-8", str.to_s)  
+  end
+  
+
 end
