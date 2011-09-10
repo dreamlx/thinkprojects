@@ -92,9 +92,8 @@ class BookingsController < ApplicationController
     @booking = @project.bookings.find(params[:id])
     @project.bookings.delete(@booking)
 
-    respond_to do |format|
-      format.html { redirect_to(project_url(@project)) }
-      format.xml  { head :ok }
+     render :update do |page|
+      page.remove "item_#{params[:id]}"
     end
   end
 

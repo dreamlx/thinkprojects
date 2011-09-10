@@ -42,6 +42,15 @@ authorization do
   role :providence_breaker do
     includes :director
     has_permission_on [:projects,:personalcharges, :expenses, :users, :clients, :people], :to => [:manage] 
+    has_permission_on [:projects], :to => [:batch_actions] 
+    has_permission_on [:projects], :to => [:approval, :disapproval] do
+      if_attribute :state => "pending"
+    end
+    has_permission_on [:projects], :to => [:close, :transform] do
+      if_attribute :state => "approved"
+    end
+
+    has_permission_on [:personalcharges, :expenses], :to => [:approval, :disapproval, :batch_actions] { if_attribute :state => "pending" }
 
   end
 end
