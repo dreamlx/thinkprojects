@@ -56,7 +56,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :projects, :member => { :close => :post,
     :approval => :post,
     :disapproval => :post,
-    :transform => :post }
+    :transform => :post,
+    :addcomment => :post }
 
   map.resources :projects do |project|
     project.resources :bookings

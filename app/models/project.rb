@@ -1,5 +1,6 @@
 class Project < ActiveRecord::Base
   # human names
+  acts_as_commentable
   validates_uniqueness_of          :job_code
   validates_presence_of :partner_id
   validates_presence_of :manager_id

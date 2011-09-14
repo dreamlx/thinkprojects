@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110821084141) do
+ActiveRecord::Schema.define(:version => 20110910080347) do
 
   create_table "billings", :force => true do |t|
     t.timestamp "created_on",                                                                    :null => false
@@ -83,6 +83,16 @@ ActiveRecord::Schema.define(:version => 20110821084141) do
     t.string    "email_3",      :limit => 50,  :default => "", :null => false
     t.timestamp "created_on",                                  :null => false
     t.timestamp "updated_on",                                  :null => false
+  end
+
+  create_table "comments", :force => true do |t|
+    t.string   "title",            :limit => 50, :default => ""
+    t.string   "comment",                        :default => ""
+    t.integer  "commentable_id",                 :default => 0
+    t.string   "commentable_type", :limit => 15, :default => ""
+    t.integer  "user_id",                        :default => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "common_fees", :primary_key => "period_id", :force => true do |t|

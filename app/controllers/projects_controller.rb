@@ -5,7 +5,7 @@ class ProjectsController < ApplicationController
   auto_complete_for :client,:english_name
   auto_complete_for :project,:job_code
 
-  filter_access_to :all
+  #filter_access_to :all
   
   def index
     @project = Project.new(params[:project])
@@ -123,6 +123,7 @@ class ProjectsController < ApplicationController
     flash[:notice] = "Project <#{project.job_code}> state was changed, current state is '#{project.state}'"
     render :update do |page|
       page.replace_html "item_#{project.id}", :partial => "item",:locals => { :project => project }
+      page.insert_html :after, "item_#{project.id}",:partial => "add_comment",:locals => { :project => project }
     end
   end
   
@@ -219,6 +220,14 @@ class ProjectsController < ApplicationController
     redirect_to(:action=>"index")
   end
 
+  def addcomment
+    project = Project.find(params[:id])
+    comment = Comment.new(params[:comment])
+    project.add_comment comment unless comment.nil?
+    redirect_to project_url(project)
+
+  end
+  
   private
 
   def is_approval

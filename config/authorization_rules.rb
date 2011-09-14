@@ -50,8 +50,9 @@ authorization do
       if_attribute :state => "approved"
     end
 
-    has_permission_on [:personalcharges, :expenses], :to => [:approval, :disapproval, :batch_actions] { if_attribute :state => "pending" }
-
+    has_permission_on [:personalcharges, :expenses], :to => [:approval, :disapproval, :batch_actions] do
+ if_attribute :state => "pending" 
+    end
   end
 end
 
