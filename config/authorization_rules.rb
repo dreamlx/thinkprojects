@@ -16,7 +16,7 @@ authorization do
     has_permission_on [:projects], :to => [:update, :delete] do
       if_attribute :manager_id => is {user.person_id}, :state  => ["disapproved","pending"]
     end
-    has_permission_on [:personalcharges, :expenses], :to => [:approval, :disapproval, :batch_actions] do
+    has_permission_on [:personalcharges, :expenses], :to => [:approval, :disapproval, :batch_actions,:addcomment] do
       if_attribute :person_id                   => is_not {user.person_id},:state => "pending"
     end
   end
@@ -30,7 +30,7 @@ authorization do
     has_permission_on [:projects], :to => [:batch_actions] do
       if_attribute :partner_id => is {user.person_id}
     end
-    has_permission_on [:projects], :to => [:approval, :disapproval] do
+    has_permission_on [:projects], :to => [:approval, :disapproval,:addcomment] do
       if_attribute :partner_id => is {user.person_id},:state => "pending"
     end
     has_permission_on [:projects], :to => [ :close] do
@@ -64,7 +64,7 @@ privileges do
   privilege :create, :includes                => :new
   privilege :update, :includes                => :edit
   privilege :delete, :includes                => :destroy
-
+  privilege :addcomment, :includes                 => :addcomment
   privilege :close, :includes                 => :close
   privilege :transform, :includes             => :transform
   privilege :approval, :includes              => :approval

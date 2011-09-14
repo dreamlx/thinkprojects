@@ -1,4 +1,5 @@
 class Personalcharge < ActiveRecord::Base
+  acts_as_commentable
   validates_presence_of :person_id
   validates_presence_of :charge_date
 

@@ -39,3 +39,17 @@
 
 <%= link_to 'Edit', edit_expense_path(@expense) if @expense.state !="approved" and @expense.person_id == current_user.person_id %> |
 <%= link_to 'Back', expenses_path %>
+
+<hr/>
+
+<h3>Disapproval description</3>
+
+<% 
+    if @expense.comments.any?
+       for comment in @expense.comments
+%>
+<p><%= comment.created_at.strftime(" %m/%d/%Y")  %> <br/><%= Person.find(comment.user_id).english_name + ": " + comment.comment %></p>
+<%         
+       end
+    end 
+%>

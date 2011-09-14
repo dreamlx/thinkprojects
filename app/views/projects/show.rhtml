@@ -78,7 +78,7 @@
     if @project.comments.any?
        for comment in @project.comments
 %>
-<p><%= comment.created_at.strftime(" %m/%d/%Y') +"<br/>"  %><%= Person.find(comment.user_id).english_name + ":" + comment.comment %></p>
+<p><%= comment.created_at.strftime(" %m/%d/%Y") +"<br/>"  %><%= Person.find(comment.user_id).english_name + ": " + comment.comment %></p>
 <%         
        end
     end 

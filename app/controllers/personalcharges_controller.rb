@@ -53,7 +53,13 @@ class PersonalchargesController < ApplicationController
     end
   end
 
+  def addcomment
+    @personalcharge = Personalcharge.find(params[:id])
+    comment = Comment.new(params[:comment])
+    @personalcharge.add_comment comment unless comment.nil?
+    redirect_to personalcharge_url(@personalcharge) 
 
+  end
   
   def show
     @personalcharge = Personalcharge.find(params[:id])
@@ -93,6 +99,7 @@ class PersonalchargesController < ApplicationController
     flash[:notice] = " state was changed, current state is '#{personalcharge.state}'"
     render :update do |page|
       page.replace_html "item_#{personalcharge.id}", :partial => "item",:locals => { :personalcharge => personalcharge }
+      page.insert_html :after, "item_#{personalcharge.id}",:partial => "add_comment",:locals => { :item => personalcharge }
     end
   end
   

@@ -67,9 +67,11 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :expenses
   map.resources :expenses, :member => { :close => :post,
     :approval => :post,
-    :disapproval => :post }
+    :disapproval => :post,
+    :addcomment => :post }
   map.resources :personalcharges
-  map.resources :personalcharges, :member=>{:approval=> :post,:disapproval=>:post}
+  map.resources :personalcharges, :member=>{:approval=> :post,:disapproval=>:post,
+  :addcomment => :post}
   map.resources :periods
   map.root :controller => 'homepage'
   map.connect ':controller/:action/:id'
