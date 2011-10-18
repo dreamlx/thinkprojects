@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110910080347) do
+ActiveRecord::Schema.define(:version => 20110916071305) do
 
   create_table "billings", :force => true do |t|
     t.timestamp "created_on",                                                                    :null => false
@@ -224,11 +224,7 @@ ActiveRecord::Schema.define(:version => 20110910080347) do
     t.date     "ending_date"
     t.decimal  "estimated_annual_fee",                 :default => 0.0,       :null => false
     t.integer  "risk_id",                :limit => 11
-    t.integer  "partner_id",             :limit => 11
     t.integer  "manager_id",             :limit => 11
-    t.integer  "referring_id",           :limit => 11
-    t.integer  "billing_partner_id",     :limit => 11, :default => 0,         :null => false
-    t.integer  "billing_manager_id",     :limit => 11, :default => 0,         :null => false
     t.decimal  "contracted_service_fee",               :default => 0.0,       :null => false
     t.decimal  "estimated_commision",                  :default => 0.0,       :null => false
     t.decimal  "estimated_outsorcing",                 :default => 0.0,       :null => false

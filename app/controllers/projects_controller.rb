@@ -13,10 +13,8 @@ class ProjectsController < ApplicationController
 
     sql = ' 1 '
     sql += " and clients.english_name like '%#{@client.english_name}%' " if @client.english_name.present?
-    sql += " and partner_id = #{@project.partner_id} " if @project.partner_id.present?
-    sql += " and manager_id = #{@project.manager_id} " if @project.manager_id.present?
+    sql += " and bookings.person_id = #{params[:booking_id]} " if params[:booking_id].present?
     sql += " and job_code like '%#{@project.job_code}%' " if @project.job_code.present?
-    
     sql += " and state = '#{params[:state]}'" if params[:state].present?
   
     case params[:order_by]
@@ -29,11 +27,10 @@ class ProjectsController < ApplicationController
     else
       order_str = "projects.created_on desc"
     end
-    if current_user.roles == 'providence_breaker'
-      projects = Project.find(:all, :conditions=>sql, :order=> order_str, :include=>:client)
-    else
-      projects = Person.find(current_user.person_id).my_projects(sql,order_str)
-    end
+    
+    projects = Project.my_projects(current_user,sql,order_str)
+
+    
     @projects = projects.paginate(:page=>params[:page]||1)
     
     respond_to do |format|
@@ -75,7 +72,10 @@ class ProjectsController < ApplicationController
     
     respond_to do |format|
       if @project.save
-       
+        @booking = Booking.new #项目创建者就是默认booking人员
+        @booking.person_id = @project.manager_id
+        @booking.project_id = @project.id
+        @project.bookings<<@booking
         flash[:notice] = 'Project was successfully created.'
         #is_approval
         format.html { redirect_to project_url(@project) }
@@ -94,8 +94,7 @@ class ProjectsController < ApplicationController
     @project = format_jobcode(@project)
     
     respond_to do |format|
-      if @project.update_attributes(params[:project])
-        
+      if @project.update_attributes(params[:project])        
         @project.reset
         flash[:notice] = 'Project was successfully updated.'
         format.html { redirect_to project_url(@project) }

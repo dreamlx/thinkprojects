@@ -50,7 +50,7 @@
 <br/>
 <br/><br/>
 
-<% if  current_user.person_id == @project.manager_id or current_user.person_id == @project.partner_id or current_user.roles == 'providence_breaker' %>
+<% if  current_user.person_id == @project.manager_id or current_user.roles == 'providence_breaker' %>
   <div id="booking_area">
     <% if @project.state !="closed" %>
       <div id="booking_new">

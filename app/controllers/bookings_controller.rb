@@ -90,7 +90,7 @@ class BookingsController < ApplicationController
   # DELETE /bookings/1.xml
   def destroy
     @booking = @project.bookings.find(params[:id])
-    @project.bookings.delete(@booking)
+    @project.bookings.delete(@booking) unless @booking.id == @project.manager_id
 
      render :update do |page|
       page.remove "item_#{params[:id]}"

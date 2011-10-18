@@ -83,24 +83,9 @@
     <%= f.text_field :budgeted_expense %><%= label_title("budgeted_expense") %>
   </p>
 
-  <!--p>
-    <label for="Project_service_PFA"><%= Project.human_attribute_name("service_PFA") %></label>
-  <%= f.text_field :service_PFA %>
-  </p>
 
-  <p>
-    <label for="Project_expense_PFA"><%= Project.human_attribute_name("expense_PFA") %></label>
-  <%= f.text_field :expense_PFA %>
-  </p-->
-
-  <hr/>
-  <p><label><b>Project partner:</b></label>
-    <%= select_partner("project", "partner_id") %>
-
-  </p>
-
-  <p><label><b>Project manager:</b></label>
-    <%= select_employee("project", "manager_id", current_user) %>
+  <p><label><b>Project creator:</b></label>
+    <%= !@project.manager.nil?? @project.manager.english_name : select_employee("project", "manager_id") %>
   </p>
 
 </fieldset>

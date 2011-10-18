@@ -12,34 +12,8 @@ class PersonalchargesController < ApplicationController
     sql += " and project_id=#{params[:prj_id]}"       if params[:prj_id].present?
     sql += " and personalcharges.state = '#{params[:state]}'" if params[:state].present?
 
-    if params[:role].present?
-      case params[:role]
-      when "Director":
-          projects = Project.find(:all, :conditions=>"partner_id = #{current_user.person_id}")
-        managers_id =""
-        projects.each{|p| managers_id += (p.manager.id.to_s + ",") unless p.manager.nil?}
-        managers_id += "0"
-        sql += " and personalcharges.person_id in (#{managers_id})"
-      when "Manager":
-          sql += " and projects.manager_id = #{current_user.person_id}"
-      when "Member":
-          sql += " and personalcharges.person_id = #{current_user.person_id}"
-      end
-    end
-
-    if current_user.roles == "providence_breaker"
-      personalcharges = Personalcharge.find(:all,:conditions=>sql, 
-        :order=>"personalcharges.state desc,personalcharges.updated_on", :include=>[:project,:period])
-    else
-      personalcharges = Person.find(current_user.person_id).my_personalcharges(sql)
-    end
+    personalcharges = Personalcharge.my_personalcharges(current_user,sql)
     
-    personalcharges.collect{|p|
-      if  !p.period.nil? and p.charge_date.nil?
-        p.charge_date = p.period.number
-        p.save
-      end
-    }
     session[:personalcharge_sql] =sql
     @personalcharges = personalcharges.paginate(:page=>params[:page]||1)
 

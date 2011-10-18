@@ -8,11 +8,7 @@
     </td>
     <td>
       <p>Person:
-        <% if current_user.roles =="providence_breaker" %>
-          <%= select_people("","person_id")  %>
-        <% else %>
-          <%= select("", "person_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => true }) %>
-        <% end %>
+        <%= select("", "person_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => true }) %>
       </p>
     </td>
 
@@ -28,9 +24,7 @@
         <%= select("", "state", ["pending","approved","disapproved"].collect {|p| [p.humanize,p] }, { :include_blank => true }) %>
       </p>
     </td>
-    <td>
-      I am:<%= select("", "role", ["Member","Manager","Director"].collect {|p| [p,p] }, { :include_blank => true }) %>
-    </td>
+
     <td>
       <input type="submit" value="Search" />
     </td>

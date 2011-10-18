@@ -24,7 +24,7 @@ class ReportsController < ApplicationController
       sql += " and project_id = #{params[:project_id]}"           if params[:project_id].present?
       sql += " and projects.state = '#{params[:project_state]}' "  if params[:project_state].present?
       sql += " and manager_id = #{params[:manager_id]}"           if params[:manager_id].present?
-      sql += " and partner_id = #{params[:partner_id]}"           if params[:partner_id].present?
+      
       sql += " and periods.id = #{params[:period_id]}"            if params[:period_id].present?
     else
       sql = session[:personalcharge_sql]
@@ -34,7 +34,7 @@ class ReportsController < ApplicationController
       personalcharges = Personalcharge.find(:all,:conditions=>sql,
         :order=>"personalcharges.state desc,projects.job_code", :include=>[:project,:period])
     else
-      personalcharges = Person.find(current_user.person_id).my_personalcharges(sql)
+      personalcharges = Personalcharge.my_personalcharges(current_user,sql)
     end
 
 

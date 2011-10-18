@@ -28,13 +28,13 @@ authorization do
   role :director do
     includes :manager
     has_permission_on [:projects], :to => [:batch_actions] do
-      if_attribute :partner_id => is {user.person_id}
+      #if_attribute :partner_id => is {user.person_id}
     end
     has_permission_on [:projects], :to => [:approval, :disapproval,:addcomment] do
-      if_attribute :partner_id => is {user.person_id},:state => "pending"
+      #if_attribute :partner_id => is {user.person_id},:state => "pending"
     end
     has_permission_on [:projects], :to => [ :close] do
-      if_attribute :partner_id => is {user.person_id},:state => "approved"
+      #if_attribute :partner_id => is {user.person_id},:state => "approved"
     end
 
   end

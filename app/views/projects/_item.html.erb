@@ -2,7 +2,6 @@
 	<td><%= check_box_tag "check_items[#{project.id}]", project.id if permitted_to? :batch_actions, project %> <b><%= h project.job_code%></b></td>
 	<td><%=h project.created_on.strftime('%Y-%m-%d') %></td>
 	<td class="wide_col"><%=h project.client.english_name||"" unless project.client.nil?%></td>
-	<td><%=h project.partner.english_name||"" unless project.partner.nil?%></td>
 	<td><%=h project.manager.english_name||"" unless project.manager.nil?%></td>
 	<td><%=h truncate(project.description,40) %></td>
 	<td><%=h project.state.humanize%></td>

@@ -1,13 +1,12 @@
 class Project < ActiveRecord::Base
   # human names
   acts_as_commentable
-  validates_uniqueness_of          :job_code
-  validates_presence_of :partner_id
-  validates_presence_of :manager_id
-  validates_numericality_of       :estimated_hours
-  validates_numericality_of       :estimated_annual_fee
-  validates_numericality_of       :budgeted_expense
-  validates_numericality_of       :budgeted_service_fee
+  validates_uniqueness_of           :job_code
+  validates_presence_of             :manager_id,:message => "Please select one person as project creator "
+  validates_numericality_of         :estimated_hours
+  validates_numericality_of         :estimated_annual_fee
+  validates_numericality_of         :budgeted_expense
+  validates_numericality_of         :budgeted_service_fee
   ModelName = "Project"
   ColumnNames ={
     :contract_number => "contract_number",
@@ -62,25 +61,10 @@ class Project < ActiveRecord::Base
     :foreign_key => "risk_id",
     :conditions => "category = 'risk'"
   
-  belongs_to :partner,
-    :class_name => "Person",
-    :foreign_key => "partner_id"
-  
   belongs_to :manager,
     :class_name => "Person",
     :foreign_key => "manager_id"
-  
-  belongs_to :referring,
-    :class_name => "Person",
-    :foreign_key => "referring_id"
 
-  belongs_to :billing_partner,
-    :class_name => "Person",
-    :foreign_key => "billing_partner_id"
-  
-  belongs_to :billing_manager,
-    :class_name => "Person",
-    :foreign_key => "billing_manager_id"
 
 
   named_scope :alive, :conditions =>"state = 'approved'", :order=>'job_code'
@@ -114,12 +98,20 @@ class Project < ActiveRecord::Base
     return flag
   end
 
-  def is_partner?(id)
-    self.partner_id == id ? true : false
-  end
-
   def is_manager?(id)
     self.manager_id == id ? true : false
+  end
+  
+  def self.my_projects(current_user,sql="1",order_str="projects.created_on") 
+    if current_user.roles == 'providence_breaker' 
+      #all projects
+      projects = Project.find(:all, :conditions=>sql, :order=> order_str, :include=>[:client, :bookings] )
+    else
+      # the booking projects including me
+      sql += " and bookings.person_id = #{current_user.person_id}"
+      projects = Project.find(:all, :conditions=>sql, :order=> order_str, :include=>[:client, :bookings] )
+    end
+    return projects   
   end
   
 end

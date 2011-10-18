@@ -11,10 +11,8 @@
           {:skip_style=>true}  %>
       </td>
       <td>
-        Partner:<%= select_partner("project","partner_id") %>
-      </td>
-      <td>
-        Manager:<%= select_people("project","manager_id")%>
+        Member:
+<%= select("", "booking_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => true }) %>
       </td>
       <td>Status:<%= select("", "state", ["pending","approved","disapproved","closed"].collect {|p| [p.humanize,p] }, { :include_blank => true }) %>
 </td>
