@@ -15,12 +15,12 @@
 <%= link_to 'Edit', edit_personalcharge_path(@personalcharge)  if @personalcharge.project.state != 'closed' and current_user.person_id == @personalcharge.person_id%> |
 <%= link_to 'Back', personalcharges_path %>
 
-<h3>Disapproval description</3>
 
-<% 
-    if @personalcharge.comments.any?
-       for comment in @personalcharge.comments
-%>
+<%     if @personalcharge.comments.any?	%>
+	
+	<h3>Disapproval description</3>
+	<%       for comment in @personalcharge.comments %>
+<hr/>
 <p><%= comment.created_at.strftime(" %m/%d/%Y") +"<br/>"  %><%= Person.find(comment.user_id).english_name + ": " + comment.comment %></p>
 <%         
        end

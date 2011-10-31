@@ -1,10 +1,13 @@
 
-<% show_columns =["charge_date","hours","ot_hours","desc"] %>
+<% show_columns =["hours","ot_hours","desc"] %>
 <tr id="item_<%= personalcharge.id %>" class="personalcharge_item">
-  <td><%=h personalcharge.id %></td>
-  <td><%= check_box_tag "check_items[#{personalcharge.id}]", personalcharge.id if personalcharge.state == "pending" and permitted_to? :batch_actions,personalcharge %> <%=  personalcharge.project.job_code    unless personalcharge.project.nil?%></td>
+  <!--td><%=h personalcharge.id %></td-->
   <td><%=  personalcharge.person.english_name unless personalcharge.person.nil?%></td>
-  <td><%=  personalcharge.period.number       unless personalcharge.period.nil? %></td>
+  <td><%= check_box_tag "check_items[#{personalcharge.id}]", personalcharge.id if personalcharge.state == "pending" and permitted_to? :batch_actions,personalcharge %> <%=  personalcharge.period.number       unless personalcharge.period.nil? %></td>
+  <td><%=  personalcharge.charge_date %></td>
+  <td><%=  personalcharge.project.job_code    unless personalcharge.project.nil?%></td>
+
+
   <% for column in show_columns %>
     <td>
       <%= h personalcharge.send(column) %>

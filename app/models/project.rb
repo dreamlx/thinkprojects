@@ -94,7 +94,7 @@ class Project < ActiveRecord::Base
   
   def is_booking?(id)
     flag = false
-    self.bookings.each{|b| flag =true if b.person_id == id}
+    #bug#self.bookings.each{|b| flag =true if b.person_id == id} 
     return flag
   end
 

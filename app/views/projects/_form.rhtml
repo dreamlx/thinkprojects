@@ -1,9 +1,9 @@
 
 <fieldset>
-  <p>
+  <!--p>
     <label for="Project_contract_number"><%= Project.human_attribute_name("contract_number") %></label>
     <%= f.text_field :contract_number %>
-  </p>
+  </p-->
 
   <p>
     <label for="Project_job_code"><%= Project.human_attribute_name("job_code") %></label>
@@ -84,7 +84,7 @@
   </p>
 
 
-  <p><label><b>Project creator:</b></label>
+  <p><label><b>Project owner:</b></label>
     <%= !@project.manager.nil?? @project.manager.english_name : select_employee("project", "manager_id") %>
   </p>
 

@@ -13,7 +13,7 @@
     <td><%=h booking.person.charge_rate  %></td>
     <td><%=h booking.hours %></td>
     <td><%= link_to_remote 'Destroy', :update => 'bookings',
-	:url => booking_url(:project_id=>@project,:id=>booking), :confirm => 'Are you sure?', :method => :delete if  booking.project.state !="closed"%></td>
+	:url => booking_url(:project_id=>@project,:id=>booking), :confirm => 'Are you sure?', :method => :delete if  booking.project.state !="closed" and booking.person_id != @project.manager_id%></td>
   </tr>
 <% end %>
 </table>

@@ -37,7 +37,6 @@ class Person < ActiveRecord::Base
   end
 
   def self.my_teams(current_user)
-    
     projects = Project.find(:all)
     my_bookings = []
     projects.each{|project| my_bookings<< project.bookings if project.is_booking?(current_user.person_id) }
