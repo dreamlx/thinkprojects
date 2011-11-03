@@ -192,7 +192,7 @@
     <% @industries.each do |industry| %>
        <option value="<%= industry.id %>"
          <%= ' selected' if industry.id == @client.industry_id %>>
-         <%=industry.code %>
+         <%=industry.code+"||"+industry.title %>
        </option>
     <% end %>
    </select>

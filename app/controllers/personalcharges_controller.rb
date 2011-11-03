@@ -1,43 +1,19 @@
 
 class PersonalchargesController < ApplicationController
-  #filter_access_to :all
+  filter_access_to :all
 
   # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
 
   def index
-
     sql = " 1 "
     sql += " and person_id=#{params[:person_id]}"     if params[:person_id].present?
-    sql += " and personalcharges.state = '#{params[:state]}'"       if params[:state].present?
     sql += " and periods.starting_date >= '#{params[:period_from]}' "   if params[:period_from].present?
     sql += " and periods.ending_date   <= '#{params[:period_to]}' "     if params[:period_to].present?
     sql += " and project_id=#{params[:prj_id]}"       if params[:prj_id].present?
-    if params[:role].present?
-      case params[:role]
-      when "Director":
-          projects = Project.find(:all, :conditions=>"partner_id = #{current_user.person_id}")
-        managers_id =""
-        projects.each{|p| managers_id += (p.manager.id.to_s + ",") unless p.manager.nil?}
-        managers_id += "0"
-        sql += " and personalcharges.person_id in (#{managers_id})"
-      when "Manager":
-          sql += " and projects.manager_id = #{current_user.person_id}"
-      when "Member":
-          sql += " and personalcharges.person_id = #{current_user.person_id}"
-      end
-    end
-    if current_user.roles == "providence_breaker"
-      personalcharges = Personalcharge.find(:all,:conditions=>sql, 
-        :order=>"personalcharges.state desc,projects.job_code", :include=>[:project,:period])
-    else
-      personalcharges = Person.find(current_user.person_id).my_personalcharges(sql)
-    end
-    personalcharges.collect{|p|
-      if  !p.period.nil? and p.charge_date.nil?
-        p.charge_date = p.period.number
-        p.save
-      end
-    }
+    sql += " and personalcharges.state = '#{params[:state]}'" if params[:state].present?
+
+    personalcharges = Personalcharge.my_personalcharges(current_user,sql)
+    
     session[:personalcharge_sql] =sql
     @personalcharges = personalcharges.paginate(:page=>params[:page]||1)
 
@@ -51,7 +27,13 @@ class PersonalchargesController < ApplicationController
     end
   end
 
+  def addcomment
+    @personalcharge = Personalcharge.find(params[:id])
+    comment = Comment.new(params[:comment])
+    @personalcharge.add_comment comment unless comment.nil?
+    redirect_to personalcharge_url(@personalcharge) 
 
+  end
   
   def show
     @personalcharge = Personalcharge.find(params[:id])
@@ -91,6 +73,7 @@ class PersonalchargesController < ApplicationController
     flash[:notice] = " state was changed, current state is '#{personalcharge.state}'"
     render :update do |page|
       page.replace_html "item_#{personalcharge.id}", :partial => "item",:locals => { :personalcharge => personalcharge }
+      page.insert_html :after, "item_#{personalcharge.id}",:partial => "add_comment",:locals => { :item => personalcharge }
     end
   end
   
@@ -146,9 +129,9 @@ class PersonalchargesController < ApplicationController
         p = Personalcharge.find(value)
         case params[:do_action]
         when "approval":
-            p.approval
+            p.approval if p.state == "pending"
         when "disapproval":
-            p.disapproval
+            p.disapproval if p.state == "pending"
         when "destroy":
             p.destroy if p.state == "pending"
 

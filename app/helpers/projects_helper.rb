@@ -25,14 +25,7 @@ module ProjectsHelper
     return ""
     #return str
   end
-  
-  def allow_project_op(project)
-    flag = (current_user.person_id == project.partner_id or current_user.roles =="providence_breaker" or project.manager_id == current_user.person_id)
-    return flag
-  end
 
-  def approval_op(project)
-    flag = (allow_project_op(project) and project.state == 'pending' and project.manager_id != current_user.person_id)
-    return flag
-  end
+  
+  
 end

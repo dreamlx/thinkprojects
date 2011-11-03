@@ -1,4 +1,5 @@
 class Personalcharge < ActiveRecord::Base
+  acts_as_commentable
   validates_presence_of :person_id
   validates_presence_of :charge_date
 
@@ -44,14 +45,34 @@ class Personalcharge < ActiveRecord::Base
     return items
   end
   
-  def self.my_personalcharges(person_id,sql)
-    sql += " and (projects.partner_id = #{person_id} or projects.manager_id = #{person_id} or person_id = #{person_id})"
-    self.find(:all, :conditions=> sql,  :joins=>"left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id",
-      :order=>"personalcharges.state desc")
+  def self.my_personalcharges(current_user,sql)
+    #思考角色判断-todo
+    projects = Project.my_projects(current_user)
+    
+    prj_ids = ""
+    projects.each{|p| prj_ids += " #{p.id}," }
+    prj_ids += "0"
+    
+    case current_user.roles
+      when "providence_breaker":
+
+      when "director":
+        sql += " and project_id in (#{prj_ids})"
+      when "manager":
+        sql += " and project_id in (#{prj_ids})"      
+      when "employee":
+        sql += " and (person_id = #{current_user.person_id})"
+    else
+    end
+    
+    self.find(:all, :conditions=> sql,  
+      :joins=>" left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id",
+      :order=>" personalcharges.state desc, personalcharges.updated_on")
+        
   end
 
   def self.my_group_hours(person_id,condition)
-    condition += " and (projects.partner_id = #{person_id} or projects.manager_id = #{person_id} or person_id = #{person_id})"
+    condition += " and ( projects.manager_id = #{person_id} or person_id = #{person_id})"
     sql = "select sum(hours) as hours,person_id,charge_date from personalcharges left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id where "
     sql += condition
     sql += " group by personalcharges.person_id, charge_date "
@@ -107,7 +128,7 @@ class Personalcharge < ActiveRecord::Base
   end
 
   def self.iam_partner(person_id,sql="1")
-    sql += " and projects.partner_id = #{person_id}"
+    #sql += " and projects.partner_id = #{person_id}"
     self.find(:all, :conditions =>sql,:include=>:project)
   end
 

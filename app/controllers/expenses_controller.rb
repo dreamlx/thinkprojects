@@ -1,5 +1,5 @@
 class ExpensesController < ApplicationController
-  #filter_access_to :all
+  filter_access_to :all
   # GET /expenses
   # GET /expenses.xml
   def index
@@ -110,6 +110,7 @@ class ExpensesController < ApplicationController
     flash[:notice] = "Expense state was changed, current state is '#{expense.state}'"
     render :update do |page|
       page.replace_html "item_#{expense.id}", :partial => "item",:locals => { :expense => expense }
+      
     end
   end
 
@@ -119,6 +120,7 @@ class ExpensesController < ApplicationController
     flash[:notice] = "Expense state was changed, current state is '#{expense.state}'"
     render :update do |page|
       page.replace_html "item_#{expense.id}", :partial => "item",:locals => { :expense => expense }
+      page.insert_html :after, "item_#{expense.id}",:partial => "add_comment",:locals => { :item => expense }
     end
   end
 
@@ -129,13 +131,12 @@ class ExpensesController < ApplicationController
         p = Expense.find(value)
         case params[:do_action]
         when "approval":
-            p.approval
+            p.approval if p.state == "pending"
         when "disapproval":
-            p.disapproval
+            p.disapproval if p.state == "pending"
         when "destroy":
             p.destroy if p.state == "pending"
-        when "close":
-            p.close
+
         else
 
         end
@@ -144,7 +145,13 @@ class ExpensesController < ApplicationController
 
     redirect_to(:action=>"index")
   end
+  def addcomment
+    @expense = Expense.find(params[:id])
+    comment = Comment.new(params[:comment])
+    @expense.add_comment comment unless comment.nil?
+    redirect_to expense_url(@expense) 
 
+  end
   def format_date(get_date)
     if get_date.length <10
       arr = get_date.split('-')

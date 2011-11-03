@@ -10,10 +10,6 @@ class Person < ActiveRecord::Base
   has_many :projects, :through => :bookings
   has_many  :expenses
 
-  has_many :partner_projects,
-    :class_name=> "Project",
-    :foreign_key => :partner_id
-
   has_many :manager_projects,
     :class_name=> "Project",
     :foreign_key => :manager_id
@@ -41,37 +37,35 @@ class Person < ActiveRecord::Base
   end
 
   def self.my_teams(current_user)
-    
-    teams=[]
+    projects = Project.find(:all)
+    my_bookings = []
+    projects.each{|project| my_bookings<< project.bookings if project.is_booking?(current_user.person_id) }
+    my_bookings =   Hash[*my_bookings.map {|obj| [obj.person_id, obj]}.flatten].values
+
     ids=""
-    iam=self.find(current_user.person_id)
-    iam.manager_projects.each{|p|
-      p.bookings.each{|b|
-        ids+=(b.person_id.to_s+",")
-      }
-    }
-    iam.partner_projects.each{|p|
-      p.bookings.each{|b|
-        ids+=(b.person_id.to_s+",")
-      }
-    }
+    my_bookings.each{|booking| ids += (booking.person_id.to_s+",")} 
+    ids += " 0 "
 
-    ids += current_user.person_id.to_s
+    teams = self.find(:all, :conditions=> "id in (#{ids})", :order => "english_name")
 
-    teams = self.find(:all, :conditions=> "id in (#{ids})")
-    teams=   Hash[*teams.map {|obj| [obj.english_name, obj]}.flatten].values
-    tms = teams.sort_by{|t| t.english_name}
-    return tms
+    case current_user.roles
+      when "providence_breaker":
+        teams = self.find(:all, :order => "english_name")
+      when "director":
+        teams = self.find(:all, :conditions=> "id in (#{ids})", :order => "english_name")
+      when "manager":
+        teams = self.find(:all, :conditions=> "id in (#{ids})", :order => "english_name")     
+      when "employee":
+        teams = self.find(:all, :conditions => "id = #{current_user.person_id}")
+    else
+        teams = self.find(:all, :order => "english_name")
+    end
+    
+    return teams
   end
 
   def my_projects(sql="1",order_str="projects.created_on")
-    order_str = "projects.created_on" if order_str.blank?
-    myprojects = Project.find(:all, :conditions=>sql, :order=> order_str, :include =>[:status,:client])
-    all_projects=[]
-    myprojects.each{|p|
-      all_projects << p if p.is_partner?(self.id) or p.is_manager?(self.id) or p.is_booking?(self.id)
-    }
-    return all_projects.compact
+    myprojects = Project.my_projects(sql,order_str,self)
   end
 
   def my_bookings

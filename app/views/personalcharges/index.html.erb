@@ -2,18 +2,18 @@
   <%= render :partial => "search" %>
 <% end %>
 <%= link_to 'Export data', :controller=>"reports", :action => "personalcharges_export" %>||
-<%= link_to 'New personalcharge', :action => 'new', :id=>params[:id], :person_id => params[:person_id]  %>
+<%= link_to 'New TimeCost', :action => 'new', :id=>params[:id], :person_id => params[:person_id]  %>
 
 <%#= session[:personalcharge_sql] %>
 <form name="myform" action="personalcharges/batch_actions" method="post">
   <%= render :partial => 'homepage/all_op' %>
   <table>
     <tr>
-      <th>ID</th>
-      <th width="75px">Job code</th>
-      <th>Employee name</th>
-      <th>Period</th>
+      <!--th>ID</th-->
+    	<th>Employee name</th>  
+		<th>Period</th>
       <th>Charge date</th>
+      <th width="75px">Job code</th>
       <th>Hours</th>
       <th>Including OT hours</th>
       <th>Description</th>
@@ -33,7 +33,7 @@
 
 </form>
 <div><label>Standard Hours:</label><%= @standard_hours %></div>
-<!--div><label>OT hours:</label><%= @ot_hours %></div>
-<div><label>OT pay hours:</label><%= @ot_pay_hours %></div-->
+<div><label>OT hours:</label><%= @ot_hours %></div>
+<div><label>OT pay hours:</label><%= @ot_pay_hours %></div>
 <%= will_paginate @personalcharges %>
 <br />

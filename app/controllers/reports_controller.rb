@@ -24,7 +24,7 @@ class ReportsController < ApplicationController
       sql += " and project_id = #{params[:project_id]}"           if params[:project_id].present?
       sql += " and projects.state = '#{params[:project_state]}' "  if params[:project_state].present?
       sql += " and manager_id = #{params[:manager_id]}"           if params[:manager_id].present?
-      sql += " and partner_id = #{params[:partner_id]}"           if params[:partner_id].present?
+      
       sql += " and periods.id = #{params[:period_id]}"            if params[:period_id].present?
     else
       sql = session[:personalcharge_sql]
@@ -34,17 +34,16 @@ class ReportsController < ApplicationController
       personalcharges = Personalcharge.find(:all,:conditions=>sql,
         :order=>"personalcharges.state desc,projects.job_code", :include=>[:project,:period])
     else
-      personalcharges = Person.find(current_user.person_id).my_personalcharges(sql)
+      personalcharges = Personalcharge.my_personalcharges(current_user,sql)
     end
 
 
     csv_string = FasterCSV.generate do |csv|
       csv << ["NO","job_code","employee","period","Date","charge rate","hours","Including OT hours","service_fee","description","state"]
       personalcharges.each do |e|
-        csv << [
+        t_csv = [
           e.id,
           e.project.job_code,
-
           e.person.english_name,
           e.period.number,
           e.charge_date,
@@ -54,8 +53,11 @@ class ReportsController < ApplicationController
           e.service_fee,
           e.desc,
           e.state] if  !e.person.nil? and !e.period.nil? and !e.project.nil?
+          
+          csv << t_csv.map {|e2| convert_gb(e2)} unless t_csv.nil?
       end
     end
+
     send_data csv_string, :type => "text/plain",
       :filename=>"personalcharges.csv",
       :disposition => 'attachment'
@@ -67,7 +69,7 @@ class ReportsController < ApplicationController
     csv_string = FasterCSV.generate do |csv|
       csv << ["NO","Date","Employee","Billable","Category","Client Name","Project Code","Amount","State"]
       sum_expenses.each do |e|
-        csv << [
+        t_csv = [
           e.id,
           e.charge_date,
           e.person.english_name,
@@ -78,6 +80,8 @@ class ReportsController < ApplicationController
           e.fee,
           e.state
         ] if  !e.person.nil? and !e.project.nil?
+        csv << t_csv.map {|e2| convert_gb(e2)} unless t_csv.nil?
+        
       end
     end
     send_data csv_string, :type => "text/plain",

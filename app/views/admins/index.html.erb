@@ -1,6 +1,6 @@
 <div>
   <h3>check& auto insert Self study</h3>
-
+  <p>This action will check all working hours and auto refill SEF project by self study hours</p>
   <% form_for(:admin, :url => {:action=>"auto_complete_hours"}, :html => { :method => :get }) do |f| %>
     <p>
       Period:<%= select("", "period_id",
