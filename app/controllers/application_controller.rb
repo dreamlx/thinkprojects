@@ -55,20 +55,6 @@ class ApplicationController < ActionController::Base
     return now_period
   end
 
-  def init_set
-    prj_status = Dict.find_by_title_and_category("Active","prj_status")
-    person_status = Dict.find_by_title_and_category("Resigned","person_status")
-    @people = Person.find(:all,
-      :conditions => "status_id != '#{person_status.id}' ",
-      :order => 'english_name')
-
-    @projects = Project.find( :all, :conditions=>" status_id =#{prj_status.id}",
-
-      :order=>'job_code')
-    @periods = Period.find(:all, :order => 'number DESC')
-
-  end
-
   def billing_number_set
     @billing_number = Dict.find(:first, :conditions =>" category ='billing_number' ")
     @number = @billing_number.code.to_i + 1

@@ -56,7 +56,7 @@ class Personalcharge < ActiveRecord::Base
     case current_user.roles
       when "providence_breaker":
 
-      when "director":
+      when "partner":
         sql += " and project_id in (#{prj_ids})"
       when "manager":
         sql += " and project_id in (#{prj_ids})"      

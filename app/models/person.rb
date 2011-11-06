@@ -51,7 +51,7 @@ class Person < ActiveRecord::Base
     case current_user.roles
       when "providence_breaker":
         teams = self.find(:all, :order => "english_name")
-      when "director":
+      when "partner":
         teams = self.find(:all, :conditions=> "id in (#{ids})", :order => "english_name")
       when "manager":
         teams = self.find(:all, :conditions=> "id in (#{ids})", :order => "english_name")     
