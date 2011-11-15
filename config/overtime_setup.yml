@@ -5,7 +5,9 @@ working_days:
     - 3
     - 4
     - 5 #0-6, 0 is sunday
-holiday:
-  
+holidays:
+    - 2011/10/1
+    - 2011/10/2
+    - 2011/10/3
 
 

@@ -48,17 +48,17 @@ authorization do
     end
 
     has_permission_on [:projects], :to => [ :close] do
-      if_attribute :manager_id => is_not {user.person_id},:state => "approved"
+      if_attribute :manager_id => is {user.person_id},:state => "approved"
     end
 
   end
 
-  role :sys_admin do
+  role :systemadmin do
     includes :partner
   end
   
   role :providence_breaker do
-    includes :sys_admin
+    includes :systemadmin
     has_permission_on [:projects,:personalcharges, :expenses, :users, :clients, :people], :to => [:manage] 
     has_permission_on [:projects], :to => [:batch_actions] 
     has_permission_on [:projects], :to => [:approval, :disapproval] do

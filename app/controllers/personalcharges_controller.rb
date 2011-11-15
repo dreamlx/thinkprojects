@@ -10,17 +10,28 @@ class PersonalchargesController < ApplicationController
     sql += " and periods.starting_date >= '#{params[:period_from]}' "   if params[:period_from].present?
     sql += " and periods.ending_date   <= '#{params[:period_to]}' "     if params[:period_to].present?
     sql += " and project_id=#{params[:prj_id]}"       if params[:prj_id].present?
+    sql2 = sql
     sql += " and personalcharges.state = '#{params[:state]}'" if params[:state].present?
 
     personalcharges = Personalcharge.my_personalcharges(current_user,sql)
     
-    session[:personalcharge_sql] =sql
+    session[:personalcharge_sql]=sql
     @personalcharges = personalcharges.paginate(:page=>params[:page]||1)
 
-    #OT
-    @standard_hours = Personalcharge.standard_hours(current_user.person_id,sql)
-    @ot_hours       = Personalcharge.ot_hours(current_user.person_id,sql)
-    @ot_pay_hours   = Personalcharge.ot_pay_hours(current_user.person_id,sql)
+    #OT 参考 over ti
+    sql_ot =" select sum(hours) hours, personalcharges.person_id, personalcharges.period_id, personalcharges.project_id, personalcharges.charge_date charge_date from personalcharges 
+    left join projects on personalcharges.project_id = projects.id 
+    left join periods on personalcharges.period_id = periods.id
+    
+    where #{sql2}
+    and personalcharges.state = 'approved' and charge_date is not null
+    group by charge_date,person_id
+    " 
+    approved_personalcharges = Personalcharge.find_by_sql(sql_ot)
+    session[:personalcharge_ot] =sql_ot
+    @standard_hours = OverTime.standard_hours(approved_personalcharges)
+    @ot_hours       = OverTime.ot_hours(approved_personalcharges)
+    @ot_pay_hours   = OverTime.ot_pay_hours(approved_personalcharges)
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @personalcharges.to_xml }

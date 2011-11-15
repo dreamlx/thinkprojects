@@ -71,7 +71,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_level
-    #guest,employee,manager,director,providence_breaker
+    #guest,employee,manager,partner,providence_breaker
     level = Authorization.current_user.role_symbols.to_s
     return level
 

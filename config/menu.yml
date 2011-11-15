@@ -14,19 +14,19 @@
    title: Time Cost
    url: /Personalcharges
 -
-   title: Expense
+   title: Expenses
    url: /expenses
 #-
 #   title: Report
 #   url: /reports
 -
-   title: Employee
+   title: Staffs
    url: /people
 -
-   title: Client
+   title: Clients
    url: /clients
 -
-  title: Peferences
+  title: System Peferences
   url: #
   child:
     -

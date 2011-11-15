@@ -16,7 +16,7 @@
 <!--[form:personalcharge]-->
 <p>
   <label for="personalcharge_charge_date"><%= Personalcharge.human_attribute_name("charge_date") %></label>
-  <%= text_field 'personalcharge', 'charge_date' ,{:onfocus=>"HS_setDate(this)"} %>
+  <%= text_field 'personalcharge', 'charge_date' ,{:value=> Date.today.to_s,:onfocus=>"HS_setDate(this)"} %>
 </p>
 
 
@@ -24,7 +24,7 @@
   <%= text_field 'personalcharge', 'hours'  %></p>
 
 <p><label for="personalcharge_ot_hours">Including OT hours</label>
-  <%= text_field 'personalcharge', 'ot_hours'  %></p>
+  <%= text_field 'personalcharge', 'ot_hours', :value =>0  %></p>
 
 <p><label for="personalcharge_desc">Description</label><br/>
   <%= text_area 'personalcharge', 'desc'  %></p>

@@ -1,24 +1,33 @@
 <%= render :partial => "search" %>
 <hr/>
+<script   language=javascript>  
+function   switch_form(value,page,project_id){  
+	if (confirm('Are you sure transfer all data to this project?')){
+		document.myform.action= page+"?zy_id="+value+"&id="+project_id;  
+
+		document.myform.submit();
+	}  
+}  
+</script>
 
 <%= link_to "New Project", new_project_path %>
 <form name="myform" action="projects/batch_actions" method="post">
-  <%= render :partial => 'homepage/all_op' %>
-  <table id="items" class="project_item">
-    <tr id="project_title">
-      <th width="75px">Job code</th>
-      <th>Created date</th>
-      <th class="wide_col">Client name</th>
-      <th>Job creator</th>
-      <th>Description</th>
-      <th>Job state</th>
-      <th  colspan="3">OP</th>
-    </tr>
+	<%= render :partial => 'homepage/all_op' %>
+	<table id="items" class="project_item">
+		<tr id="project_title">
+			<th width="75px">Job code</th>
+			<th>Created date</th>
+			<th class="wide_col">Client name</th>
+			<th>Job creator</th>
+			<th>Description</th>
+			<th>Job state</th>
+			<th  colspan="3">OP</th>
+		</tr>
 
-    <% for project in @projects %>
-      <%= render :partial => 'item', :locals => { :project => project } %>
-    <% end %>
-  </table>
+		<% for project in @projects %>
+		<%= render :partial => 'item', :locals => { :project => project } %>
+		<% end %>
+	</table>
 
 </form>
 <%= will_paginate @projects %>

@@ -5,7 +5,7 @@ class ProjectsController < ApplicationController
   auto_complete_for :client,:english_name
   auto_complete_for :project,:job_code
 
-  filter_access_to :all
+  #filter_access_to :all
   
   def index
     @project = Project.new(params[:project])
@@ -29,8 +29,6 @@ class ProjectsController < ApplicationController
     end
     
     projects = Project.my_projects(current_user,sql,order_str)
-
-    
     @projects = projects.paginate(:page=>params[:page]||1)
     
     respond_to do |format|
@@ -122,7 +120,7 @@ class ProjectsController < ApplicationController
     flash[:notice] = "Project <#{project.job_code}> state was changed, current state is '#{project.state}'"
     render :update do |page|
       page.replace_html "item_#{project.id}", :partial => "item",:locals => { :project => project }
-      page.insert_html :after, "item_#{project.id}",:partial => "add_comment",:locals => { :project => project }
+      page.insert_html :after, "item_#{project.id}",:partial => "add_comment",:locals => { :item => project }
     end
   end
   
@@ -147,34 +145,24 @@ class ProjectsController < ApplicationController
   def transform
 
     @project =    Project.find(params[:id])
-    if params[:zy_project][:id].present?
-      @zy_project = Project.find(params[:zy_project][:id])
-    
-      @t_message = "<h3>Begin transfer</h3><br/>"
-      @t_message +="==from #{@project.job_code} to #{@zy_project.job_code}==<hr/>"
+    if params[:zy_id].present?
+      @zy_project = Project.find(params[:zy_id])
 
-      @project.bookings.each{|b|
-        @zy_project.bookings<<b
-        @t_message += " =>booking:No-#{b.id}, name-#{b.person.english_name}, hours-#{b.hours}<br/>"
-      }
+      @t_message ="== Promotion code from: |#{@project.job_code}| to: |#{@zy_project.job_code}|=="
 
-      @t_message +="<hr/>"
-      @project.personalcharges.each{|p|
-        @zy_project.personalcharges << p
-        @t_message += " =>persnalcharges: No-#{p.id}, name-#{p.person.english_name}, hours-#{p.hours}, including ot hours-#{p.ot_hours}<br/>"
-      }
-
-      @t_message +="<hr/>"
-      @project.expenses.each{|e|
-        @zy_project.expenses << e
-        @t_message += " =>expenses No-#{e.id}, category-#{e.expense_category}, fee -#{e.fee}<br/>"
-      }
       @project.description += @t_message
+      @zy_project.description += @t_message
+      @project.save
+      @zy_project.save
+
+      @project.close
     else
       @zy_project = nil
     end
-
-    @project.close
+    render :update do |page|
+      page.replace_html "item_#{project.id}", :partial => "item",:locals => { :project => project }
+    end
+    
   end
 
 

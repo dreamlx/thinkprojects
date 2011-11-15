@@ -66,8 +66,8 @@ class Personalcharge < ActiveRecord::Base
     end
     
     self.find(:all, :conditions=> sql,  
-      :joins=>" left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id",
-      :order=>" personalcharges.state desc, personalcharges.updated_on")
+      :joins=>" left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id left join people on personalcharges.person_id = people.id",
+      :order=>" people.english_name, periods.number, personalcharges.charge_date, projects.job_code, personalcharges.hours,personalcharges.state desc, personalcharges.updated_on")
         
   end
 
@@ -81,52 +81,7 @@ class Personalcharge < ActiveRecord::Base
     return items
   end
 
-  def self.standard_hours(person_id,sql)
-    otsetup = YAML.load_file(RAILS_ROOT + "/config/overtime_setup.yml")
-    hours = 0
-    items = self.my_group_hours(person_id,sql)
-    items.each{|i|
-      if otsetup["working_days"].include?(i.charge_date.to_date.wday) #current day is work day?
-
-        hours += otsetup["daily_working_hours"]
-      end
-
-    }
-    return hours
-  end
-
-  def self.ot_hours(person_id,sql)
-    otsetup = YAML.load_file(RAILS_ROOT + "/config/overtime_setup.yml")
-    hours = 0
-    items = self.my_group_hours(person_id,sql)
-    items.each{|i|
-      if otsetup["working_days"].include?(i.charge_date.to_date.wday) #current day is work day?
-        if i.hours - otsetup["daily_working_hours"] >0
-          hours += (i.hours - otsetup["daily_working_hours"] )
-        end
-      else
-        hours += i.hours
-      end
-    }
-    return hours
-  end
-
-  def self.ot_pay_hours(person_id,sql)
-    otsetup = YAML.load_file(RAILS_ROOT + "/config/overtime_setup.yml")
-    hours = 0
-    items = self.my_group_hours(person_id,sql)
-    items.each{|i|
-      if otsetup["working_days"].include?(i.charge_date.to_date.wday) #current day is work day?
-        if i.hours - otsetup["daily_working_hours"] >0
-          hours += ((i.hours - otsetup["daily_working_hours"] )/2)
-        end
-      else
-        hours += i.hours
-      end
-    }
-    return hours
-  end
-
+  
   def self.iam_partner(person_id,sql="1")
     #sql += " and projects.partner_id = #{person_id}"
     self.find(:all, :conditions =>sql,:include=>:project)
