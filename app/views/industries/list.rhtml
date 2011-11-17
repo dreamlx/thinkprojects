@@ -11,7 +11,7 @@
 <% for industry in @industries %>
   <tr>
   <% for column in Industry.content_columns %>
-    <td><%=h industry.send(column.name) %></td>
+    <td><%=h industry.send(column.name).humanize %></td>
   <% end %>
     <td><%= link_to 'Show', :action => 'show', :id => industry %></td>
     <td><%= link_to 'Edit', :action => 'edit', :id => industry %></td>

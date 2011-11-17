@@ -15,8 +15,9 @@ function   switch_form(value,page,project_id){
 	<%= render :partial => 'homepage/all_op' %>
 	<table id="items" class="project_item">
 		<tr id="project_title">
-			<th width="75px">Job code</th>
-			<th>Created date</th>
+			<th></th>
+			<th width="100px">Job code</th>
+			<th width="75px">Created date</th>
 			<th class="wide_col">Client name</th>
 			<th>Job creator</th>
 			<th>Description</th>
@@ -25,7 +26,9 @@ function   switch_form(value,page,project_id){
 		</tr>
 
 		<% for project in @projects %>
+		<tr id="item_<%= project.id %>" class="project_item">
 		<%= render :partial => 'item', :locals => { :project => project } %>
+		</tr>
 		<% end %>
 	</table>
 

@@ -5,6 +5,7 @@ authorization do
     has_permission_on :users, :to             => [:read_index,:create,:read_show]
 
   end
+# 需要创建一个hr角色， 管理client/staff/projects, 只能创建不能删除
 
   role :employee do
     includes :guest

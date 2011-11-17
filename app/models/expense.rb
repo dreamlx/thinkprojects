@@ -35,7 +35,7 @@ class Expense < ActiveRecord::Base
   end
 
   def self.my_expenses(person_id,sql="1", order_str="expenses.state desc, charge_date")
-    sql += "  or projects.manager_id = #{person_id} or expenses.person_id = #{person_id})"
+    sql += "  or projects.manager_id = #{person_id} or expenses.person_id = #{person_id}"
     self.find(:all, :conditions=> sql,
       :joins=>" left join projects on project_id = projects.id left join clients on client_id = clients.id",
       :order=>order_str)

@@ -37,12 +37,14 @@
 
   <p>
     <label for="Project_starting_date"><%= Project.human_attribute_name("starting_date") %></label>
-    <%= f.date_select :starting_date %>
+ <%= f.text_field :starting_date ,{:value=> Date.today.to_s,:onfocus=>"HS_setDate(this)"}%>
+
   </p>
 
   <p>
     <label for="Project_ending_date"><%= Project.human_attribute_name("ending_date") %></label>
-    <%= f.date_select :ending_date %>
+ <%= f.text_field :ending_date ,{:onfocus=>"HS_setDate(this)"}%>
+
   </p>
 
 

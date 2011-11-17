@@ -30,17 +30,17 @@
   url: #
   child:
     -
-     title: dictionary
+     title: Dictionary
      url: /dicts
     -
-     title: industry
+     title: Industry
      url: /industries
     -
-     title: period
+     title: Period
      url: /periods
     -
-     title: user&password
+     title: User&password
      url: /users
     -
-     title: admins
+     title: Admins
      url: /admins
