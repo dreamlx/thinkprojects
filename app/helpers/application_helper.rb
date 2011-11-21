@@ -21,7 +21,7 @@ module ApplicationHelper
 
   def allow_lv
     level = current_user.roles
-   
+
     (level =='providence_breaker')? flag_lv = true : flag_lv = false
 
     return flag_lv
@@ -31,7 +31,7 @@ module ApplicationHelper
   def select_employee(model,id)
     case current_user.roles
     when "providence_breaker":
-        select_people(model,id)
+      select_people(model,id)
     else
       select_person(model,id)
     end
@@ -40,30 +40,30 @@ module ApplicationHelper
 
   def select_person(model,id)
     select(model, id,
-      Person.find(:all,
-        :conditions=>["id=?", current_user.person_id]).collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
-      { :include_blank => false }
+    Person.find(:all,
+    :conditions=>["id=?", current_user.person_id]).collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
+    { :include_blank => false }
     )
   end
 
   def select_people(model,id)
     select(model, id,
-      Person.find(:all,:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
-      { :include_blank => true }
+    Person.find(:all,:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
+    { :include_blank => true }
     )
   end
 
   def select_partner(model,id)
     select(model, id,
-      Person.find(:all,:conditions=>"position like '%director%' or position like 'partner' ",:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
-      { :include_blank => true }
+    Person.find(:all,:conditions=>"position like '%director%' or position like 'partner' ",:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
+    { :include_blank => true }
     )
   end
-  
+
   def select_manager(model,id)
     select(model, id,
-      Person.find(:all,:conditions=>"position like '%manager%'  ",:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
-      { :include_blank => true }
+    Person.find(:all,:conditions=>"position like '%manager%'  ",:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
+    { :include_blank => true }
     )
   end
 
@@ -72,19 +72,25 @@ module ApplicationHelper
   end
 
   def select_my_projects(model,id)
-      select( model,id , 
-        Project.my_projects(current_user,"1","job_code").collect {|p| [ p.job_code, p.id ] }, { :include_blank => true })
+    select( model,id , 
+    Project.my_projects(current_user,"1","job_code").collect {|p| [ p.job_code, p.id ] }, { :include_blank => true })
   end
 
   def select_booked_project(model,id)
     case current_user.roles
     when "providence_breaker":
-        select( model,id , Project.alive.collect {|p| [ p.job_code, p.id ] }, { :include_blank => false })
+      select( model,id , Project.alive.collect {|p| [ p.job_code, p.id ] }, { :include_blank => false })
     else
       select(model,id,
-        Project.my_bookings(current_user.person_id).collect {|p| [ p.job_code, p.id ] }, { :include_blank => false })
+      Project.my_bookings(current_user.person_id).collect {|p| [ p.job_code, p.id ] }, { :include_blank => false })
     end
   end
 
+  def check_menu(title,current_user)
+    flag = false
+    flag = true if (title == 'System Peferences' or title == 'Report' ) and (current_user.roles != 'providence_breaker' or current_user.roles != 'partner')
+   
+    return flag
+  end
 
 end

@@ -6,7 +6,7 @@
 
 	<% @menus.each do |menu|  %>
 	<% menu_tree_id +=1 %>
-	<li id="<%= h('menu_tree_' + menu_tree_id.to_s) %>" style="<%= h('display:none') if menu['title'] == 'Peferences' and current_user.roles != 'providence_breaker' %>">
+	<li id="<%= h('menu_tree_' + menu_tree_id.to_s) %>" style="<%= h('display:none') if check_menu(menu[:title],current_user) %>">
 		<span><a href="<%=h(menu['url']||'#')%>"><%=h(menu['title']) %></a></span>
 		<% unless menu['child'].nil? %>
 		<ul>

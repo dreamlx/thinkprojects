@@ -18,7 +18,7 @@
     <% if current_user.roles == 'providence_breaker' %>
     <p>
       <%= f.label :roles,"角色" %><br />
-      <%= f.select :roles, [['staff','staff'],['senior','senior'],['manager','manager'],['partner','partner'],['systemadmin','systemadmin'],['超级管理员','providence_breaker']], {:include_blank=>"请选择",:selected => @user.roles||0} %>
+      <%= f.select :roles, [['staff','staff'],['senior','senior'],['manager','manager'],['partner','partner'],['hr_admin','hr_admin'],['超级管理员','providence_breaker']], {:include_blank=>"请选择",:selected => @user.roles||0} %>
     </p>
     <p><%= f.label :person_id, '关联员工：' %><br/>
     <%= f.select :person_id, Person.find(:all,:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] }, { :include_blank => false,:selected =>@user.person_id||0} %>
