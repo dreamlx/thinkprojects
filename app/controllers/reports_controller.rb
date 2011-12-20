@@ -31,11 +31,11 @@ class ReportsController < ApplicationController
     @ot_pay_hours   = OverTime.ot_pay_hours(approved_personalcharges)
     
     csv_string = FasterCSV.generate do |csv|
-      csv << ["NO","employee","period","charge rate","job_code","hours","Including OT hours","description","state"]
+      csv << ["NO","Employee","Period","Charge Rate","Job Code","Hours","Including OT hours","Description","State"]
       personalcharges.each do |e|
         t_csv = [
           e.id,    
-          e.person.english_name,
+          e.person.english_name.humanize,
           e.period.number,
           e.charge_date,
            e.project.job_code,       
@@ -46,7 +46,7 @@ class ReportsController < ApplicationController
 
           csv << t_csv unless t_csv.nil?
         end
-        csv << ["standard hours","Including OT hours","OT pay hours"]
+        csv << ["Standard hours","Including OT hours","OT pay hours"]
         csv << [@standard_hours, @ot_hours, @ot_pay_hours]
       end
 
@@ -56,22 +56,21 @@ class ReportsController < ApplicationController
     end
 
     def expenses_export
-      sum_expenses =Person.find(current_user.person_id).my_expenses(session[:expense_sql])
-
+      sum_expenses =Expense.my_expenses(current_user.person_id,session[:expense_sql])
       csv_string = FasterCSV.generate do |csv|
         csv << ["NO","Date","Employee","Billable","Category","Client Name","Project Code","Amount","State"]
         sum_expenses.each do |e|
           t_csv = [
             e.id,
             e.charge_date,
-            e.person.english_name,
+            e.person.english_name.humanize,
             e.billable,
             e.expense_category,
             e.project.client.english_name,
             e.project.job_code,
             e.fee,
             e.state
-            ] if  !e.person.nil? and !e.project.nil?
+            ] if  !e.person.nil? and !e.project.nil? and !e.project.client.nil? and !e.project.nil?
             csv << t_csv.map {|e2| convert_gb(e2)} unless t_csv.nil?
 
           end

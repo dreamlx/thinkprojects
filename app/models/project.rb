@@ -3,6 +3,7 @@ class Project < ActiveRecord::Base
   acts_as_commentable
   validates_uniqueness_of           :job_code
   validates_presence_of             :manager_id,:message => "Please select one person as project creator "
+  validates_presence_of             :client_id
   validates_numericality_of         :estimated_hours
   validates_numericality_of         :estimated_annual_fee
   validates_numericality_of         :budgeted_expense

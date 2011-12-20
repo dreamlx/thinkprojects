@@ -8,7 +8,7 @@
     </td>
     <td>
       <p>Person:
-        <%= select("", "person_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => true }) %>
+        <%= select("", "person_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => "All" }) %>
       </p>
     </td>
 
@@ -21,7 +21,7 @@
     </td>
     <td>
       <p>Status:
-        <%= select("", "state", ["pending","approved","disapproved"].collect {|p| [p.humanize,p] }, { :include_blank => true }) %>
+        <%= select("", "state", ["pending","approved","disapproved"].collect {|p| [p.humanize,p] }, { :include_blank => "All" }) %>
       </p>
     </td>
 

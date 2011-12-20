@@ -49,31 +49,31 @@ module ApplicationHelper
   def select_people(model,id)
     select(model, id,
     Person.find(:all,:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
-    { :include_blank => true }
+    { :include_blank => "All" }
     )
   end
 
   def select_partner(model,id)
     select(model, id,
     Person.find(:all,:conditions=>"position like '%director%' or position like 'partner' ",:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
-    { :include_blank => true }
+    { :include_blank => "All" }
     )
   end
 
   def select_manager(model,id)
     select(model, id,
     Person.find(:all,:conditions=>"position like '%manager%'  ",:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
-    { :include_blank => true }
+    { :include_blank => "All" }
     )
   end
 
   def select_period(model,id)
-    select(model, id, Period.find(:all,:order=>"number DESC").collect {|p| [ p.number, p.number ] }, { :include_blank => true })
+    select(model, id, Period.find(:all,:order=>"number DESC").collect {|p| [ p.number, p.number ] }, { :include_blank => "All" })
   end
 
   def select_my_projects(model,id)
     select( model,id , 
-    Project.my_projects(current_user,"1","job_code").collect {|p| [ p.job_code, p.id ] }, { :include_blank => true })
+    Project.my_projects(current_user,"1","job_code").collect {|p| [ p.job_code, p.id ] }, { :include_blank => "All" })
   end
 
   def select_booked_project(model,id)
