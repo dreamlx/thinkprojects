@@ -53,20 +53,24 @@ class PersonalchargesController < ApplicationController
     if params[:target_id].present?
       @target_project = Project.find(params[:target_id])
 
-      @t_message ="== Promotion code from: |#{personalcharge.project.job_code}| to: |#{@target_project.job_code}|=="
-
-      personalcharge.project.description += @t_message
-      @target_project.description += @t_message
-      personalcharge.project.save
-      @target_project.save
+      @t_message ="| Promotion code from: <#{personalcharge.project.job_code}> to: <#{@target_project.job_code}> |"
+      personalcharge.desc = "" if personalcharge.desc.nil?
+      personalcharge.desc += @t_message
+      #@target_project.description += @t_message
+      #personalcharge.project.save
+      #@target_project.save
+      #@target_project.personalcharges << personalcharge
+      
       personalcharge.project_id = params[:target_id]
       personalcharge.save
     end
-    render :update do |page|
-      page.remove "item_#{params[:source_id]}"
-      #page.replace_html "item_#{expense.id}", :partial => "item",:locals => { :expense => expense }
-    end    
+     respond_to do |format|
+          flash[:notice] = 'Item was successfully forward.'
+          format.html { redirect_to personalcharges_url }
+          format.xml  { head :ok }
+      end 
   end
+  
   def show
     @personalcharge = Personalcharge.find(params[:id])
     respond_to do |format|

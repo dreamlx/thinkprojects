@@ -12,6 +12,7 @@
   <td><%= link_to 'Edit', edit_expense_path(expense) if permitted_to? :edit, expense %></td>
   <td><%= button_to_remote 'Approval', :url=>approval_expense_path(expense), :confirm => " Are you sure approval?", :method => :post if permitted_to? :approval, expense %>
     <%= button_to_remote 'Disapproval', :url=>disapproval_expense_path(expense), :confirm => "Are you sure disapproval?",:method => :post  if permitted_to? :disapproval, expense %>
+		<%= select("","select_zy_id",Project.find(:all,:conditions=>" state = 'approved' ", :order=>"job_code").collect {|p| [ p.job_code, p.id ] }, { :include_blank => "Transfer to:" },{ :onChange=>"switch_form(this.value,'#{transform_expense_path(expense)}',#{expense.id}); " }) if expense.state =="approved" and  !Dict.get_forward(expense.project.job_code).empty?  and permitted_to? :transform,expense %> 
     <%= button_to_remote 'Destroy', :update=> 'expenses',:url=>expense, :confirm => 'Are you sure destroy?', :method => :delete   if permitted_to? :delete, expense %>
   </td>
 </tr>

@@ -109,7 +109,28 @@ class ExpensesController < ApplicationController
     end
   end
 
+  def transform
+    expense =    Expense.find(params[:source_id])
+    if params[:target_id].present?
+      @target_project = Project.find(params[:target_id])
 
+      @t_message ="| Promotion code from: <#{expense.project.job_code}> to: <#{@target_project.job_code}>|"
+
+      expense.desc += @t_message
+      #@target_project.description += @t_message
+      #personalcharge.project.save
+      #@target_project.save
+      #@target_project.personalcharges << personalcharge
+      
+      expense.project_id = params[:target_id]
+      expense.save
+    end
+     respond_to do |format|
+          flash[:notice] = 'Item was successfully forward.'
+          format.html { redirect_to expenses_url }
+          format.xml  { head :ok }
+      end 
+  end
 
   def approval
     expense = Expense.find(params[:id])

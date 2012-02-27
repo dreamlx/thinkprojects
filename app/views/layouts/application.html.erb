@@ -15,9 +15,9 @@
     <!--******************* End NodeFire head sections **********************-->
 	<script   language=javascript>  
 	function   switch_form(value,page,source_id){  
-		if (confirm('Are you sure transfer all data to this project?')){
+		if (confirm('Are you sure transfer data to this project?')){
 			document.myform.action= page+"?target_id="+value+"&source_id="+source_id;  
-
+			
 			document.myform.submit();
 		}  
 	}  
