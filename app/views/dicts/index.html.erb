@@ -1,5 +1,3 @@
-
-
 <% form_for(:dict, :url => dicts_path, :html => { :method => :get }) do |f| %>
 
  category:<%= text_field("dict", "category") %>
@@ -26,3 +24,5 @@
 </table>
 
 <%= will_paginate @dicts%>
+
+#forward job_code, must set the title is 'forward_code'

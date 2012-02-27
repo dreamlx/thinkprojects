@@ -28,7 +28,7 @@ ActionController::Routing::Routes.draw do |map|
 
   # Sample resource route with sub-resources:
   #   map.resources :products, :has_many => [ :comments, :sales ], :has_one => :seller
-  
+
   # Sample resource route with more complex sub-resources
   #   map.resources :products do |products|
   #     products.resources :comments
@@ -57,25 +57,31 @@ ActionController::Routing::Routes.draw do |map|
     :approval => :post,
     :disapproval => :post,
     :transform => :post,
-    :addcomment => :post }
+    :addcomment => :post 
+  }
 
   map.resources :projects do |project|
     project.resources :bookings
     #project.resources :bookings, :member => { :bookall => :post }
   end
-  
+
   map.resources :expenses
   map.resources :expenses, :member => { :close => :post,
     :approval => :post,
     :disapproval => :post,
-    :addcomment => :post }
+    :addcomment => :post,
+    :transform => :post 
+  }
   map.resources :personalcharges
-  map.resources :personalcharges, :member=>{:approval=> :post,:disapproval=>:post,
-  :addcomment => :post}
+  map.resources :personalcharges, :member=>{:approval=> :post,
+    :disapproval=>:post,
+    :addcomment => :post,
+    :transform => :post
+  }
   map.resources :periods
   map.root :controller => 'homepage'
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
   #map.root :controller => 'login', :action => 'login'
-  
+
 end

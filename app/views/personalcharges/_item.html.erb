@@ -21,7 +21,7 @@
 
 		<%= button_to_remote "approval", :url=>approval_personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :post if permitted_to? :approval, personalcharge %>
 		<%= button_to_remote "disapproval", :url=>disapproval_personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :post if permitted_to? :disapproval, personalcharge %>
-
+		<%= select("","select_zy_id",Project.find(:all,:conditions=>" state = 'approved' ", :order=>"job_code").collect {|p| [ p.job_code, p.id ] }, { :include_blank => "Transfer to:" },{ :onChange=>"switch_form(this.value,'#{transform_personalcharge_path(personalcharge)}',#{personalcharge.id}); " }) if personalcharge.project.state =="approved" and  !Dict.get_forward(personalcharge.project.job_code).empty?  and permitted_to? :transform,personalcharge.project %> 
 	</td>
 	<td>
 		<%= button_to_remote 'Destroy',        

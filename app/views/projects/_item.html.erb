@@ -17,8 +17,7 @@
 		<%= button_to_remote 'Disapproval', :url=>disapproval_project_path(project), :confirm => check_message(project)+" Are you sure disapproval?",:method => :post if permitted_to? :disapproval, project  %>
 		<%= button_to_remote 'Close', :url=>close_project_path(project), :confirm => 'Are you sure close?',:method => :post if permitted_to? :close, project %>
 		<%= button_to_remote 'ReOpen', :url=>close_project_path(project), :confirm => 'Are you sure reopen it ?',:method => :post if project.state =="closed" and current_user.roles == 'providence_breaker' %>
-		<%= select("","select_zy_id",Project.find(:all,:conditions=>" state == 'approved' ", :order=>"job_code").collect {|p| [ p.job_code, p.id ] }, { :include_blank => "Transfer to:" },{ :onChange=>"switch_form(this.value,'#{transform_project_path(project)}',#{project.id}); " }) if project.state =="approved" and project.job_code[0,2] == '99' and permitted_to? :transform,project %>
-
+		<%= select("","select_zy_id",Project.find(:all,:conditions=>" state = 'approved' ", :order=>"job_code").collect {|p| [ p.job_code, p.id ] }, { :include_blank => "Transfer to:" },{ :onChange=>"switch_form(this.value,'#{transform_project_path(project)}',#{project.id}); " }) if project.state =="approved" and  !Dict.get_forward(project.job_code).empty?  and permitted_to? :transform,project %> 
 		<%= button_to_remote 'Destroy', :update=> 'projects',:url=>project, :confirm => 'Are you sure destroy?', :method => :delete if current_user.roles == 'providence_breaker' and project.state =="pending"%>
 
 	</td>

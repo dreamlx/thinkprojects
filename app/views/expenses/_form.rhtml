@@ -12,7 +12,7 @@
 
   <p>
     <label for="Expense_charge_date"><%= Expense.human_attribute_name("charge_date") %></label>
-    <%= f.text_field :charge_date ,{:value=> Date.today.to_s,:onfocus=>"HS_setDate(this)"}%>
+    <%= f.text_field :charge_date ,{:value=> Date.today.to_s,:onfocus=>"SelectDate(this,'yyyy-MM-dd')"}%>
   </p>
 
 

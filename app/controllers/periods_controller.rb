@@ -5,8 +5,6 @@ class PeriodsController < ApplicationController
     #@periods = Period.find(:all)
     sql = "1"
     sql = sql + "  and number like '%#{params[:period][:number]}%'" unless params[:period].nil?
-
-
     @periods = Period.search_by_sql(sql,params[:page]||1)
     
 

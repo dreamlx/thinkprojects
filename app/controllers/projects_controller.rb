@@ -144,23 +144,24 @@ class ProjectsController < ApplicationController
   
   def transform
 
-    @project =    Project.find(params[:id])
-    if params[:zy_id].present?
-      @zy_project = Project.find(params[:zy_id])
+    project =    Project.find(params[:source_id])
+    if params[:target_id].present?
+      @zy_project = Project.find(params[:target_id])
 
-      @t_message ="== Promotion code from: |#{@project.job_code}| to: |#{@zy_project.job_code}|=="
+      @t_message ="== Promotion code from: |#{project.job_code}| to: |#{@zy_project.job_code}|=="
 
-      @project.description += @t_message
+      project.description += @t_message
       @zy_project.description += @t_message
-      @project.save
+      project.save
       @zy_project.save
-
-      @project.close
+      project.close
     else
       @zy_project = nil
     end
-    render :update do |page|
-      page.replace_html "item_#{project.id}", :partial => "item",:locals => { :project => project }
+    respond_to do |format|
+        flash[:notice] = 'Project was successfully forward.'
+        format.html { redirect_to project_url }
+        format.xml  { head :ok }
     end
     
   end

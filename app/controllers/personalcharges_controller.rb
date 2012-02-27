@@ -14,7 +14,10 @@ class PersonalchargesController < ApplicationController
     sql += " and personalcharges.state = '#{params[:state]}'" if params[:state].present?
 
     personalcharges = Personalcharge.my_personalcharges(current_user,sql)
-    
+    if current_user.roles == 'staff'  or current_user.roles == 'senior'
+      temp =personalcharges.map{|e| e.person_id == current_user.person_id ? e : nil}.compact
+      personalcharges = temp
+    end
     session[:personalcharge_sql]=sql
     @personalcharges = personalcharges.paginate(:page=>params[:page]||1)
 
@@ -43,9 +46,27 @@ class PersonalchargesController < ApplicationController
     comment = Comment.new(params[:comment])
     @personalcharge.add_comment comment unless comment.nil?
     redirect_to personalcharge_url(@personalcharge) 
-
   end
   
+  def transform
+    personalcharge =    Personalcharge.find(params[:source_id])
+    if params[:target_id].present?
+      @target_project = Project.find(params[:target_id])
+
+      @t_message ="== Promotion code from: |#{personalcharge.project.job_code}| to: |#{@target_project.job_code}|=="
+
+      personalcharge.project.description += @t_message
+      @target_project.description += @t_message
+      personalcharge.project.save
+      @target_project.save
+      personalcharge.project_id = params[:target_id]
+      personalcharge.save
+    end
+    render :update do |page|
+      page.remove "item_#{params[:source_id]}"
+      #page.replace_html "item_#{expense.id}", :partial => "item",:locals => { :expense => expense }
+    end    
+  end
   def show
     @personalcharge = Personalcharge.find(params[:id])
     respond_to do |format|

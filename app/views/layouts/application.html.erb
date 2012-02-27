@@ -5,7 +5,7 @@
 
     <%= stylesheet_link_tag 'tablecloth','dropdown','themes' %>
 
-    <%= javascript_include_tag :defaults,'calenderJS','Calendar4','sdmenu'%>
+    <%= javascript_include_tag :defaults,'webCalender','sdmenu'%>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!--******************* Include the following sections in the head of year documents **********************-->
@@ -13,6 +13,15 @@
     <script type="text/javascript" src="/javascripts/nodefire.js"></script>
 
     <!--******************* End NodeFire head sections **********************-->
+	<script   language=javascript>  
+	function   switch_form(value,page,source_id){  
+		if (confirm('Are you sure transfer all data to this project?')){
+			document.myform.action= page+"?target_id="+value+"&source_id="+source_id;  
+
+			document.myform.submit();
+		}  
+	}  
+	</script>
     <%= yield(:head)%>
   </head>
   <body>

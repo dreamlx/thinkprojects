@@ -1,14 +1,5 @@
 <%= render :partial => "search" %>
 <hr/>
-<script   language=javascript>  
-function   switch_form(value,page,project_id){  
-	if (confirm('Are you sure transfer all data to this project?')){
-		document.myform.action= page+"?zy_id="+value+"&id="+project_id;  
-
-		document.myform.submit();
-	}  
-}  
-</script>
 
 <%= link_to "New Project", new_project_path %>
 <form name="myform" action="projects/batch_actions" method="post">

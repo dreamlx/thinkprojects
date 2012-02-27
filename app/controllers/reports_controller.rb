@@ -24,6 +24,10 @@ class ReportsController < ApplicationController
     sql_ot =session[:personalcharge_ot] 
 
     personalcharges = Personalcharge.my_personalcharges(current_user,sql)
+    if current_user.roles == 'staff'  or current_user.roles == 'senior'
+      temp =personalcharges.map{|e| e.person_id == current_user.person_id ? e : nil}.compact
+      personalcharges = temp
+    end
     approved_personalcharges = Personalcharge.find_by_sql(sql_ot)
    
     @standard_hours = OverTime.standard_hours(approved_personalcharges)
@@ -56,10 +60,14 @@ class ReportsController < ApplicationController
     end
 
     def expenses_export
-      sum_expenses =Expense.my_expenses(current_user.person_id,session[:expense_sql])
+      expenses =Expense.my_expenses(current_user.person_id,session[:expense_sql])
+      if current_user.roles == 'staff' or current_user.roles == 'senior'
+        temp = expenses.map{|e| e.person_id == current_user.person_id ? e : nil}.compact
+        expenses = temp
+      end
       csv_string = FasterCSV.generate do |csv|
         csv << ["NO","Date","Employee","Billable","Category","Client Name","Project Code","Amount","State"]
-        sum_expenses.each do |e|
+        expenses.each do |e|
           t_csv = [
             e.id,
             e.charge_date,

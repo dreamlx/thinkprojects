@@ -18,9 +18,14 @@ class ExpensesController < ApplicationController
 
     if current_user.roles == "providence_breaker"
       expenses = Expense.find(:all,:conditions=>sql, :order=>"expenses.state, projects.job_code",
-        :joins=>" left join projects on project_id = projects.id left join clients on client_id = clients.id")
+      :joins=>" left join projects on project_id = projects.id left join clients on client_id = clients.id")
     else
       expenses = Expense.my_expenses(current_user.person_id, sql)
+
+      if current_user.roles == 'staff' or current_user.roles == 'senior'
+        temp = expenses.map{|e| e.person_id == current_user.person_id ? e : nil}.compact
+        expenses = temp
+      end
     end
 
     @expenses = expenses.paginate(:page=> params[:page]||1)
@@ -49,7 +54,7 @@ class ExpensesController < ApplicationController
   def new
     @expense = Expense.new
     @expense.project_id = params[:prj_id]
-   
+
   end
 
   # GET /expenses/1;edit
@@ -81,7 +86,7 @@ class ExpensesController < ApplicationController
     @expense.reset
     respond_to do |format|
       if @expense.update_attributes(params[:expense])
-        
+
         flash[:notice] = 'Expense was successfully updated.'
         format.html { redirect_to expense_url(@expense) }
         format.xml  { head :ok }
@@ -104,13 +109,15 @@ class ExpensesController < ApplicationController
     end
   end
 
+
+
   def approval
     expense = Expense.find(params[:id])
     expense.approval
     flash[:notice] = "Expense state was changed, current state is '#{expense.state}'"
     render :update do |page|
       page.replace_html "item_#{expense.id}", :partial => "item",:locals => { :expense => expense }
-      
+
     end
   end
 
@@ -131,11 +138,11 @@ class ExpensesController < ApplicationController
         p = Expense.find(value)
         case params[:do_action]
         when "approval":
-            p.approval if p.state == "pending"
+          p.approval if p.state == "pending"
         when "disapproval":
-            p.disapproval if p.state == "pending"
+          p.disapproval if p.state == "pending"
         when "destroy":
-            p.destroy if p.state == "pending"
+          p.destroy if p.state == "pending"
 
         else
 
