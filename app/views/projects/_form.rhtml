@@ -12,7 +12,7 @@
 
   <p><label for="Project_client">Client:</label>
     <%= select("project", "client_id",
-      Client.find(:all,:order=>"english_name,client_code").collect {|p| [ p.client_code+"||"+p.english_name, p.id ] }, { :include_blank => false }) %>
+      Client.find(:all,:order=>"english_name").collect {|p| [ p.client_code+"||"+p.english_name, p.id ] }, { :include_blank => false }) %>
   </p>
 
   <p><label for="Project_GMU">GMU:</label>
