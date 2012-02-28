@@ -16,7 +16,7 @@
 <!--[form:personalcharge]-->
 <p>
   <label for="personalcharge_charge_date"><%= Personalcharge.human_attribute_name("charge_date") %></label>
-  <%= text_field 'personalcharge', 'charge_date' ,{:value=> Date.today.to_s,:onfocus=>"SelectDate(this,'yyyy-MM-dd')"} %>
+  <%= text_field 'personalcharge', 'charge_date' ,{:value=> @personalcharge.charge_date||Date.today.to_s,:onfocus=>"SelectDate(this,'yyyy-MM-dd')"} %>
 </p>
 
 

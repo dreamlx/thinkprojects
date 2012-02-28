@@ -237,7 +237,7 @@ class ProjectsController < ApplicationController
     sum_hours = @project.bookings.sum('hours')
     sum_fee = 0
     for booking in @project.bookings
-      sum_fee += (booking.hours * booking.person.charge_rate)
+      sum_fee += (booking.hours * booking.person.charge_rate||0)
     end
     if @project.estimated_hours.to_i < sum_hours.to_i or @project.estimated_annual_fee.to_i < sum_fee.to_i
       flash[:notice] = 'booking超过预算请检查'
