@@ -5,7 +5,7 @@
 	<td><%=  personalcharge.person.english_name unless personalcharge.person.nil?%></td>
 	<td><%= check_box_tag "check_items[#{personalcharge.id}]", personalcharge.id if personalcharge.state == "pending" and permitted_to? :batch_actions,personalcharge %> <%=  personalcharge.period.number       unless personalcharge.period.nil? %></td>
 	<td><%=  personalcharge.charge_date %></td>
-	<td><%=  personalcharge.project.job_code    unless personalcharge.project.nil?%></td>
+	<td title="<%= personalcharge.project.client.english_name unless personalcharge.project.nil? %>"><%=  personalcharge.project.job_code    unless personalcharge.project.nil?%></td>
 	<% for column in show_columns %>
 	<td>
 		<%= h personalcharge.send(column) %>
