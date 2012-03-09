@@ -18,7 +18,8 @@ class ExpensesController < ApplicationController
 
     if current_user.roles == "providence_breaker"
       expenses = Expense.find(:all,:conditions=>sql, :order=>"expenses.state, projects.job_code",
-      :joins=>" left join projects on project_id = projects.id left join clients on client_id = clients.id")
+      :joins=>" left join projects on project_id = projects.id left join clients on client_id = clients.id",
+      :order=>'expenses.created_at desc,expenses.state desc')
     else
       expenses = Expense.my_expenses(current_user.person_id, sql)
 

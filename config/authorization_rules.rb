@@ -28,9 +28,12 @@ authorization do
     includes :staff
   end
 
+  role :manager do
+    includes :senior
 
+  end
   role :hr_admin do
-    includes :staff
+    includes :manager
     has_permission_on [:projects,:clients, :people], :to => [:create, :read, :update] 
     has_permission_on :users, :to             => [:read_show,:update] do
       if_attribute :id                        => is {user.id}
@@ -82,10 +85,7 @@ authorization do
   end
   
   
-  role :manager do
-    includes :providence_breaker
-
-  end
+  
 end
 
 privileges do

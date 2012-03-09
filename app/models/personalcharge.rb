@@ -67,7 +67,7 @@ class Personalcharge < ActiveRecord::Base
     
     self.find(:all, :conditions=> sql,  
       :joins=>" left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id left join people on personalcharges.person_id = people.id",
-      :order=>" people.english_name, periods.number, personalcharges.charge_date, projects.job_code, personalcharges.hours,personalcharges.state desc, personalcharges.updated_on")
+      :order=>" personalcharges.created_on desc,people.english_name, periods.number, personalcharges.charge_date, projects.job_code, personalcharges.hours,personalcharges.state desc ")
         
   end
 

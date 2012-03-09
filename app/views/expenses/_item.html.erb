@@ -1,8 +1,9 @@
-<tr id="item_<%= expense.id %>" >
+<% if permitted_to? :transform,expense %>
+<tr id="item_<%= expense.id %>" title="created at:<%= expense.created_at%>" >
   <td><%= check_box_tag "check_items[#{expense.id}]", expense.id if permitted_to? :batch_actions,expense %><%= expense.id %></td>
   <td><%= expense.charge_date %>(<%= expense.charge_date.to_date.strftime("%A") %>)</td>
   <td><%= expense.person.english_name unless expense.person.nil? %></td>
-  <td><%= expense.billable %></td>
+  <td><%= expense.billable ? 'Billable' : 'Non-billable' %></td>
   <td><%= expense.expense_category %></td>
   <td><%= expense.project.client.english_name unless expense.project.client.nil?%></td>
   <td><%= expense.project.job_code %></td>
@@ -16,3 +17,4 @@
     <%= button_to_remote 'Destroy', :update=> 'expenses',:url=>expense, :confirm => 'Are you sure destroy?', :method => :delete   if permitted_to? :delete, expense %>
   </td>
 </tr>
+<% end %>

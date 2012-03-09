@@ -79,10 +79,10 @@ module ApplicationHelper
   def select_booked_project(model,id)
     case current_user.roles
     when "providence_breaker":
-      select( model,id , Project.alive.collect {|p| [ p.job_code, p.id ] }, { :include_blank => false })
+      select( model,id , Project.alive.collect {|p| [ p.job_code + "|" + p.client.english_name, p.id ] }, { :include_blank => false })
     else
       select(model,id,
-      Project.my_bookings(current_user.person_id).collect {|p| [ p.job_code, p.id ] }, { :include_blank => false })
+      Project.my_bookings(current_user.person_id).collect {|p| [ p.job_code + "|" + p.client.english_name, p.id ] }, { :include_blank => false })
     end
   end
 
