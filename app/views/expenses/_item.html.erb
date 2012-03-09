@@ -7,7 +7,7 @@
   <td><%= expense.expense_category %></td>
   <td><%= expense.project.client.english_name unless expense.project.client.nil?%></td>
   <td><%= expense.project.job_code %></td>
-  <td><%= expense.fee %></td>
+  <td><%= format("%.2f",to_fexpense.fee)%></td>
   <td><%= expense.state.humanize %></td>
   <td><%= link_to 'Show', expense_path(expense) if permitted_to? :show, expense %></td>
   <td><%= link_to 'Edit', edit_expense_path(expense) if permitted_to? :edit, expense %></td>

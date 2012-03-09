@@ -24,7 +24,7 @@
   <%= text_field 'personalcharge', 'hours'  %></p>
 
 <p><label for="personalcharge_ot_hours">Including OT hours</label>
-  <%= text_field 'personalcharge', 'ot_hours', :value =>0  %></p>
+  <%= text_field 'personalcharge', 'ot_hours', :value =>@personalcharge.ot_hours||0  %></p>
 
 <p><label for="personalcharge_desc">Description</label><br/>
   <%= text_area 'personalcharge', 'desc'  %></p>

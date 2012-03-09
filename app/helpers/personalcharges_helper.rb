@@ -3,7 +3,7 @@ module PersonalchargesHelper
     if OverTime.allow_ot?(current_item,items)
       return ""
     else
-      return "#cdc"
+      return "#E6E6E6"
     end
   end
   
