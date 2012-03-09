@@ -104,8 +104,8 @@ class Project < ActiveRecord::Base
   end
   
   def self.my_projects(current_user,sql="1",order_str="projects.created_on") 
-    if current_user.roles == 'providence_breaker' or current_user.roles == "parnter"
-      #all projects
+    if current_user.roles == 'providence_breaker' 
+      #all projects or current_user.roles == "parnter"
       projects = Project.find(:all, :conditions=>sql, :order=> order_str, :include=>[:client, :bookings] )
     else
       # the booking projects including me
