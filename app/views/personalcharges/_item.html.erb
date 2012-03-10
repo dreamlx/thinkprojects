@@ -1,4 +1,4 @@
-<% if permitted_to? :transform,personalcharge%>
+
 <% show_columns =["hours","ot_hours","desc"] %>
 <tr id="item_<%= personalcharge.id %>" class="personalcharge_item " bgcolor='<%= @warn_color%>' title=" created at:<%= personalcharge.created_on%>">
 	<!--td><%=h personalcharge.id %></td-->
@@ -31,4 +31,3 @@
 
 	</td>
 </tr>
-<%end%>

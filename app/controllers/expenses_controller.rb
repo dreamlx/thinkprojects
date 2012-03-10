@@ -3,7 +3,7 @@ class ExpensesController < ApplicationController
   # GET /expenses
   # GET /expenses.xml
   def index
-
+    
     order_str =" expenses.updated_at desc "
     sql =" 1 "
     sql += " and expense_category like '%#{params[:expense_category].strip}%' "  if params[:expense_category].present?
@@ -14,6 +14,14 @@ class ExpensesController < ApplicationController
     sql += " and expenses.charge_date >= '#{format_date(params[:start_date])}'" if params[:start_date].present?
     sql += " and expenses.person_id = #{params[:person_id]}" if params[:person_id].present?
     sql += " and expenses.state = '#{params[:state]}'" if params[:state].present?
+    
+    if current_user.roles != 'providence_breaker'
+      my_projects = Project.my_projects(current_user);
+      ids= ''
+      my_projects.each{|m| ids += m.id }
+      sql += ' and project_id in (#ids)'
+    end
+    
     session[:expense_sql] =sql
 
     if current_user.roles == "providence_breaker"
@@ -23,7 +31,7 @@ class ExpensesController < ApplicationController
     else
       expenses = Expense.my_expenses(current_user.person_id, sql)
 
-      if current_user.roles == 'staff' or current_user.roles == 'senior'
+      if current_user.roles == 'staff' or current_user.roles == 'senior' or current_user.roles == 'manager'
         temp = expenses.map{|e| e.person_id == current_user.person_id ? e : nil}.compact
         expenses = temp
       end
