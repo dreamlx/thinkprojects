@@ -18,8 +18,8 @@ class ExpensesController < ApplicationController
     if current_user.roles != 'providence_breaker'
       my_projects = Project.my_projects(current_user);
       ids= ''
-      my_projects.each{|m| ids += m.id }
-      sql += ' and project_id in (#ids)'
+      my_projects.each{|m| ids += m.id.to_s }
+      sql += "and project_id in (#{ids})"
     end
     
     session[:expense_sql] =sql
@@ -27,7 +27,7 @@ class ExpensesController < ApplicationController
     if current_user.roles == "providence_breaker"
       expenses = Expense.find(:all,:conditions=>sql, :order=>"expenses.state, projects.job_code",
       :joins=>" left join projects on project_id = projects.id left join clients on client_id = clients.id",
-      :order=>'expenses.created_at desc,expenses.state desc')
+      :order=>'expenses.charge_date desc,expenses.state desc')
     else
       expenses = Expense.my_expenses(current_user.person_id, sql)
 

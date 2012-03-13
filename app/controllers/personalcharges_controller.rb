@@ -15,8 +15,8 @@ class PersonalchargesController < ApplicationController
     if current_user.roles != 'providence_breaker'
       my_projects = Project.my_projects(current_user);
       ids= ''
-      my_projects.each{|m| ids += m.id }
-      sql += ' and project_id in (#ids)'
+      my_projects.each{|m| ids += m.id.to_s }
+      sql += " and project_id in (#{ids})"
     end
     personalcharges = Personalcharge.my_personalcharges(current_user,sql)
     if current_user.roles == 'staff'  or current_user.roles == 'senior' or current_user.roles == 'manager'
