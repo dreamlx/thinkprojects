@@ -52,10 +52,12 @@ class Person < ActiveRecord::Base
       when "providence_breaker":
         teams = self.find(:all, :order => "english_name")
       when "partner":
-        teams = self.find(:all, :conditions=> "id in (#{ids})", :order => "english_name")
+        teams = self.find(:all, :order => "english_name")
       when "manager":
-        teams = self.find(:all, :conditions=> "id in (#{ids})", :order => "english_name")     
-      when "employee":
+        teams = self.find(:all, :conditions=> "id in (#{ids})", :order => "english_name")
+      when "senior":
+        teams = self.find(:all, :conditions => "id = #{current_user.person_id}")       
+      when "staff":
         teams = self.find(:all, :conditions => "id = #{current_user.person_id}")
     else
         teams = self.find(:all, :order => "english_name")

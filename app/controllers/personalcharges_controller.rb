@@ -12,17 +12,9 @@ class PersonalchargesController < ApplicationController
     sql += " and project_id=#{params[:prj_id]}"       if params[:prj_id].present?
     sql2 = sql
     sql += " and personalcharges.state = '#{params[:state]}'" if params[:state].present?
-    if current_user.roles != 'providence_breaker'
-      my_projects = Project.my_projects(current_user);
-      ids= ''
-      my_projects.each{|m| ids += m.id.to_s }
-      sql += " and project_id in (#{ids})"
-    end
+
     personalcharges = Personalcharge.my_personalcharges(current_user,sql)
-    if current_user.roles == 'staff'  or current_user.roles == 'senior' or current_user.roles == 'manager'
-      temp =personalcharges.map{|e| e.person_id == current_user.person_id ? e : nil}.compact
-      personalcharges = temp
-    end
+
     session[:personalcharge_sql]=sql
     @personalcharges = personalcharges.paginate(:page=>params[:page]||1)
 

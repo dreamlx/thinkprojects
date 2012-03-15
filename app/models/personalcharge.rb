@@ -59,8 +59,10 @@ class Personalcharge < ActiveRecord::Base
       when "partner":
         sql += " and project_id in (#{prj_ids})"
       when "manager":
-        sql += " and project_id in (#{prj_ids})"      
-      when "employee":
+        sql += " and (person_id = #{current_user.person_id})"
+      when "senior":
+        sql += " and (person_id = #{current_user.person_id})"        
+      when "staff":
         sql += " and (person_id = #{current_user.person_id})"
     else
     end
