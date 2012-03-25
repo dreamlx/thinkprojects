@@ -30,8 +30,8 @@ authorization do
 
   role :manager do
     includes :senior
-
   end
+  
   role :hr_admin do
     includes :manager
     has_permission_on [:projects,:clients, :people], :to => [:create, :read, :update] 

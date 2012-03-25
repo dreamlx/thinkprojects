@@ -24,18 +24,7 @@ class ExpensesController < ApplicationController
     
     session[:expense_sql] =sql
 
-    if current_user.roles == "providence_breaker"
-      expenses = Expense.find(:all,:conditions=>sql, :order=>"expenses.state, projects.job_code",
-      :joins=>" left join projects on project_id = projects.id left join clients on client_id = clients.id",
-      :order=>'expenses.charge_date desc,expenses.state desc')
-    else
-      expenses = Expense.my_expenses(current_user.person_id, sql)
-
-      if current_user.roles == 'staff' or current_user.roles == 'senior' or current_user.roles == 'manager'
-        temp = expenses.map{|e| e.person_id == current_user.person_id ? e : nil}.compact
-        expenses = temp
-      end
-    end
+    expenses = Expense.my_expenses(current_user, sql)
 
     @expenses = expenses.paginate(:page=> params[:page]||1)
     @sum_amount = 0

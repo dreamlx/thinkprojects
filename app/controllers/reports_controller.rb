@@ -60,11 +60,8 @@ class ReportsController < ApplicationController
     end
 
     def expenses_export
-      expenses =Expense.my_expenses(current_user.person_id,session[:expense_sql])
-      if current_user.roles == 'staff' or current_user.roles == 'senior'
-        temp = expenses.map{|e| e.person_id == current_user.person_id ? e : nil}.compact
-        expenses = temp
-      end
+      expenses =Expense.my_expenses(current_user,session[:expense_sql])
+      
       csv_string = FasterCSV.generate do |csv|
         csv << ["NO","Date","Employee","Billable","Category","Client Name","Project Code","Amount","State"]
         expenses.each do |e|

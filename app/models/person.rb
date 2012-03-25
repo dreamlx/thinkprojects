@@ -86,7 +86,7 @@ class Person < ActiveRecord::Base
   end
 
   def my_expenses(sql="1")
-    Expense.my_expenses(self.id,sql)
+    Expense.find(:all,  :conditions => "person_id = #{self.id}")
   end
   
 end
