@@ -14,14 +14,7 @@ class ExpensesController < ApplicationController
     sql += " and expenses.charge_date >= '#{format_date(params[:start_date])}'" if params[:start_date].present?
     sql += " and expenses.person_id = #{params[:person_id]}" if params[:person_id].present?
     sql += " and expenses.state = '#{params[:state]}'" if params[:state].present?
-    
-    if current_user.roles != 'providence_breaker'
-      my_projects = Project.my_projects(current_user);
-      ids= ''
-      my_projects.each{|m| ids += m.id.to_s }
-      sql += "and project_id in (#{ids})"
-    end
-    
+
     session[:expense_sql] =sql
 
     expenses = Expense.my_expenses(current_user, sql)
@@ -169,7 +162,8 @@ class ExpensesController < ApplicationController
       }
     end
 
-    redirect_to(:action=>"index")
+    #redirect_to(:action=>"index")
+    redirect_to(request.env['HTTP_REFERER'] )
   end
   def addcomment
     @expense = Expense.find(params[:id])

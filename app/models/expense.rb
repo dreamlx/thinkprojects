@@ -47,11 +47,11 @@ class Expense < ActiveRecord::Base
         prj_ids += "0"
         sql += " and project_id in (#{prj_ids})" #和自己项目有关
       when "manager":
-        sql += " and (person_id = #{current_user.person_id})"
+        sql += " and (expenses.person_id = #{current_user.person_id})"
       when "senior":
-        sql += " and (person_id = #{current_user.person_id})"        
+        sql += " and (expenses.person_id = #{current_user.person_id})"        
       when "staff":
-        sql += " and (person_id = #{current_user.person_id})"
+        sql += " and (expenses.person_id = #{current_user.person_id})"
     else
     end
     

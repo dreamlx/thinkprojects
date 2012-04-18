@@ -174,7 +174,7 @@ class PersonalchargesController < ApplicationController
       }
     end
 
-    redirect_to(:action=>"index")
+     redirect_to(request.env['HTTP_REFERER'] )
   end
   
   private
