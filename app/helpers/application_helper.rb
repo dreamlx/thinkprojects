@@ -67,8 +67,8 @@ module ApplicationHelper
     )
   end
 
-  def select_period(model,id)
-    select(model, id, Period.find(:all,:order=>"number DESC").collect {|p| [ p.number, p.number ] }, { :include_blank => "All" })
+  def select_period(model,id,select_params = "")
+    select(model, id, Period.find(:all,:order=>"number DESC").collect {|p| [ p.number, p.number ] }, { :include_blank => "All", :selected=>select_params })
   end
 
   def select_my_projects(model,id)

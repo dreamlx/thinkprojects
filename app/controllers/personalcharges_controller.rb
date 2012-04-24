@@ -7,8 +7,14 @@ class PersonalchargesController < ApplicationController
   def index
     sql = " 1 "
     sql += " and person_id=#{params[:person_id]}"     if params[:person_id].present?
-    sql += " and periods.starting_date >= '#{params[:period_from]}' "   if params[:period_from].present?
-    sql += " and periods.ending_date   <= '#{params[:period_to]}' "     if params[:period_to].present?
+    
+    if params[:period_from] == params[:period_to] and params[:period_from].present?
+      sql += " and periods.number = '#{params[:period_from]}' "
+      sql += " and periods.number  = '#{params[:period_to]}' "   
+    else
+    sql += " and periods.number >= '#{params[:period_from]}' "   if params[:period_from].present?
+    sql += " and periods.number   <= '#{params[:period_to]}' "     if params[:period_to].present?
+    end
     sql += " and project_id=#{params[:prj_id]}"       if params[:prj_id].present?
     sql2 = sql
     sql += " and personalcharges.state = '#{params[:state]}'" if params[:state].present?
