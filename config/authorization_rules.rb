@@ -47,7 +47,7 @@ authorization do
   role :partner do
     includes :manager
     #includes :hr_admin
-    has_permission_on [:personalcharges, :expenses], :to => [:approval, :disapproval, :batch_actions,:addcomment] do
+    has_permission_on [:personalcharges, :expenses], :to => [:approval, :disapproval, :batch_actions,:addcomment, :read] do
       if_attribute :person_id                   => is_not {user.person_id},:state => "pending"
     end
     has_permission_on [:projects], :to => [:create, :read] do

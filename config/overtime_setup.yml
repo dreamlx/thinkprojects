@@ -1,4 +1,4 @@
-daily_working_hours: 6.5
+daily_working_hours: 8
 working_days:
     - 1
     - 2
@@ -33,5 +33,12 @@ holidays:
     - 2012/10/5
     - 2012/10/6
     - 2012/10/7
-
-
+allow_charge_hours: 6.5
+ineffective_code:
+    - 1000001
+    - 1000002
+    - 1000003
+    - 1000004
+    - 1000005
+    - 1000006
+    - 1000007

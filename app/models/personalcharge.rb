@@ -22,7 +22,6 @@ class Personalcharge < ActiveRecord::Base
   end
   
 
-
   def self.sum_by_sql(sql)
     sum_p = self.new
     sum_p.hours = self.sum(:hours,:conditions=>sql,:include=>:period)

@@ -1,13 +1,19 @@
 class OverTime
-  attr_accessor :working_days, :daily_working_hours, :holidays
+  attr_accessor :working_days, :daily_working_hours, :holidays, :ineffective_code
   @@otsetup = YAML.load_file(RAILS_ROOT + "/config/overtime_setup.yml")
   def initialize
 
     @working_days = @@otsetup["working_days"]
     @daily_working_hours = @@otsetup["daily_working_hours"]
     @holidays = @@otsetup["holidays"]
+    @ineffective_code = @@otsetup["ineffective_code"]
   end
-
+  
+  def self.remove_ineffective_hours(items)
+    removed = items.each{|item| @@otsetup["ineffective_code"].include?(Project.find(item.project_id).job_code) ? item : nil }
+    removed.compact
+  end
+  
   def self.standard_hours(items)
     hours = 0
 
@@ -69,7 +75,7 @@ class OverTime
     items.each{|item|
       sum_hours += item.hours if (item.charge_date == current_item.charge_date and item.person_id == current_item.person_id)
       }
-      if sum_hours - @@otsetup["daily_working_hours"] >0
+      if sum_hours - @@otsetup["allow_charge_hours"] >0
         flag = true
       else
         flag = false

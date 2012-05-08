@@ -35,9 +35,10 @@ class PersonalchargesController < ApplicationController
     " 
     approved_personalcharges = Personalcharge.find_by_sql(sql_ot)
     session[:personalcharge_ot] =sql_ot
+    effective_hours = OverTime.remove_ineffective_hours(approved_personalcharges)
     @standard_hours = OverTime.standard_hours(approved_personalcharges)
-    @ot_hours       = OverTime.ot_hours(approved_personalcharges)
-    @ot_pay_hours   = OverTime.ot_pay_hours(approved_personalcharges)
+    @ot_hours       = OverTime.ot_hours(effective_hours)
+    @ot_pay_hours   = OverTime.ot_pay_hours(effective_hours)
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @personalcharges.to_xml }
