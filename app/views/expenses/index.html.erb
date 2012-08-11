@@ -6,8 +6,7 @@
 <hr/>
 <%= link_to 'Export data', :controller=>"reports", :action => "expenses_export" %>||
 <%= link_to 'New expense', :action => 'new' %>
-
-<%= form_tag 'expenses/batch_actions', :method => :post  %>
+<form name="myform" action="expenses/batch_actions" method="post">
 <%= render :partial => 'homepage/all_op' %>
 <table>
   <tr>
@@ -28,7 +27,7 @@
   <% end %>
   <tr>
     <td colspan="7">Total</td>
-    <td id="sum_amount"><%= @sum_amount %></td>
+    <td id="sum_amount"><%= format("%.2f",@sum_amount) %></td>
     <td colspan=4"></td>
   </tr>
 </table>

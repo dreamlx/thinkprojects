@@ -3,22 +3,25 @@
 
 <%= link_to "New Project", new_project_path %>
 <form name="myform" action="projects/batch_actions" method="post">
-  <%= render :partial => 'homepage/all_op' %>
-  <table id="items" class="project_item">
-    <tr id="project_title">
-      <th width="75px">Job code</th>
-      <th>Created date</th>
-      <th class="wide_col">Client name</th>
-      <th>Job creator</th>
-      <th>Description</th>
-      <th>Job state</th>
-      <th  colspan="3">OP</th>
-    </tr>
+	<%= render :partial => 'homepage/all_op' %>
+	<table id="items" class="project_item">
+		<tr id="project_title">
+			<th></th>
+			<th width="100px">Job code</th>
+			<th width="75px">Created date</th>
+			<th class="wide_col">Client name</th>
+			<th>Job creator</th>
+			<th>Description</th>
+			<th>Job state</th>
+			<th  colspan="3">OP</th>
+		</tr>
 
-    <% for project in @projects %>
-      <%= render :partial => 'item', :locals => { :project => project } %>
-    <% end %>
-  </table>
+		<% for project in @projects %>
+		<tr id="item_<%= project.id %>" class="project_item">
+		<%= render :partial => 'item', :locals => { :project => project } %>
+		</tr>
+		<% end %>
+	</table>
 
 </form>
 <%= will_paginate @projects %>

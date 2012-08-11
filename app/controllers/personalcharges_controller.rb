@@ -7,20 +7,38 @@ class PersonalchargesController < ApplicationController
   def index
     sql = " 1 "
     sql += " and person_id=#{params[:person_id]}"     if params[:person_id].present?
-    sql += " and periods.starting_date >= '#{params[:period_from]}' "   if params[:period_from].present?
-    sql += " and periods.ending_date   <= '#{params[:period_to]}' "     if params[:period_to].present?
+    
+    if params[:period_from] == params[:period_to] and params[:period_from].present?
+      sql += " and periods.number = '#{params[:period_from]}' "
+      sql += " and periods.number  = '#{params[:period_to]}' "   
+    else
+    sql += " and periods.number >= '#{params[:period_from]}' "   if params[:period_from].present?
+    sql += " and periods.number   <= '#{params[:period_to]}' "     if params[:period_to].present?
+    end
     sql += " and project_id=#{params[:prj_id]}"       if params[:prj_id].present?
+    sql2 = sql
     sql += " and personalcharges.state = '#{params[:state]}'" if params[:state].present?
 
     personalcharges = Personalcharge.my_personalcharges(current_user,sql)
-    
-    session[:personalcharge_sql] =sql
+
+    session[:personalcharge_sql]=sql
     @personalcharges = personalcharges.paginate(:page=>params[:page]||1)
 
-    #OT
-    @standard_hours = Personalcharge.standard_hours(current_user.person_id,sql)
-    @ot_hours       = Personalcharge.ot_hours(current_user.person_id,sql)
-    @ot_pay_hours   = Personalcharge.ot_pay_hours(current_user.person_id,sql)
+    #OT 参考 over ti
+    sql_ot =" select sum(hours) hours, personalcharges.person_id, personalcharges.period_id, personalcharges.project_id, personalcharges.charge_date charge_date from personalcharges 
+    left join projects on personalcharges.project_id = projects.id 
+    left join periods on personalcharges.period_id = periods.id
+    
+    where #{sql2}
+    and personalcharges.state = 'approved' and charge_date is not null
+    group by charge_date,person_id
+    " 
+    approved_personalcharges = Personalcharge.find_by_sql(sql_ot)
+    session[:personalcharge_ot] =sql_ot
+    effective_hours = OverTime.remove_ineffective_hours(approved_personalcharges)
+    @standard_hours = OverTime.standard_hours(approved_personalcharges)
+    @ot_hours       = OverTime.ot_hours(effective_hours)
+    @ot_pay_hours   = OverTime.ot_pay_hours(effective_hours)
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @personalcharges.to_xml }
@@ -32,7 +50,29 @@ class PersonalchargesController < ApplicationController
     comment = Comment.new(params[:comment])
     @personalcharge.add_comment comment unless comment.nil?
     redirect_to personalcharge_url(@personalcharge) 
+  end
+  
+  def transform
+    personalcharge =    Personalcharge.find(params[:source_id])
+    if params[:target_id].present?
+      @target_project = Project.find(params[:target_id])
 
+      @t_message ="| Promotion code from: <#{personalcharge.project.job_code}> to: <#{@target_project.job_code}> |"
+      personalcharge.desc = "" if personalcharge.desc.nil?
+      personalcharge.desc += @t_message
+      #@target_project.description += @t_message
+      #personalcharge.project.save
+      #@target_project.save
+      #@target_project.personalcharges << personalcharge
+      
+      personalcharge.project_id = params[:target_id]
+      personalcharge.save
+    end
+     respond_to do |format|
+          flash[:notice] = 'Item was successfully forward.'
+          format.html { redirect_to personalcharges_url }
+          format.xml  { head :ok }
+      end 
   end
   
   def show
@@ -141,7 +181,7 @@ class PersonalchargesController < ApplicationController
       }
     end
 
-    redirect_to(:action=>"index")
+     redirect_to(request.env['HTTP_REFERER'] )
   end
   
   private

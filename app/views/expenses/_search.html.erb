@@ -15,7 +15,7 @@
         <% if current_user.roles =="providence_breaker" %>
           <%= select_people("","person_id")  %>
         <% else %>
-          <%= select("", "person_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => true }) %>
+          <%= select("", "person_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => "All" }) %>
         <% end %>
       </p>
 
@@ -28,11 +28,11 @@
     </td>
 
     <td>
-      Date: from<%= text_field("","start_date",{:size=>10,:onfocus=>"HS_setDate(this)"}) %> to<%= text_field("","end_date",{:size=>10,:onfocus=>"HS_setDate(this)"}) %>
+      Date: from<%= text_field("","start_date",{:size=>10,:onfocus=>"SelectDate(this,'yyyy-MM-dd')"}) %> to<%= text_field("","end_date",{:size=>10,:onfocus=>"SelectDate(this,'yyyy-MM-dd')"}) %>
     </td>
     <td>
       <p>Status:
-        <%= select("", "state", ["pending","approved","disapproved"].collect {|p| [p.humanize,p] }, { :include_blank => true }) %>
+        <%= select("", "state", ["pending","approved","disapproved"].collect {|p| [p.humanize,p] }, { :include_blank => "All" }) %>
       </p>
     </td>
   </tr>

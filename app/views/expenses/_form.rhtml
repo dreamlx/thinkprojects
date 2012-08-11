@@ -1,7 +1,7 @@
 
 <fieldset>
   <p>
-    <b>Person:</b>
+    <label>Person:</label>
     <%= select_employee("expense","person_id") %>
   </p>
 
@@ -12,7 +12,7 @@
 
   <p>
     <label for="Expense_charge_date"><%= Expense.human_attribute_name("charge_date") %></label>
-    <%= f.text_field :charge_date ,{:onfocus=>"HS_setDate(this)"} %>
+    <%= f.text_field :charge_date ,{:value=> Date.today.to_s,:onfocus=>"SelectDate(this,'yyyy-MM-dd')"}%>
   </p>
 
 
@@ -27,7 +27,7 @@
   </p>
   <p>
     <label for="Expense_fee">Amount</label>
-    <%= f.text_field :fee %>
+    <%= f.text_field :fee, :value=>@expense.fee||0 %>
   </p>
 
   <p>

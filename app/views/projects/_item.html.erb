@@ -1,6 +1,7 @@
-<tr id="item_<%= project.id %>" class="project_item">
-	<td><%= check_box_tag "check_items[#{project.id}]", project.id if permitted_to? :batch_actions, project %> <b><%= h project.job_code%></b></td>
-	<td><%=h project.created_on.strftime('%Y-%m-%d') %></td>
+
+	<td><%= check_box_tag "check_items[#{project.id}]", project.id if permitted_to? :batch_actions, project %></td>
+	<td><b><%= h project.job_code%></b></td>
+	<td> <%=h project.created_on.strftime('%Y-%m-%d') %></td>
 	<td class="wide_col"><%=h project.client.english_name||"" unless project.client.nil?%></td>
 	<td><%=h project.manager.english_name||"" unless project.manager.nil?%></td>
 	<td><%=h truncate(project.description,40) %></td>
@@ -12,12 +13,11 @@
 		<%= link_to 'Edit', edit_project_path(project) if permitted_to? :edit, project %>
 	</td>
 	<td>
-
 		<%= button_to_remote 'Approval',    :url=>approval_project_path(project), :confirm => check_message(project)+" Are you sure approval?", :method => :post if permitted_to? :approval, project %>
 		<%= button_to_remote 'Disapproval', :url=>disapproval_project_path(project), :confirm => check_message(project)+" Are you sure disapproval?",:method => :post if permitted_to? :disapproval, project  %>
 		<%= button_to_remote 'Close', :url=>close_project_path(project), :confirm => 'Are you sure close?',:method => :post if permitted_to? :close, project %>
 		<%= button_to_remote 'ReOpen', :url=>close_project_path(project), :confirm => 'Are you sure reopen it ?',:method => :post if project.state =="closed" and current_user.roles == 'providence_breaker' %>
+		<%= select("","select_zy_id",Project.find(:all,:conditions=>" state = 'approved' ", :order=>"job_code").collect {|p| [ p.job_code, p.id ] }, { :include_blank => "Transfer to:" },{ :onChange=>"switch_form(this.value,'#{transform_project_path(project)}',#{project.id}); " }) if project.state =="approved" and  !Dict.get_forward(project.job_code).empty?  and permitted_to? :transform,project %> 
 		<%= button_to_remote 'Destroy', :update=> 'projects',:url=>project, :confirm => 'Are you sure destroy?', :method => :delete if current_user.roles == 'providence_breaker' and project.state =="pending"%>
 
 	</td>
-</tr>

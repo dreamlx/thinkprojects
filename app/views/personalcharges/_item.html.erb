@@ -1,36 +1,29 @@
 
-<% show_columns =["hours","ot_hours","desc"] %>
-<tr id="item_<%= personalcharge.id %>" class="personalcharge_item">
-  <!--td><%=h personalcharge.id %></td-->
-  <td><%=  personalcharge.person.english_name unless personalcharge.person.nil?%></td>
-  <td><%= check_box_tag "check_items[#{personalcharge.id}]", personalcharge.id if personalcharge.state == "pending" and permitted_to? :batch_actions,personalcharge %> <%=  personalcharge.period.number       unless personalcharge.period.nil? %></td>
-  <td><%=  personalcharge.charge_date %></td>
-  <td><%=  personalcharge.project.job_code    unless personalcharge.project.nil?%></td>
+<tr id="item_<%= personalcharge.id %>" class="personalcharge_item " bgcolor='<%= @warn_color%>' title=" created at:<%= personalcharge.created_on%>">
+	<!--td><%=h personalcharge.id %></td-->
+	<td><%=  personalcharge.person.english_name unless personalcharge.person.nil?%></td>
+	<td><%= check_box_tag "check_items[#{personalcharge.id}]", personalcharge.id if personalcharge.state == "pending" and permitted_to? :batch_actions,personalcharge %> <%=  personalcharge.period.number       unless personalcharge.period.nil? %></td>
+	<td ><%=  personalcharge.charge_date %></td>
+	<td ><div title="<%= personalcharge.project.client.english_name unless personalcharge.project.nil? %>" href="#"><%=  personalcharge.project.job_code    unless personalcharge.project.nil?%></div></td>
 
+	<td><%= format("%.2f",personalcharge.hours)%></td>
+	<td><%= format("%.2f",personalcharge.ot_hours||0)%></td>
+	<td><%= personalcharge.desc%></td>
+	<td><%=h personalcharge.state.humanize %></td>
+	<td><%= link_to 'Show', personalcharge_path(personalcharge) if permitted_to? :show, personalcharge %></td>
 
-  <% for column in show_columns %>
-    <td>
-      <%= h personalcharge.send(column) %>
-      <%= "("+ personalcharge.charge_date.to_date.strftime("%A")+")" \
-        if column == 'charge_date' and !personalcharge.charge_date.blank?%>
-    </td>
-  <% end %>
-    <td><%=h personalcharge.state.humanize %></td>
-    <td><%= link_to 'Show', personalcharge_path(personalcharge) if permitted_to? :show, personalcharge %></td>
+	<td><%= link_to 'Edit', edit_personalcharge_path(personalcharge)  if permitted_to? :edit, personalcharge %></td>
+	<td>
 
-    <td><%= link_to 'Edit', edit_personalcharge_path(personalcharge)  if permitted_to? :edit, personalcharge %></td>
-    <td>
+		<%= button_to_remote "approval", :url=>approval_personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :post if permitted_to? :approval, personalcharge %>
+		<%= button_to_remote "disapproval", :url=>disapproval_personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :post if permitted_to? :disapproval, personalcharge %>
+		<%= select("","select_zy_id",Project.find(:all,:conditions=>" state = 'approved' ", :order=>"job_code").collect {|p| [ p.job_code, p.id ] }, { :include_blank => "Transfer to:" },{ :onChange=>"switch_form(this.value,'#{transform_personalcharge_path(personalcharge)}',#{personalcharge.id}); " }) if personalcharge.state =="approved" and  !Dict.get_forward(personalcharge.project.job_code).empty?  and permitted_to? :transform,personalcharge %> 
+	</td>
+	<td>-
+		<%= button_to_remote 'Destroy',        
+		:update=> 'personalcharges',
+		:url=>personalcharge,        :confirm => 'Are you sure destroy this item?',
+		:method => :delete if   permitted_to? :destroy, personalcharge %>
 
-        <%= button_to_remote "approval", :url=>approval_personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :post if permitted_to? :approval, personalcharge %>
-        <%= button_to_remote "disapproval", :url=>disapproval_personalcharge_path(personalcharge), :confirm => 'Are you sure?', :method => :post if permitted_to? :disapproval, personalcharge %>
-
-    </td>
-    <td>
-      <%= button_to_remote 'Destroy',        
-        :update=> 'personalcharges',
-        :url=>personalcharge,        :confirm => 'Are you sure destroy this item?',
-        :method => :delete if   permitted_to? :destroy, personalcharge %>
-
-    </td>
-
+	</td>
 </tr>

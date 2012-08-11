@@ -3,7 +3,7 @@ class ExpensesController < ApplicationController
   # GET /expenses
   # GET /expenses.xml
   def index
-
+    
     order_str =" expenses.updated_at desc "
     sql =" 1 "
     sql += " and expense_category like '%#{params[:expense_category].strip}%' "  if params[:expense_category].present?
@@ -14,14 +14,10 @@ class ExpensesController < ApplicationController
     sql += " and expenses.charge_date >= '#{format_date(params[:start_date])}'" if params[:start_date].present?
     sql += " and expenses.person_id = #{params[:person_id]}" if params[:person_id].present?
     sql += " and expenses.state = '#{params[:state]}'" if params[:state].present?
+
     session[:expense_sql] =sql
 
-    if current_user.roles == "providence_breaker"
-      expenses = Expense.find(:all,:conditions=>sql, :order=>"expenses.state, projects.job_code",
-        :joins=>" left join projects on project_id = projects.id left join clients on client_id = clients.id")
-    else
-      expenses = Expense.my_expenses(current_user.person_id, sql)
-    end
+    expenses = Expense.my_expenses(current_user, sql)
 
     @expenses = expenses.paginate(:page=> params[:page]||1)
     @sum_amount = 0
@@ -49,7 +45,7 @@ class ExpensesController < ApplicationController
   def new
     @expense = Expense.new
     @expense.project_id = params[:prj_id]
-   
+
   end
 
   # GET /expenses/1;edit
@@ -81,7 +77,7 @@ class ExpensesController < ApplicationController
     @expense.reset
     respond_to do |format|
       if @expense.update_attributes(params[:expense])
-        
+
         flash[:notice] = 'Expense was successfully updated.'
         format.html { redirect_to expense_url(@expense) }
         format.xml  { head :ok }
@@ -104,13 +100,36 @@ class ExpensesController < ApplicationController
     end
   end
 
+  def transform
+    expense =    Expense.find(params[:source_id])
+    if params[:target_id].present?
+      @target_project = Project.find(params[:target_id])
+
+      @t_message ="| Promotion code from: <#{expense.project.job_code}> to: <#{@target_project.job_code}>|"
+
+      expense.desc += @t_message
+      #@target_project.description += @t_message
+      #personalcharge.project.save
+      #@target_project.save
+      #@target_project.personalcharges << personalcharge
+      
+      expense.project_id = params[:target_id]
+      expense.save
+    end
+     respond_to do |format|
+          flash[:notice] = 'Item was successfully forward.'
+          format.html { redirect_to expenses_url }
+          format.xml  { head :ok }
+      end 
+  end
+
   def approval
     expense = Expense.find(params[:id])
     expense.approval
     flash[:notice] = "Expense state was changed, current state is '#{expense.state}'"
     render :update do |page|
       page.replace_html "item_#{expense.id}", :partial => "item",:locals => { :expense => expense }
-      
+
     end
   end
 
@@ -131,11 +150,11 @@ class ExpensesController < ApplicationController
         p = Expense.find(value)
         case params[:do_action]
         when "approval":
-            p.approval if p.state == "pending"
+          p.approval if p.state == "pending"
         when "disapproval":
-            p.disapproval if p.state == "pending"
+          p.disapproval if p.state == "pending"
         when "destroy":
-            p.destroy if p.state == "pending"
+          p.destroy if p.state == "pending"
 
         else
 
@@ -143,7 +162,8 @@ class ExpensesController < ApplicationController
       }
     end
 
-    redirect_to(:action=>"index")
+    #redirect_to(:action=>"index")
+    redirect_to(request.env['HTTP_REFERER'] )
   end
   def addcomment
     @expense = Expense.find(params[:id])

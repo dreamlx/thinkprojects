@@ -14,33 +14,33 @@
    title: Time Cost
    url: /Personalcharges
 -
-   title: Expense
+   title: Expenses
    url: /expenses
 #-
 #   title: Report
 #   url: /reports
 -
-   title: Employee
+   title: Staffs
    url: /people
 -
-   title: Client
+   title: Clients
    url: /clients
 -
-  title: Peferences
+  title: System Peferences
   url: #
   child:
     -
-     title: dictionary
+     title: Dictionary
      url: /dicts
     -
-     title: industry
+     title: Industry
      url: /industries
     -
-     title: period
+     title: Period
      url: /periods
     -
-     title: user&password
+     title: User&password
      url: /users
     -
-     title: admins
+     title: Admins
      url: /admins

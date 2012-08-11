@@ -3,6 +3,7 @@ class Project < ActiveRecord::Base
   acts_as_commentable
   validates_uniqueness_of           :job_code
   validates_presence_of             :manager_id,:message => "Please select one person as project creator "
+  validates_presence_of             :client_id
   validates_numericality_of         :estimated_hours
   validates_numericality_of         :estimated_annual_fee
   validates_numericality_of         :budgeted_expense
@@ -104,7 +105,7 @@ class Project < ActiveRecord::Base
   
   def self.my_projects(current_user,sql="1",order_str="projects.created_on") 
     if current_user.roles == 'providence_breaker' 
-      #all projects
+      #all projects or current_user.roles == "parnter"
       projects = Project.find(:all, :conditions=>sql, :order=> order_str, :include=>[:client, :bookings] )
     else
       # the booking projects including me

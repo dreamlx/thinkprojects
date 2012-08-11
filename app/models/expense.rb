@@ -34,8 +34,27 @@ class Expense < ActiveRecord::Base
       :order=>order_str
   end
 
-  def self.my_expenses(person_id,sql="1", order_str="expenses.state desc, charge_date")
-    sql += "  or projects.manager_id = #{person_id} or expenses.person_id = #{person_id})"
+  def self.my_expenses(current_user,sql="1", order_str="expenses.charge_date desc,expenses.state desc")
+    
+    case current_user.roles
+      when "providence_breaker":
+
+      when "partner":
+        projects = Project.my_projects(current_user)
+
+        prj_ids = ""
+        projects.each{|p| prj_ids += " #{p.id}," }
+        prj_ids += "0"
+        sql += " and project_id in (#{prj_ids})" #和自己项目有关
+      when "manager":
+        sql += " and (expenses.person_id = #{current_user.person_id})"
+      when "senior":
+        sql += " and (expenses.person_id = #{current_user.person_id})"        
+      when "staff":
+        sql += " and (expenses.person_id = #{current_user.person_id})"
+    else
+    end
+    
     self.find(:all, :conditions=> sql,
       :joins=>" left join projects on project_id = projects.id left join clients on client_id = clients.id",
       :order=>order_str)

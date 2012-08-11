@@ -11,12 +11,12 @@ class ClientsController < ApplicationController
     sql = "1"
      sql += " and client_code like '%"+@client.client_code+"%' " if @client.client_code
      sql += " and chinese_name like '%"+@client.chinese_name+"%' " if @client.chinese_name
-    if @client.client_code
+    if !@client.client_code.empty?
       #@clients = Client.find(:all,
       #                      :conditions => ['client_code like ?', @client.client_code])
-      @clients = Client.find(:all,:conditions=>sql).paginate :page => params[:page], :per_page => 20, :order => 'client_code'
+      @clients = Client.find(:all,:conditions=>sql).paginate :page => params[:page], :per_page => 20, :order => 'english_name'
     else
-      @clients  = Client.paginate :page => params[:page], :per_page => 20, :order => 'english_name,client_code'
+      @clients  = Client.paginate :page => params[:page], :per_page => 20, :order => 'english_name'
     end
     
     respond_to do |format|
