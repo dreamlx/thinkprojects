@@ -31,9 +31,15 @@
 
   </table>
 
-</form>
-<div><label>Standard Hours:</label><%= @standard_hours %></div>
-<div><label>OT hours:</label><%= @ot_hours %></div>
-<div><label>OT pay hours:</label><%= @ot_pay_hours %></div>
+</form><label id="spinner" style="display:none;">please waiting...</label>
+<%= button_to_remote "Get OverTime",
+:url=> {:action=> "get_ot",:approved_personalcharges=> @approved_personalcharges, :effective_hours => @effective_hours}, :method =>:post,
+:update => "the-ot",
+:before=>visual_effect(:appear,'spinner',:duration =>0.5),
+:complete=>"$('spinner').hide();"
+ %>
+
+<div id="the-ot"></div>
+
 <%= will_paginate @personalcharges %>
 <br />
