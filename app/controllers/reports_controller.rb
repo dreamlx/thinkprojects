@@ -17,6 +17,13 @@ class ReportsController < ApplicationController
     @total = Personalcharge.new(params[:total])
   end
 
+    def clients_export
+      @clients = Client.find(:all)
+      respond_to do |format|
+        format.xls { send_data @clients.to_xls,:filename=>"clients.xls",
+        :disposition => 'attachment' }
+      end
+    end
 
   def personalcharges_export
 
