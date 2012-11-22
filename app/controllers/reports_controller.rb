@@ -46,14 +46,14 @@ class ReportsController < ApplicationController
       personalcharges.each do |e|
         t_csv = [
           e.id,    
-          e.person.english_name.humanize,
-          e.period.number,
+          e.person.nil? ? "" : e.person.english_name.humanize,
+          e.period.nil? ? "" : e.period.number,
           e.charge_date,
-           e.project.job_code,       
+          e.project.nil? ? "" : e.project.job_code,       
           e.hours,
           e.ot_hours,
           e.desc,
-          e.state] if  !e.person.nil? and !e.period.nil? and !e.project.nil?
+          e.state] #if  !e.person.nil? and !e.period.nil? and !e.project.nil?
 
           csv << t_csv unless t_csv.nil?
         end
@@ -61,7 +61,7 @@ class ReportsController < ApplicationController
         csv << [@standard_hours, @ot_hours, @ot_pay_hours]
       end
 
-      send_data csv_string, :type => "text/plain",
+      send_data csv_string, :type => "text/csv",
       :filename=>"personalcharges.csv",
       :disposition => 'attachment'
     end
@@ -75,22 +75,50 @@ class ReportsController < ApplicationController
           t_csv = [
             e.id,
             e.charge_date,
-            e.person.english_name.humanize,
+            e.person.nil? ? "" : e.person.english_name.humanize,
             e.billable,
             e.expense_category,
-            e.project.client.english_name,
-            e.project.job_code,
+            (!e.project.nil? and !e.project.client.nil?) ? e.project.client.english_name : "",
+            e.project.nil? ? "" : e.project.job_code,
             e.fee,
             e.state
-            ] if  !e.person.nil? and !e.project.nil? and !e.project.client.nil? and !e.project.nil?
-            csv << t_csv.map {|e2| convert_gb(e2)} unless t_csv.nil?
+            ] #if  !e.person.nil? and !e.project.nil? and !e.project.client.nil? and !e.project.nil?
+          
+            csv << t_csv
+            #.map {|e2| convert_gb(e2)} unless t_csv.nil?
 
           end
         end
-        send_data csv_string, :type => "text/plain",
+        send_data csv_string, :type => "text/csv",
         :filename=>"expenses.csv",
         :disposition => 'attachment'
-      end
+      end    
+
+    # def expenses_export
+    #   expenses =Expense.my_expenses(current_user,session[:expense_sql])
+      
+    #   csv_string = FasterCSV.generate do |csv|
+    #     csv << ["NO","Date","Employee","Billable","Category","Client Name","Project Code","Amount","State"]
+    #     expenses.each do |e|
+    #       t_csv = [
+    #         e.id,
+    #         e.charge_date,
+    #         e.person.english_name.humanize,
+    #         e.billable,
+    #         e.expense_category,
+    #         e.project.client.english_name,
+    #         e.project.job_code,
+    #         e.fee,
+    #         e.state
+    #         ] if  !e.person.nil? and !e.project.nil? and !e.project.client.nil? and !e.project.nil?
+    #         csv << t_csv.map {|e2| convert_gb(e2)} unless t_csv.nil?
+
+    #       end
+    #     end
+    #     send_data csv_string, :type => "text/plain",
+    #     :filename=>"expenses.csv",
+    #     :disposition => 'attachment'
+    #   end
 
       def billing_export
 
