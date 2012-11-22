@@ -94,7 +94,7 @@ class Personalcharge < ActiveRecord::Base
     else
     end
 
-    self.find(:all, :conditions=> sql,  
+    self.find(:all, :conditions=> sql,  :limit=>5,
     :joins=>" left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id left join people on personalcharges.person_id = people.id",
     :order=>" personalcharges.charge_date desc,personalcharges.created_on desc,people.english_name, periods.number,  projects.job_code, personalcharges.hours,personalcharges.state desc ")
 
@@ -125,5 +125,33 @@ class Personalcharge < ActiveRecord::Base
     self.find(:all, :conditions =>" person_id = #{person_id}")
   end
 
+  def ot_pay_hours
+        sql_ot =session[:personalcharge_ot] 
+        approved_personalcharges = Personalcharge.find_by_sql(sql_ot)
+        OverTime.ot_pay_hours(approved_personalcharges)
+  end
 
+  def employee
+      if self.person
+        self.person.english_name.humanize 
+      else
+        ""
+      end
+  end
+
+  def period_number
+      if self.period
+        self.period.number
+      else
+        ""
+      end        
+  end
+
+  def job_code
+      if self.project
+        self.project.job_code
+      else
+        ""
+      end    
+  end
 end
