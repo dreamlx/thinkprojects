@@ -18,11 +18,30 @@ class ReportsController < ApplicationController
   end
 
     def clients_export
-      @clients = Client.find(:all)
-      respond_to do |format|
-        format.xls { send_data @clients.to_xls,:filename=>"clients.xls",
-        :disposition => 'attachment' }
-      end
+      clients = Client.find(:all)
+      csv_string = FasterCSV.generate do |csv|
+        csv << ["Chinese name"]
+        clients.each do |e|
+
+          t_csv = [
+            e.chinese_name,
+            # e.charge_date,
+            # e.person.english_name.humanize,
+            # e.billable,
+            # e.expense_category,
+            # e.project.client.english_name,
+            # e.project.job_code,
+            # e.fee,
+            # e.state
+            ]
+            csv << t_csv
+
+          end
+        end
+
+        send_data csv_string, :type => "text/csv",
+        :filename=>"clients.csv",
+        :disposition => 'attachment'
     end
 
   def personalcharges_export
@@ -70,23 +89,28 @@ class ReportsController < ApplicationController
       expenses =Expense.my_expenses(current_user,session[:expense_sql])
       
       csv_string = FasterCSV.generate do |csv|
-        csv << ["NO","Date","Employee","Billable","Category","Client Name","Project Code","Amount","State"]
+        csv << ["DESC","NO"]
         expenses.each do |e|
+          puts e.desc
+          puts "+++++++++++++++++++++++++++++++++++------------------------------------"
           t_csv = [
+            e.desc,
             e.id,
-            e.charge_date,
-            e.person.english_name.humanize,
-            e.billable,
-            e.expense_category,
-            e.project.client.english_name,
-            e.project.job_code,
-            e.fee,
-            e.state
+            # e.charge_date,
+            # e.person.english_name.humanize,
+            # e.billable,
+            # e.expense_category,
+            # e.project.client.english_name,
+            # e.project.job_code,
+            # e.fee,
+            # e.state
             ] if  !e.person.nil? and !e.project.nil? and !e.project.client.nil? and !e.project.nil?
             csv << t_csv.map {|e2| convert_gb(e2)} unless t_csv.nil?
 
           end
         end
+        converter = Iconv.new(to, from)
+        converter.iconv(s)
         send_data csv_string, :type => "text/plain",
         :filename=>"expenses.csv",
         :disposition => 'attachment'
