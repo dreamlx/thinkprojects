@@ -3,7 +3,7 @@
 authorization do
   role :guest do
     has_permission_on :users, :to             => [:read_index,:create,:read_show]
-
+    has_permission_on :personalcharges, :to =>[:get_ot]
   end
   # 需要创建一个hr角色， 管理client/staff/projects, 只能创建不能删除
 

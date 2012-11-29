@@ -20,7 +20,7 @@ class Personalcharge < ActiveRecord::Base
     end
 
   end
-  
+
 
   def self.sum_by_sql(sql)
     sum_p = self.new
@@ -29,10 +29,10 @@ class Personalcharge < ActiveRecord::Base
 
     return sum_p
   end
-  
+
   def self.search(page)
     paginate :per_page => 10, :page => page,
-      :order => 'created_on'
+    :order => 'created_on'
   end
 
   def self.group_hours(condition)
@@ -43,33 +43,61 @@ class Personalcharge < ActiveRecord::Base
     items = self.find_by_sql(sql)
     return items
   end
-  
-  def self.my_personalcharges(current_user,sql)
-    #思考角色判断-todo
+
+  def self.time_cost_paginate(current_user,sql,page,per_page="20")
     projects = Project.my_projects(current_user)
-    
+
     prj_ids = ""
     projects.each{|p| prj_ids += " #{p.id}," }
     prj_ids += "0"
-    
-    case current_user.roles
-      when "providence_breaker":
 
-      when "partner":
-        sql += " and project_id in (#{prj_ids})"
-      when "manager":
-        sql += " and (person_id = #{current_user.person_id})"
-      when "senior":
-        sql += " and (person_id = #{current_user.person_id})"        
-      when "staff":
-        sql += " and (person_id = #{current_user.person_id})"
+    case current_user.roles
+    when "providence_breaker":
+
+    when "partner":
+      sql += " and project_id in (#{prj_ids})"
+    when "manager":
+      sql += " and (person_id = #{current_user.person_id})"
+    when "senior":
+      sql += " and (person_id = #{current_user.person_id})"        
+    when "staff":
+      sql += " and (person_id = #{current_user.person_id})"
     else
     end
-    
-    self.find(:all, :conditions=> sql,  
-      :joins=>" left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id left join people on personalcharges.person_id = people.id",
-      :order=>" personalcharges.charge_date desc,personalcharges.created_on desc,people.english_name, periods.number,  projects.job_code, personalcharges.hours,personalcharges.state desc ")
-        
+
+    self.paginate_by_sql("select personalcharges.* from personalcharges " +
+    "left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id left join people on personalcharges.person_id = people.id " +
+    "where " + sql + 
+    " order by personalcharges.charge_date desc,personalcharges.created_on desc,people.english_name, periods.number,  projects.job_code, personalcharges.hours,personalcharges.state desc",
+    :page => page, :per_page => 20)
+  end
+
+  def self.my_personalcharges(current_user,sql)
+    #思考角色判断-todo
+    projects = Project.my_projects(current_user)
+
+    prj_ids = ""
+    projects.each{|p| prj_ids += " #{p.id}," }
+    prj_ids += "0"
+
+    case current_user.roles
+    when "providence_breaker":
+
+    when "partner":
+      sql += " and project_id in (#{prj_ids})"
+    when "manager":
+      sql += " and (person_id = #{current_user.person_id})"
+    when "senior":
+      sql += " and (person_id = #{current_user.person_id})"        
+    when "staff":
+      sql += " and (person_id = #{current_user.person_id})"
+    else
+    end
+
+    self.find(:all, :conditions=> sql,
+    :joins=>" left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id left join people on personalcharges.person_id = people.id",
+    :order=>" personalcharges.charge_date desc,personalcharges.created_on desc,people.english_name, periods.number,  projects.job_code, personalcharges.hours,personalcharges.state desc ")
+
   end
 
   def self.my_group_hours(person_id,condition)
@@ -82,7 +110,7 @@ class Personalcharge < ActiveRecord::Base
     return items
   end
 
-  
+
   def self.iam_partner(person_id,sql="1")
     #sql += " and projects.partner_id = #{person_id}"
     self.find(:all, :conditions =>sql,:include=>:project)
@@ -97,5 +125,33 @@ class Personalcharge < ActiveRecord::Base
     self.find(:all, :conditions =>" person_id = #{person_id}")
   end
 
+  def ot_pay_hours
+        sql_ot =session[:personalcharge_ot] 
+        approved_personalcharges = Personalcharge.find_by_sql(sql_ot)
+        OverTime.ot_pay_hours(approved_personalcharges)
+  end
 
+  def employee
+      if self.person
+        self.person.english_name.humanize 
+      else
+        ""
+      end
+  end
+
+  def period_number
+      if self.period
+        self.period.number
+      else
+        ""
+      end        
+  end
+
+  def job_code
+      if self.project
+        self.project.job_code
+      else
+        ""
+      end    
+  end
 end

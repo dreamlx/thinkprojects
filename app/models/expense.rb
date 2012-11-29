@@ -60,4 +60,27 @@ class Expense < ActiveRecord::Base
       :order=>order_str)
   end
 
+  def employee
+      if self.person
+        self.person.english_name.humanize 
+      else
+        ""
+      end
+  end
+
+  def client_name
+      if self.project and self.project.client
+        self.project.client.english_name
+      else
+        ""
+      end        
+  end
+
+  def project_code
+      if self.project
+        self.project.job_code
+      else
+        ""
+      end    
+  end
 end

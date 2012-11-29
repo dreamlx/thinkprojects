@@ -75,12 +75,14 @@ ActionController::Routing::Routes.draw do |map|
     :addcomment => :post,
     :transform => :post 
   }
+  map.get_ot '/personalcharges/get-ot', :controller=>'personalcharges', :action =>'get_ot'
   map.resources :personalcharges
   map.resources :personalcharges, :member=>{:approval=> :post,
     :disapproval=>:post,
     :addcomment => :post,
     :transform => :post
   }
+  
   map.resources :periods
   map.root :controller => 'homepage'
   map.connect ':controller/:action/:id'
