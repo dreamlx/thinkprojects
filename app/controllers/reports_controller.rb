@@ -78,7 +78,7 @@ class ReportsController < ApplicationController
     def expenses_export
       expenses =Expense.my_expenses(current_user,session[:expense_sql])
       respond_to do |format|
-        format.xls { send_data expenses.to_xls(:except => [:person_id, :project_id], :methods => [:employee, :client_name, :project_code]),:filename=>"expenses.xls",
+        format.xls { send_data expenses.to_xls(:except => [:person_id, :project_id, :approved_by], :methods => [:employee, :client_name, :project_code, :approved_name]),:filename=>"expenses.xls",
         :disposition => 'attachment' }
       end      
       # csv_string = FasterCSV.generate do |csv|
