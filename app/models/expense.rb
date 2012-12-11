@@ -70,16 +70,8 @@ class Expense < ActiveRecord::Base
 
   def approved_name
       if self.approved_by
-        begin 
-          user = Person.find(self.approved_by)
-        rescue ActiveRecord::RecordNotFound
-          user = nil
-        end 
-        if user
-          user.english_name
-        else
-          ""
-        end 
+        self.person.english_name
+
       else
         ""
       end
