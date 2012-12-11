@@ -126,7 +126,7 @@ class ExpensesController < ApplicationController
 
   def approval
     expense = Expense.find(params[:id])
-    expense.approved_by = session[:user_id] 
+    #expense.approved_by = session[:user_id] 
     expense.approval
     flash[:notice] = "Expense state was changed, current state is '#{expense.state}'"
     render :update do |page|
