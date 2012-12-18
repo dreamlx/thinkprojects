@@ -27,12 +27,14 @@ class PersonalchargesController < ApplicationController
     page = params[:page]||1
     @personalcharges = Personalcharge.time_cost_paginate(current_user,sql,page,20)
     #OT 参考 over ti
+    #approved_condition = " and personalcharges.state = 'approved' "
+    approved_condition = ""
     sql_ot =" select sum(hours) hours, personalcharges.person_id, personalcharges.period_id, personalcharges.project_id, personalcharges.charge_date charge_date from personalcharges 
     left join projects on personalcharges.project_id = projects.id 
     left join periods on personalcharges.period_id = periods.id
-
     where #{sql2}
-    and personalcharges.state = 'approved' and charge_date is not null
+    #{approved_condition}
+    and charge_date is not null
     group by charge_date,person_id
     " 
     session[:personalcharge_ot] =sql_ot
