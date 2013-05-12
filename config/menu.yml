@@ -12,7 +12,7 @@
 #   url: /billings
 -
    title: Time Cost
-   url: /Personalcharges
+   url: /personalcharges
 -
    title: Expenses
    url: /expenses

@@ -70,7 +70,7 @@ class Expense < ActiveRecord::Base
 
   def approved_name
       if self.approved_by
-        self.person.english_name
+        Person.find(self.approved_by).english_name
 
       else
         ""
