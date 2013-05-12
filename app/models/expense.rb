@@ -68,6 +68,15 @@ class Expense < ActiveRecord::Base
       end
   end
 
+  def approved_name
+      if self.approved_by
+        Person.find(self.approved_by).english_name
+
+      else
+        ""
+      end
+  end  
+
   def client_name
       if self.project and self.project.client
         self.project.client.english_name
