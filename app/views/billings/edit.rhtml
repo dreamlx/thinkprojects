@@ -1,5 +1,5 @@
 <h1>Editing billing</h1>
-<% form_for(:billing, :url => billing_path(@billing), :html => { :method => :put }) do |f| %>
+<%= form_for(:billing, :url => billing_path(@billing), :html => { :method => :put }) do |f| %>
 <p><b>Project:</b><br>
 <%= h(@billing.project.job_code) %>
   </p>

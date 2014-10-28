@@ -1,4 +1,4 @@
-<% form_for(:person, :url => people_path, :html => { :method => :get }) do |f| %>
+<%= form_for(:person, :url => people_path, :html => { :method => :get }) do |f| %>
 
  Employee_number:<%= text_field("person", "employee_number") %>
  English_name:<%= text_field("person", "english_name") %>

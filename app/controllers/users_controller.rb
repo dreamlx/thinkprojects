@@ -1,3 +1,4 @@
+#coding: utf-8
 class UsersController < ApplicationController
   # Be sure to include AuthenticationSystem in Application Controller instead
   #include AuthenticatedSystem
@@ -46,7 +47,6 @@ class UsersController < ApplicationController
     end
   end
 
-
   def destroy
     @user.destroy
     flash[:notice] = "删除用户成功。"
@@ -61,8 +61,4 @@ class UsersController < ApplicationController
   def new_user
     @user = User.new
   end
-
-
-
-
 end

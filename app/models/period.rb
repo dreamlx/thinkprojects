@@ -15,7 +15,7 @@ class Period < ActiveRecord::Base
   def self.today_period
     today = Time.now.strftime("%Y-%m-%d")
     period_sql = " 1 and '#{today}' <= ending_date and '#{today}' >= starting_date"
-    t_period = find(:first, :conditions => period_sql)||find(:first,:order=>"number desc")
+    t_period = where(:conditions => period_sql).first || where(:order=>"number desc").first
     
     return t_period
   end

@@ -5,9 +5,9 @@ class Dict < ActiveRecord::Base
   has_many :projects
   has_many :overtimes
 
-  named_scope :GMU,           :conditions => "category ='GMU'", :order=>'code'
-  named_scope :department,    :conditions => "category = 'department'", :order=>'code'
-  named_scope :expense_types, :conditions => "category = 'expense_type'", :order=>'code'
+  scope :GMU,           :conditions => "category ='GMU'", :order=>'code'
+  scope :department,    :conditions => "category = 'department'", :order=>'code'
+  scope :expense_types, :conditions => "category = 'expense_type'", :order=>'code'
 
   def self.search_by_sql(search,page = 1)
     paginate :per_page => 20, :page => page,
@@ -15,6 +15,6 @@ class Dict < ActiveRecord::Base
   end
 
   def self.get_forward(code='')
-    self.find(:all, :conditions => " code like '#{code}%'")
+    self.where(:conditions => " code like '#{code}%'")
   end
 end

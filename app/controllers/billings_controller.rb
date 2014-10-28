@@ -28,7 +28,7 @@ class BillingsController < ApplicationController
 
   def show
     @billing = Billing.find(params[:id])
-    @receive_amounts = ReceiveAmount.find(:all, :conditions=>['billing_id = ?',@billing.id])
+    @receive_amounts = ReceiveAmount.where(:conditions=>['billing_id = ?',@billing.id])
    
     if @billing.status != '1'
       @billing_amount = ReceiveAmount.sum('receive_amount', :conditions =>['billing_id = ?', @billing.id ])||0
@@ -57,7 +57,7 @@ class BillingsController < ApplicationController
   def new
 
     billing_number_set
-    @type = Dict.find(:all, :conditions => "category ='billing_type'")
+    @type = Dict.where(:conditions => "category ='billing_type'")
     @billing = Billing.new
     #@periods = Period.find(:all)
     
@@ -71,7 +71,7 @@ class BillingsController < ApplicationController
 
   def create
     @billing = Billing.new(params[:billing])
-    @billing_number = Dict.find(:first, :conditions =>" category ='billing_number' ")
+    @billing_number = Dict.where(:conditions =>" category ='billing_number' ").first
     @number = @billing_number.code.to_i + 1
     @billing_number.code = @number.to_s
         
@@ -98,7 +98,7 @@ class BillingsController < ApplicationController
 
   def edit
 
-    @type = Dict.find(:all, :conditions => "category ='billing_type'")
+    @type = Dict.where(:conditions => "category ='billing_type'")
     
     @billing = Billing.find(params[:id])
 

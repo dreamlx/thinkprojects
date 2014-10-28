@@ -1,6 +1,6 @@
 <h1>New billing</h1>
 <%= error_messages_for :billing %>
-<% form_for(:billing, :url => billings_path) do |f| %>
+<%= form_for(:billing, :url => billings_path) do |f| %>
 
   <p><b>Project:</b><br>
    <%= select("billing", "project_id",

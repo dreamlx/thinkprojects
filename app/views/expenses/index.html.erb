@@ -1,5 +1,5 @@
 
-<% form_for(:expense, :url => expenses_path, :html => { :method => :get }) do |f| %>
+<%= form_for(:expense, :url => expenses_path, :html => { :method => :get }) do |f| %>
   <%= render :partial => "search" %>
 <% end %>
 

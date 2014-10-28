@@ -1,6 +1,6 @@
 <h1>Listing clients</h1>
 
-<% form_for(:client, :url => clients_path, :html => { :method => :get }) do |f| %>
+<%= form_for(:client, :url => clients_path, :html => { :method => :get }) do |f| %>
   Client Code:<%= text_field("client", "client_code") %>
   Chinese Name:<%= text_field("client", "chinese_name") %>
   <input type="submit" value="Search" />

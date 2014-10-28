@@ -1,6 +1,4 @@
-# Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-
   def title(page_title, show_title = true)
     @content_for_title = page_title.to_s
     @show_title = show_title
@@ -29,8 +27,7 @@ module ApplicationHelper
 
 
   def select_employee(model,id)
-    case current_user.roles
-    when "providence_breaker":
+    if current_user.roles == "providence_breaker"
       select_people(model,id)
     else
       select_person(model,id)
@@ -40,35 +37,34 @@ module ApplicationHelper
 
   def select_person(model,id)
     select(model, id,
-    Person.find(:all,
-    :conditions=>["id=?", current_user.person_id]).collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
+    Person.where(:conditions=>["id=?", current_user.person_id]).collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
     { :include_blank => false }
     )
   end
 
   def select_people(model,id)
     select(model, id,
-    Person.find(:all,:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
+    Person.where(:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
     { :include_blank => "All" }
     )
   end
 
   def select_partner(model,id)
     select(model, id,
-    Person.find(:all,:conditions=>"position like '%director%' or position like 'partner' ",:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
+    Person.where(:conditions=>"position like '%director%' or position like 'partner' ",:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
     { :include_blank => "All" }
     )
   end
 
   def select_manager(model,id)
     select(model, id,
-    Person.find(:all,:conditions=>"position like '%manager%'  ",:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
+    Person.where(:conditions=>"position like '%manager%'  ",:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
     { :include_blank => "All" }
     )
   end
 
   def select_period(model,id,select_params = "")
-    select(model, id, Period.find(:all,:order=>"number DESC").collect {|p| [ p.number, p.number ] }, { :include_blank => "All", :selected=>select_params })
+    select(model, id, Period.where(:order=>"number DESC").collect {|p| [ p.number, p.number ] }, { :include_blank => "All", :selected=>select_params })
   end
 
   def select_my_projects(model,id)
@@ -77,8 +73,7 @@ module ApplicationHelper
   end
 
   def select_booked_project(model,id)
-    case current_user.roles
-    when "providence_breaker":
+    if current_user.roles == "providence_breaker"
       select( model,id , Project.alive.collect {|p| [ p.job_code + "|" + p.client.english_name, p.id ] }, { :include_blank => false })
     else
       select(model,id,
@@ -92,5 +87,4 @@ module ApplicationHelper
    
     return flag
   end
-
 end

@@ -2,7 +2,7 @@
 
 <%= error_messages_for :period %>
 
-<% form_for(:period, :url => period_path(@period), :html => { :method => :put }) do |f| %>
+<%= form_for(:period, :url => period_path(@period), :html => { :method => :put }) do |f| %>
 <%= render :partial => 'form',:locals => { :f => f }%>
   <p>
     <%= submit_tag 'Update' %>

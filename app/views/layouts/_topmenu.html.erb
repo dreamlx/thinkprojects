@@ -1,5 +1,5 @@
 <% if logged_in? %>
-<%@menus = YAML.load_file(RAILS_ROOT + "/config/menu.yml")%>
+<%@menus = YAML.load_file(RAILS.root + "/config/menu.yml")%>
 <% menu_tree_id = 0 %>
 
 <ul id="nav" class="dropdown dropdown-horizontal">

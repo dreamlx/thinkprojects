@@ -1,3 +1,4 @@
+#coding: utf-8
 class HomepageController < ApplicationController
   def index
     if logged_in?
@@ -5,36 +6,36 @@ class HomepageController < ApplicationController
 
       flash[:notice] = '请等待管理员分配用户，谢谢' if current_user.person_id.blank? or current_user.person_id.nil?
 
-            check_period(DateTime.now)
-            check_period("2012-01-01".to_date)
-            check_period("2012-01-16".to_date)
-            check_period("2012-02-01".to_date)
-            check_period("2012-02-16".to_date)
+      check_period(DateTime.now)
+      check_period("2012-01-01".to_date)
+      check_period("2012-01-16".to_date)
+      check_period("2012-02-01".to_date)
+      check_period("2012-02-16".to_date)
 
-          end
-        end
+    end
+  end
 
-        private
-        def check_period(t = DateTime.now)
-          this_period_number = t.beginning_of_month.strftime("%Y-%m-%d")
-          next_period_number = (t.beginning_of_month + 15.days).strftime("%Y-%m-%d")
-          if  (Period.find_by_number(this_period_number).nil?)      
-            period = Period.new
-            period.number = this_period_number
-            period.starting_date = t.beginning_of_month
-            period.ending_date = (t.beginning_of_month + 14.days) 
-            period.save
-          end
+  private
+  def check_period(t = DateTime.now)
+    this_period_number = t.beginning_of_month.strftime("%Y-%m-%d")
+    next_period_number = (t.beginning_of_month + 15.days).strftime("%Y-%m-%d")
+    if  (Period.find_by_number(this_period_number).nil?)      
+      period = Period.new
+      period.number = this_period_number
+      period.starting_date = t.beginning_of_month
+      period.ending_date = (t.beginning_of_month + 14.days) 
+      period.save
+    end
 
-          if  (Period.find_by_number(next_period_number).nil?)      
-            period = Period.new
-            period.number = next_period_number
-            period.starting_date = (t.beginning_of_month + 15.days) 
-            period.ending_date = t.end_of_month
-            period.save
-          end
-        end
-      end
+    if  (Period.find_by_number(next_period_number).nil?)      
+      period = Period.new
+      period.number = next_period_number
+      period.starting_date = (t.beginning_of_month + 15.days) 
+      period.ending_date = t.end_of_month
+      period.save
+    end
+  end
+end
 
       #%a - 星期几的英文简写 (``Sun'')
       #%A - 星期几的英文全称 (``Sunday'')

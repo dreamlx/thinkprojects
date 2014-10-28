@@ -1,5 +1,5 @@
 
-<% form_tag('/reports/time_report', :method => :post) do %>
+<%= form_tag('/reports/time_report', :method => :post) do %>
   <table>
     <tr>
       <td>
@@ -28,7 +28,7 @@
 <hr/>
 <h3>Get personalcharges CSV files</h3>
 <dl>
-  <dt>Projects:<br/><% form_tag('/reports/personalcharge_export', :method => :post) do %>
+  <dt>Projects:<br/><%= form_tag('/reports/personalcharge_export', :method => :post) do %>
     <%= select("personalcharge", "project_id",
             Project.find(:all,
               :conditions=>"state = 'approved'",

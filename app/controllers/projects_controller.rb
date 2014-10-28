@@ -226,7 +226,7 @@ class ProjectsController < ApplicationController
 
   def check_allow(project_id)
 
-    billings = Billing.find(:all,:conditions => "project_id = #{project_id}")
+    billings = Billing.where(:conditions => "project_id = #{project_id}")
     billing_number= "<br/>|need close billings --"
     for item in billings
       billing_number = (billing_number + item.number + " |") if item.status.to_s == 0.to_s

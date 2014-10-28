@@ -1,7 +1,7 @@
 class LoginController < ApplicationController
   #before_filter :authorize, :except => :login
   def add_user
-    @people =Person.find(:all, :order => 'english_name')  
+    @people =Person.where(:order => 'english_name')  
     if request.get?
       @user = User.new
     else
@@ -15,7 +15,7 @@ class LoginController < ApplicationController
   def edit
     @user =User.find(params[:id])
     @user.password ="******"
-    @people =Person.find(:all, :order => 'english_name')   
+    @people =Person.where(:order => 'english_name')   
   end
 
   def update
@@ -25,7 +25,7 @@ class LoginController < ApplicationController
       flash[:notice] = 'Industry was successfully updated.'
       redirect_to :action => 'list'
     else
-      @people =Person.find(:all, :order => 'english_name')
+      @people =Person.where(:order => 'english_name')
       render :action => 'edit'
     end
   end
@@ -57,14 +57,14 @@ class LoginController < ApplicationController
 
         ## dicts 创建一个新的item，用于控制 add_expense 的内容和条件  ##
         now_period = Period.today_period
-        unless Dict.find(:first, :conditions=>" title ='#{now_period.number}' ")
+        unless Dict.where(:conditions=>" title ='#{now_period.number}' ").first
           expense_log = Dict.new
           expense_log.category = "expense_log"
           expense_log.code = '1'
           expense_log.title = now_period.number
           expense_log.save
           
-          projects = Project.find(:all,:include=>:status,:conditions=>" dicts.title = 'Active'")
+          projects = Project.where(:include=>:status,:conditions=>" dicts.title = 'Active'")
           prj_count =0
           for project in projects
             if project.service_code.code.to_i >= 60 and project.service_code.code.to_i <=68
@@ -94,10 +94,10 @@ class LoginController < ApplicationController
   
   def index
     #redirect_to(:controller =>"projects",:action => "list")
-    @periods = Period.find(:all, :order =>'number')
+    @periods = Period.where(:order =>'number')
     @now_period = get_now_period
     @last_login = Dict.new
-    @last_login = Dict.find(:first, :conditions =>" category ='billing_number' ")
+    @last_login = Dict.where(:conditions =>" category ='billing_number' ").first
 
           
     #billings number

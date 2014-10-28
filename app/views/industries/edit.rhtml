@@ -1,6 +1,6 @@
 <h1>Editing industry</h1>
 
-<% form_tag  :action => 'update', :id => @industry  do%>
+<%= form_tag  :action => 'update', :id => @industry  do%>
   <%= render :partial => 'form' %>
   <%= submit_tag 'Edit' %>
 <% end %>

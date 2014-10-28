@@ -55,7 +55,7 @@ class Expense < ActiveRecord::Base
     else
     end
     
-    self.find(:all, :conditions=> sql,
+    self.where(:conditions=> sql,
       :joins=>" left join projects on project_id = projects.id left join clients on client_id = clients.id",
       :order=>order_str)
   end

@@ -94,7 +94,7 @@ class Personalcharge < ActiveRecord::Base
     else
     end
 
-    self.find(:all, :conditions=> sql,
+    self.where(:conditions=> sql,
     :joins=>" left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id left join people on personalcharges.person_id = people.id",
     :order=>" personalcharges.charge_date desc,personalcharges.created_on desc,people.english_name, periods.number,  projects.job_code, personalcharges.hours,personalcharges.state desc ")
 
@@ -113,16 +113,16 @@ class Personalcharge < ActiveRecord::Base
 
   def self.iam_partner(person_id,sql="1")
     #sql += " and projects.partner_id = #{person_id}"
-    self.find(:all, :conditions =>sql,:include=>:project)
+    self.where(:conditions =>sql,:include=>:project)
   end
 
   def self.iam_manager(person_id,sql="1")
     sql += " and projects.manager_id = #{person_id}"
-    self.find(:all, :conditions =>sql,:include=>:project)
+    self.where(:conditions =>sql,:include=>:project)
   end
 
   def self.iam_member(person_id)
-    self.find(:all, :conditions =>" person_id = #{person_id}")
+    self.where(:conditions =>" person_id = #{person_id}")
   end
 
   def ot_pay_hours

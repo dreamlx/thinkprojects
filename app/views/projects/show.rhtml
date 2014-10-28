@@ -54,7 +54,7 @@
   <div id="booking_area">
     <% if @project.state !="closed" %>
       <div id="booking_new">
-        <% form_for([@project, @booking]) do |f|%>
+        <%= form_for([@project, @booking]) do |f|%>
           <%  @booking.project_id = @project.id %>
           <%= render :partial => '/bookings/create',:locals => { :f => f } %>
         <% end  %>

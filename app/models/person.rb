@@ -29,7 +29,7 @@ class Person < ActiveRecord::Base
     :foreign_key => "department_id",
     :conditions => "category = 'department'"
 
-  named_scope :workings, :conditions =>"dicts.title <> 'Resigned' and dicts.category = 'person_status' ", :include=>:status,:order =>"english_name"
+  scope :workings, :conditions =>"dicts.title <> 'Resigned' and dicts.category = 'person_status' ", :include=>:status,:order =>"english_name"
 
   def self.search_by_sql(search,page = 1)
     paginate :per_page => 20, :page => page,
@@ -37,7 +37,7 @@ class Person < ActiveRecord::Base
   end
 
   def self.my_teams(current_user)
-    projects = Project.find(:all)
+    projects = Project.all
     my_bookings = []
     projects.each{|project| my_bookings<< project.bookings if project.is_booking?(current_user.person_id) }
     my_bookings =   Hash[*my_bookings.map {|obj| [obj.person_id, obj]}.flatten].values
@@ -46,21 +46,21 @@ class Person < ActiveRecord::Base
     my_bookings.each{|booking| ids += (booking.person_id.to_s+",")} 
     ids += " 0 "
 
-    teams = self.find(:all, :conditions=> "id in (#{ids})", :order => "english_name")
+    teams = self.where(:conditions=> "id in (#{ids})", :order => "english_name")
 
-    case current_user.roles
-      when "providence_breaker":
-        teams = self.find(:all, :order => "english_name")
-      when "partner":
-        teams = self.find(:all, :order => "english_name")
-      when "manager":
-        teams = self.find(:all, :conditions=> "id in (#{ids})", :order => "english_name")
-      when "senior":
-        teams = self.find(:all, :conditions => "id = #{current_user.person_id}")       
-      when "staff":
-        teams = self.find(:all, :conditions => "id = #{current_user.person_id}")
+    case 
+      when current_user.roles == "providence_breaker"
+        teams = self.where(:order => "english_name")
+      when current_user.roles == "partner"
+        teams = self.where(:order => "english_name")
+      when current_user.roles == "manager"
+        teams = self.where(:conditions=> "id in (#{ids})", :order => "english_name")
+      when current_user.roles == "senior"
+        teams = self.where(:conditions => "id = #{current_user.person_id}")       
+      when current_user.roles == "staff"
+        teams = self.where(:conditions => "id = #{current_user.person_id}")
     else
-        teams = self.find(:all, :order => "english_name")
+        teams = self.where(:order => "english_name")
     end
     
     return teams
@@ -71,7 +71,7 @@ class Person < ActiveRecord::Base
   end
 
   def my_bookings
-    mybookings = Booking.find(:all,:conditions=>["person_id=?",self.id], :select=>"distinct project_id,job_code, state, person_id", :joins=>" left join projects on projects.id = bookings.project_id")
+    mybookings = Booking.where(:conditions=>["person_id=?",self.id], :select=>"distinct project_id,job_code, state, person_id", :joins=>" left join projects on projects.id = bookings.project_id")
     myprojects=[]
     for mybooking in mybookings
       myprojects << mybooking.project if mybooking.state == "approved"
@@ -86,7 +86,7 @@ class Person < ActiveRecord::Base
   end
 
   def my_expenses(sql="1")
-    Expense.find(:all,  :conditions => "person_id = #{self.id}")
+    Expense.where(:conditions => "person_id = #{self.id}")
   end
   
 end

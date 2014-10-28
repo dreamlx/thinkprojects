@@ -1,7 +1,7 @@
 <h1>Editing TimeCost</h1>
 
 
-<% form_for(:personalcharge, :url => personalcharge_path(@personalcharge), :html => { :method => :put }) do |f| %>
+<%= form_for(:personalcharge, :url => personalcharge_path(@personalcharge), :html => { :method => :put }) do |f| %>
 
   <%= render :partial => 'form',:locals => { :f => f } %>
   <%= submit_tag 'Update' %>

@@ -1,5 +1,5 @@
 #forward job_code, must set the title is 'forward_code'
-<% form_for(:dict, :url => dicts_path, :html => { :method => :get }) do |f| %>
+<%= form_for(:dict, :url => dicts_path, :html => { :method => :get }) do |f| %>
 
  category:<%= text_field("dict", "category") %>
  title:<%= text_field("dict", "title") %>
