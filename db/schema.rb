@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110916071305) do
+ActiveRecord::Schema.define(:version => 20121130032721) do
 
   create_table "billings", :force => true do |t|
     t.timestamp "created_on",                                                                    :null => false
@@ -144,6 +144,7 @@ ActiveRecord::Schema.define(:version => 20110916071305) do
     t.datetime "updated_at"
     t.boolean  "billable",         :default => true
     t.integer  "person_id"
+    t.integer  "approved_by"
   end
 
   create_table "incomes", :force => true do |t|
@@ -201,7 +202,7 @@ ActiveRecord::Schema.define(:version => 20110916071305) do
     t.text     "desc"
     t.string   "state",                     :default => "pending", :null => false
     t.date     "charge_date"
-    t.decimal  "ot_hours"
+    t.decimal  "ot_hours",                  :default => 0.0
   end
 
   create_table "prj_expense_logs", :force => true do |t|
