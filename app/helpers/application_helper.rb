@@ -37,21 +37,21 @@ module ApplicationHelper
 
   def select_person(model,id)
     select(model, id,
-    Person.where(:conditions=>["id=?", current_user.person_id]).collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
+    Person.where(:id => current_user.person_id).collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
     { :include_blank => false }
     )
   end
 
   def select_people(model,id)
     select(model, id,
-    Person.where(:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
+    Person.order("english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
     { :include_blank => "All" }
     )
   end
 
   def select_partner(model,id)
     select(model, id,
-    Person.where(:conditions=>"position like '%director%' or position like 'partner' ",:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
+    Person.where("position like '%director%' or position like 'partner' ").order("english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
     { :include_blank => "All" }
     )
   end

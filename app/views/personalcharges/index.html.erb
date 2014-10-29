@@ -1,7 +1,7 @@
 <%= form_for(:personalcharge, :url => personalcharges_path, :html => { :method => :get }) do |f| %>
   <%= render :partial => "search" %>
 <% end %>
-<%= link_to 'Export data', :controller=>"reports", :action => "personalcharges_export"  %>||
+<%#= link_to 'Export data', :controller=>"reports", :action => "personalcharges_export"  %>||
 <%= link_to 'New TimeCost', :action => 'new', :id=>params[:id], :person_id => params[:person_id]  %>
 
 <form name="myform" action="personalcharges/batch_actions" method="post">
@@ -32,11 +32,9 @@
   </table>
 
 </form><label id="spinner" style="display:none;">please waiting...</label>
-<%= button_to_remote "Get OverTime",
+<%= button_to "Get OverTime",
 :url=> {:action=> "get_ot",:approved_personalcharges=> @approved_personalcharges, :effective_hours => @effective_hours}, :method =>:post,
-:update => "the-ot",
-:before=>visual_effect(:appear,'spinner',:duration =>0.5),
-:complete=>"$('spinner').hide();"
+:update => "the-ot"
  %>
 
 <div id="the-ot"></div>

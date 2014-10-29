@@ -8,15 +8,15 @@
     </td>
     <td>
       <p>Person:
-        <%= select("", "person_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => "All", :selected => params[:person_id]||current_user.person_id }) %>
+        <%#= select("", "person_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => "All", :selected => params[:person_id]||current_user.person_id }) %>
       </p>
     </td>
 
     <td>
        <p>Period from:
-        <%= select_period("","period_from",params[:period_from]) %>
+        <%#= select_period("","period_from",params[:period_from]) %>
         to:
-        <%= select_period("","period_to",params[:period_to]) %>
+        <%#= select_period("","period_to",params[:period_to]) %>
       </p>
     </td>
     <td>
