@@ -46,7 +46,7 @@ class Person < ActiveRecord::Base
     my_bookings.each{|booking| ids += (booking.person_id.to_s+",")} 
     ids += " 0 "
 
-    teams = self.where(:conditions=> "id in (#{ids})", :order => "english_name")
+    teams = self.where("id in (#{ids})").order("english_name")
 
     case 
       when current_user.roles == "providence_breaker"

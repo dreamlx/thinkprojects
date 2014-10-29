@@ -1,5 +1,5 @@
 class BillingsController < ApplicationController
-  filter_access_to :all
+  # filter_access_to :all
   def index
     #list
     #render :action => 'list'

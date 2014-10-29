@@ -28,6 +28,6 @@ class User < ActiveRecord::Base
   end
 
    def role_symbols
-    @role_symbols ||= (roles || []).map {|r| r.to_sym}
+    @role_symbols ||= roles
  end
 end

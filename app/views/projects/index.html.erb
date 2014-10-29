@@ -16,9 +16,9 @@
 			<th  colspan="3">OP</th>
 		</tr>
 
-		<% for project in @projects %>
+		<% @projects.each do |project| %>
 		<tr id="item_<%= project.id %>" class="project_item">
-		<%= render :partial => 'item', :locals => { :project => project } %>
+			<%= render :partial => 'item', :locals => { :project => project } %>
 		</tr>
 		<% end %>
 	</table>

@@ -1,12 +1,7 @@
 source 'http://ruby.taobao.org'
 
 gem 'rails', '3.2.19'
-
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
 gem 'sqlite3'
-
 gem 'json'
 
 # Gems used only for assets and not required
@@ -14,10 +9,6 @@ gem 'json'
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
-
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platforms => :ruby
-
   gem 'uglifier', '>= 1.0.3'
 end
 
@@ -39,12 +30,10 @@ gem 'jquery-rails'
 # gem 'ruby-debug'
 
 gem 'acts_as_commentable', '3.0.1'
-# gem "rails3-restful-authentication", "~> 3.0.1"
-gem 'declarative_authorization'
 gem 'will_paginate'
 gem 'state_machine'
 gem 'iconv'
 
 gem 'devise'
-gem 'devise-encryptable'
-gem 'thin'
+gem 'devise-encryptable' # migrate from restful-authentication
+gem 'thin' # fix warning issues

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141028152455) do
+ActiveRecord::Schema.define(:version => 20141029072402) do
 
   create_table "billings", :force => true do |t|
     t.timestamp "created_on",                                                                    :null => false
@@ -88,11 +88,11 @@ ActiveRecord::Schema.define(:version => 20141028152455) do
   end
 
   create_table "comments", :force => true do |t|
-    t.string   "title",            :limit => 50, :default => ""
-    t.string   "comment",                        :default => ""
-    t.integer  "commentable_id",                 :default => 0
-    t.string   "commentable_type", :limit => 15, :default => ""
-    t.integer  "user_id",                        :default => 0
+    t.string   "title",            :limit => 50,  :default => ""
+    t.text     "comment",          :limit => 255, :default => ""
+    t.integer  "commentable_id",                  :default => 0
+    t.string   "commentable_type", :limit => 15,  :default => ""
+    t.integer  "user_id",                         :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end

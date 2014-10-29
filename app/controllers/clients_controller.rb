@@ -2,7 +2,7 @@ class ClientsController < ApplicationController
   # GET /clients
   # GET /clients.xml
 
-    filter_access_to :all
+    # # filter_access_to :all
   def index
     @statuses = Dict.find(:all,
       :conditions =>"category ='client_status'")

@@ -1,6 +1,6 @@
 
 class PersonalchargesController < ApplicationController
-  filter_access_to :all
+  # filter_access_to :all
   #caches_action :index
 
   # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
@@ -188,12 +188,12 @@ class PersonalchargesController < ApplicationController
     unless items.nil?
       items.each{|key,value|
         p = Personalcharge.find(value)
-        case params[:do_action]
-        when "approval":
+        case 
+        when params[:do_action] == "approval"
           p.approval if p.state == "pending"
-        when "disapproval":
+        when params[:do_action] == "disapproval"
           p.disapproval if p.state == "pending"
-        when "destroy":
+        when params[:do_action] == "destroy"
           p.destroy if p.state == "pending"
 
         else

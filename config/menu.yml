@@ -1,7 +1,7 @@
 ## YAML Template.
 -
   title: Home
-  url: /homepage
+  url: /
 -
   title: Project
   url: /projects

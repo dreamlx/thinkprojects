@@ -15,6 +15,6 @@ class Dict < ActiveRecord::Base
   end
 
   def self.get_forward(code='')
-    self.where(:conditions => " code like '#{code}%'")
+    self.where(" code like '#{code}%'")
   end
 end

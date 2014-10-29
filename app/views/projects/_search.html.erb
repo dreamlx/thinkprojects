@@ -12,7 +12,7 @@
       </td>
       <td>
         Member:
-        <%= f.select("booking_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => "All" }) %>
+        <%#= f.select("booking_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => "All" }) %>
       </td>
       <td>
         Status:
@@ -20,7 +20,7 @@
       </td>
       <td>
         Order by:
-        <%= f.select("order_by",["job_code","created_on","client_name"].collect{|p| [p,p]},{ :include_blank => "All" }) %>
+        <%#= f.select("order_by",["job_code","created_on","client_name"].collect{|p| [p,p]},{ :include_blank => "All" }) %>
       </td>
 
       <td><%= submit_tag '查询' %></td>

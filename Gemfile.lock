@@ -40,7 +40,6 @@ GEM
       execjs
     coffee-script-source (1.8.0)
     daemons (1.1.9)
-    declarative_authorization (0.5.7)
     devise (3.4.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -131,7 +130,6 @@ PLATFORMS
 DEPENDENCIES
   acts_as_commentable (= 3.0.1)
   coffee-rails (~> 3.2.1)
-  declarative_authorization
   devise
   devise-encryptable
   iconv

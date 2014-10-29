@@ -4,10 +4,10 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.xml
   #
-  auto_complete_for :client,:english_name
-  auto_complete_for :project,:job_code
+  # auto_complete_for :client,:english_name
+  # auto_complete_for :project,:job_code
 
-  #filter_access_to :all
+  ## filter_access_to :all
   
   def index
     @project = Project.new(params[:project])

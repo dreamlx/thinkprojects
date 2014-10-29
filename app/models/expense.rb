@@ -36,21 +36,21 @@ class Expense < ActiveRecord::Base
 
   def self.my_expenses(current_user,sql="1", order_str="expenses.charge_date desc,expenses.state desc")
     
-    case current_user.roles
-      when "providence_breaker":
+    case 
+      when current_user.roles == "providence_breaker"
 
-      when "partner":
+      when current_user.roles == "partner"
         projects = Project.my_projects(current_user)
 
         prj_ids = ""
         projects.each{|p| prj_ids += " #{p.id}," }
         prj_ids += "0"
         sql += " and project_id in (#{prj_ids})" #和自己项目有关
-      when "manager":
+      when current_user.roles == "manager"
         sql += " and (expenses.person_id = #{current_user.person_id})"
-      when "senior":
+      when current_user.roles == "senior"
         sql += " and (expenses.person_id = #{current_user.person_id})"        
-      when "staff":
+      when current_user.roles == "staff"
         sql += " and (expenses.person_id = #{current_user.person_id})"
     else
     end

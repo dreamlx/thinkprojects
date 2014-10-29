@@ -51,16 +51,16 @@ class Personalcharge < ActiveRecord::Base
     projects.each{|p| prj_ids += " #{p.id}," }
     prj_ids += "0"
 
-    case current_user.roles
-    when "providence_breaker":
+    case 
+    when current_user.roles == "providence_breaker"
 
-    when "partner":
+    when current_user.roles == "partner"
       sql += " and project_id in (#{prj_ids})"
-    when "manager":
+    when current_user.roles == "manager"
       sql += " and (person_id = #{current_user.person_id})"
-    when "senior":
+    when current_user.roles == "senior"
       sql += " and (person_id = #{current_user.person_id})"        
-    when "staff":
+    when current_user.roles == "staff"
       sql += " and (person_id = #{current_user.person_id})"
     else
     end
@@ -80,16 +80,16 @@ class Personalcharge < ActiveRecord::Base
     projects.each{|p| prj_ids += " #{p.id}," }
     prj_ids += "0"
 
-    case current_user.roles
-    when "providence_breaker":
+    case 
+    when current_user.roles == "providence_breaker"
 
-    when "partner":
+    when current_user.roles == "partner"
       sql += " and project_id in (#{prj_ids})"
-    when "manager":
+    when current_user.roles == "manager"
       sql += " and (person_id = #{current_user.person_id})"
-    when "senior":
+    when current_user.roles == "senior"
       sql += " and (person_id = #{current_user.person_id})"        
-    when "staff":
+    when current_user.roles == "staff"
       sql += " and (person_id = #{current_user.person_id})"
     else
     end

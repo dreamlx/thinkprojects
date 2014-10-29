@@ -4,20 +4,16 @@
     <tr>
       <th>帐号：</th>
       <th>角色：</th>
-      <% if Authorization.current_user.role_symbols.to_s != 'guest' %>
       <th>操作：</th>
-      <% end %>
     </tr>
     <%- @users.each do |user| -%>
       <tr>
         <td><b><%= link_to user.login,user %></b></td>
         <td><%= user.roles %></td>
-        <% if Authorization.current_user.role_symbols.to_s != 'guest' %>
         <td>
-          <%= link_to '编辑', [:edit,user]  if permitted_to? :update, user %>
-          <%= link_to '删除', user, :confirm => 'Are you sure?', :method => :delete if permitted_to? :delete, user  %>
+          <%= link_to '编辑', [:edit,user] %>
+          <%= link_to '删除', user, :confirm => 'Are you sure?', :method => :delete %>
         </td>
-        <% end %>
       </tr>
     <%- end -%>
   </tbody>

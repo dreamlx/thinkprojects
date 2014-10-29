@@ -12,12 +12,12 @@
 
   <p><label for="Project_client">Client:</label>
     <%= select("project", "client_id",
-      Client.where(:order=>"english_name").collect {|p| [ p.client_code+"||"+p.english_name, p.id ] }, { :include_blank => false }) %>
+      Client.order("english_name").collect {|p| [ p.client_code+"||"+p.english_name, p.id ] }, { :include_blank => false }) %>
   </p>
 
   <p><label for="Project_GMU">GMU:</label>
     <%= select("project", "GMU_id",
-      Dict.where(:order=>"code",:conditions =>"category ='GMU'").collect {|p| [ p.code+"||"+p.title, p.id ] }, { :include_blank => false }) %>
+      Dict.order("code",:conditions =>"category ='GMU'").collect {|p| [ p.code+"||"+p.title, p.id ] }, { :include_blank => false }) %>
   </p>
 
   <p>
@@ -26,14 +26,9 @@
   </p>
 
   <p><label><b>Service line code:</b></label><%= select("project", "service_id",
-      Dict.where(:order=>"code",:conditions =>"category ='service_code'").collect {|p| [ p.code+"||"+p.title, p.id ] }, { :include_blank => false }) %>
+      Dict.order("code",:conditions =>"category ='service_code'").collect {|p| [ p.code+"||"+p.title, p.id ] }, { :include_blank => false }) %>
 
   </p>
-
-  <!--p><label><b>Job revenue type</b></label><%= select("project", "revenue_id",
-    Dict.where(:order=>"code",:conditions =>"category ='revenue_type'").collect {|p| [ p.code+"||"+p.title, p.id ] }, { :include_blank => false }) %>
-
-  </p-->
 
   <p>
     <label for="Project_starting_date"><%= Project.human_attribute_name("starting_date") %></label>
@@ -46,11 +41,6 @@
  <%= f.text_field :ending_date ,{:class=>'tcal'}%>
 
   </p>
-
-
-  <!--p><label><b>Collection risk:</b></label><%= select("project", "risk_id",
-    Dict.where(:order=>"code",:conditions =>"category ='risk'").collect {|p| [ p.code+"||"+p.title, p.id ] }, { :include_blank => false }) %>
-</p-->
 
   <hr/>
 

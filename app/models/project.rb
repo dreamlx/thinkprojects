@@ -27,7 +27,7 @@ class Project < ActiveRecord::Base
     :client_name =>"client name"
   }
   
-
+  attr_accessible :job_code, :state
 
   has_many :billings,         :dependent => :destroy
   has_many :expenses,         :dependent => :destroy
