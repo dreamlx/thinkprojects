@@ -39,8 +39,12 @@ gem 'jquery-rails'
 # gem 'ruby-debug'
 
 gem 'acts_as_commentable', '3.0.1'
-gem "rails3-restful-authentication", "~> 3.0.1"
+# gem "rails3-restful-authentication", "~> 3.0.1"
 gem 'declarative_authorization'
 gem 'will_paginate'
 gem 'state_machine'
 gem 'iconv'
+
+gem 'devise'
+gem 'devise-encryptable'
+gem 'thin'

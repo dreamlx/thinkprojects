@@ -3,22 +3,27 @@
 
   <table>
     <tr>
-      <td>Job_code:<%= text_field_with_auto_complete :project,:job_code,{:size=>12},
-          {:skip_style=>true}  %>
+      <td>
+        Job_code:<%= f.text_field :job_code,{:size=>12}  %>
       </td>
-      <td><%= Project.human_attribute_name("client_name") %>
-        <%= text_field_with_auto_complete :client,:english_name,{:size=>20},
-          {:skip_style=>true}  %>
+      <td>
+        <%= Project.human_attribute_name("client_name") %>
+        <%#= f.text_field :client_name, {:size=>20} %>
       </td>
       <td>
         Member:
-<%= select("", "booking_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => "All" }) %>
+        <%= f.select("booking_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => "All" }) %>
       </td>
-      <td>Status:<%= select("", "state", ["pending","approved","disapproved","closed"].collect {|p| [p.humanize,p] }, { :include_blank => "All" }) %>
-</td>
-<td> Order by:<%= select("","order_by",["job_code","created_on","client_name"].collect{|p| [p,p]},{ :include_blank => "All" }) %></td>
+      <td>
+        Status:
+        <%= f.select("state", ["pending","approved","disapproved","closed"].collect {|p| [p.humanize,p] }, { :include_blank => "All" }) %>
+      </td>
+      <td>
+        Order by:
+        <%= f.select("order_by",["job_code","created_on","client_name"].collect{|p| [p,p]},{ :include_blank => "All" }) %>
+      </td>
 
-<td><%= submit_tag '查询' %></td>
+      <td><%= submit_tag '查询' %></td>
     </tr>
   </table>
 

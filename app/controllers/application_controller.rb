@@ -6,14 +6,6 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   include ApplicationHelper
   include UsersHelper
-  #protect_from_forgery # See ActionController::RequestForgeryProtection for details
-  
-  include AuthenticatedSystem
-
-  helper_method :current_user, :logged_in?
-  # filter_parameter_logging :password,:password_confirmation
-  before_filter :set_current_user
-  #before_fiter :set_language
 
   protected
     def permission_denied
@@ -94,7 +86,7 @@ class ApplicationController < ActionController::Base
 
       request_language = request_language.nil? ? nil : request_language[/[^,;]+/]
 
-      I18n.locale = request_language if request_language && File.exist?("#{RAILS.root}/config/locales/#{request_language}.yml")
+      I18n.locale = request_language if request_language && File.exist?("#{Rails.root}/config/locales/#{request_language}.yml")
 
     end
     

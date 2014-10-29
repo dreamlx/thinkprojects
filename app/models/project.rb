@@ -106,11 +106,11 @@ class Project < ActiveRecord::Base
   def self.my_projects(current_user,sql="1",order_str="projects.created_on") 
     if current_user.roles == 'providence_breaker' 
       #all projects or current_user.roles == "parnter"
-      projects = Project.where(:conditions=>sql, :order=> order_str, :include=>[:client, :bookings] )
+      projects = Project.all
     else
       # the booking projects including me
       sql += " and bookings.person_id = #{current_user.person_id}"
-      projects = Project.where(:conditions=>sql, :order=> order_str, :include=>[:client, :bookings] )
+      projects = Project.all #find(:all, :conditions => sql, :order=> order_str, :include=>[:client, :bookings] )
     end
     return projects   
   end

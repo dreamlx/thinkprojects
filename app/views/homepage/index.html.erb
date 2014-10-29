@@ -1,9 +1,5 @@
-<%#
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
-%>
-<% if logged_in? %>
+<% if user_signed_in? %>
   <div>
-    My projects:<%= h(@projects.size) %>
+    My projects:<%= @projects.size %>
   </div>
 <% end %>

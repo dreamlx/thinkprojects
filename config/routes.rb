@@ -1,11 +1,13 @@
 Thinkprojects::Application.routes.draw do
+  devise_for :users
+
   resources :people
-  match '/logout' => 'sessions#destroy', :as => :logout
-  match '/login' => 'sessions#new', :as => :login
-  match '/register' => 'users#create', :as => :register
-  match '/signup' => 'users#new', :as => :signup
+  # match '/logout' => 'sessions#destroy', :as => :logout
+  # match '/login' => 'sessions#new', :as => :login
+  # match '/register' => 'users#create', :as => :register
+  # match '/signup' => 'users#new', :as => :signup
   resources :users
-  resource :session
+  # resource :session
   resources :clients
   resources :billings
   resources :dicts
@@ -55,5 +57,5 @@ Thinkprojects::Application.routes.draw do
 
   resources :periods
   root :to => 'homepage#index'
-  match '/:controller(/:action(/:id))'
+  # match '/:controller(/:action(/:id))'
 end

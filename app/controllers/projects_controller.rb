@@ -1,3 +1,5 @@
+#coding: utf-8
+
 class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.xml
@@ -17,19 +19,18 @@ class ProjectsController < ApplicationController
     sql += " and job_code like '%#{@project.job_code}%' " if @project.job_code.present?
     sql += " and state = '#{params[:state]}'" if params[:state].present?
   
-    case params[:order_by]
-    when "job_code":
+    if params[:order_by] == "job_code"
         order_str = "projects.job_code"
-    when "created_on":
+    elsif params[:order_by] == "created_on"
         order_str =" projects.created_on desc"
-    when "client_name":
+    elsif params[:order_by] == "client_name"
         order_str ="clients.english_name"
     else
       order_str = "projects.created_on desc"
     end
     
     projects = Project.my_projects(current_user,sql,order_str)
-    @projects = projects.paginate(:page=>params[:page]||1)
+    @projects = Project.paginate(:page=>params[:page]||1)
     
     respond_to do |format|
       format.html # index.rhtml
@@ -190,14 +191,14 @@ class ProjectsController < ApplicationController
     unless items.nil?
       items.each{|key,value|
         project = Project.find(value)
-        case params[:do_action]
-        when "approval":
+        case 
+        when params[:do_action] == "approval"
             project.approval if project.state == "pending"
-        when "disapproval":
+        when params[:do_action] == "disapproval"
             project.disapproval if project.state == "pending"
-        when "destroy":
+        when params[:do_action] == "destroy"
             project.destroy if project.state == "pending"
-        when "close":
+        when params[:do_action] == "close"
             project.close if project.state == "approved"
         else
     

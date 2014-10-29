@@ -99,7 +99,7 @@ class ApplicationController < ActionController::Base
 
     request_language = request_language.nil? ? nil : request_language[/[^,;]+/]
 
-    I18n.locale = request_language if request_language && File.exist?("#{RAILS.root}/config/locales/#{request_language}.yml")
+    I18n.locale = request_language if request_language && File.exist?("#{Rails.root}/config/locales/#{request_language}.yml")
 
   end
   
