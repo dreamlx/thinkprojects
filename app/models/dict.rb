@@ -5,6 +5,7 @@ class Dict < ActiveRecord::Base
   has_many :projects
   has_many :overtimes
 
+  attr_accessible :category, :code, :title
   scope :GMU,           :conditions => "category ='GMU'", :order=>'code'
   scope :department,    :conditions => "category = 'department'", :order=>'code'
   scope :expense_types, :conditions => "category = 'expense_type'", :order=>'code'

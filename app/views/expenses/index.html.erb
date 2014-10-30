@@ -4,8 +4,7 @@
 <% end %>
 
 <hr/>
-<%= link_to 'Export data', :controller=>"reports", :action => "expenses_export" %>||
-<%= link_to 'New expense', :action => 'new' %>
+<%#= link_to 'Export data', :controller=>"reports", :action => "expenses_export" %>||<%= link_to 'New expense', :action => 'new' %>
 <form name="myform" action="expenses/batch_actions" method="post">
 <%= render :partial => 'homepage/all_op' %>
 <table>
@@ -22,7 +21,7 @@
     <th colspan="3">OP</th>
   </tr>
 
-  <% for expense in @expenses %>
+  <% @expenses.each do |expense| %>
     <%= render :partial => 'item', :locals => { :expense => expense } %>
   <% end %>
   <tr>

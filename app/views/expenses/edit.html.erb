@@ -1,6 +1,8 @@
 <h1><%=  "Editing Expense" %></h1>
 
-<%= error_messages_for :expense %>
+   <% @expense.errors.full_messages.each do |msg| %>
+      <p><%= msg %></p>
+   <% end %>
 
 <%= form_for(:expense, :url => expense_path(@expense), :html => { :method => :put }) do |f| %>
 <%= render :partial => 'form',:locals => { :f => f }%>

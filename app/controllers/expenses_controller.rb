@@ -59,15 +59,11 @@ class ExpensesController < ApplicationController
   def create
     @expense = Expense.new(params[:expense])
 
-    respond_to do |format|
-      if @expense.save
-        flash[:notice] = 'Expense was successfully created.'
-        format.html { redirect_to expense_url(@expense) }
-        format.xml  { head :created, :location => expense_url(@expense) }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @expense.errors.to_xml }
-      end
+    if @expense.save
+      flash[:notice] = 'Expense was successfully created.'
+      redirect_to @expense
+    else
+      render :action => "new"
     end
   end
 

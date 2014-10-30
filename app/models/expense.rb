@@ -1,13 +1,15 @@
 class Expense < ActiveRecord::Base
   acts_as_commentable
   validates_presence_of :charge_date
-  validates_presence_of :person_id
-  validates_presence_of :type
+  # validates_presence_of :person_id
+  # validates_presence_of :type
   validates_numericality_of :fee
 
   belongs_to :project
   belongs_to :period
   belongs_to :person
+
+  attr_accessible :charge_date, :approved_by, :billable, :expense_category, :fee, :desc, :person_id, :project_id
   
   state_machine :initial => :pending do
     event :approval do
@@ -55,9 +57,7 @@ class Expense < ActiveRecord::Base
     else
     end
     
-    self.where(:conditions=> sql,
-      :joins=>" left join projects on project_id = projects.id left join clients on client_id = clients.id",
-      :order=>order_str)
+    self.joins(" left join projects on project_id = projects.id left join clients on client_id = clients.id").where(sql).order(order_str)
   end
 
   def employee

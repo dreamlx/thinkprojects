@@ -1,6 +1,8 @@
 <h1>New dict</h1>
 
-<%= error_messages_for :dict %>
+<% @dict.errors.full_messages.each do |msg| %>
+  <p><%= msg %></p>
+<% end %>
 <%= form_for(:dict, :url => dicts_path) do |f| %>
 
   <%= render :partial => 'form',:locals => { :f => f }%>

@@ -17,11 +17,7 @@
     <th colspan="3"></th>
   </tr>
   
-<% for dict in @dicts %>
-
-    <%= render :partial => 'item', :locals => { :dict => dict } %>
-
-<% end %>
+  <%= render @dicts %>
 </table>
 
 <%= will_paginate @dicts%>

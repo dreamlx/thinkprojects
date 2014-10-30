@@ -1,6 +1,8 @@
 <h1>Editing dict</h1>
 
-<%= error_messages_for :dict %>
+<% @dict.errors.full_messages.each do |msg| %>
+  <p><%= msg %></p>
+<% end %>
 
 <%= form_for(:dict, :url => dict_path(@dict), :html => { :method => :put }) do |f| %>
   <%= render :partial => 'form',:locals => { :f => f }%>

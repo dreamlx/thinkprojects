@@ -10,6 +10,8 @@ class Person < ActiveRecord::Base
   has_many :projects, :through => :bookings
   has_many  :expenses
 
+  attr_accessible :chinese_name, :english_name, :employee_number, :charge_rate, :employment_date, :address, :postalcode, :mobile, :tel, :position, :gender, :department_id, :status_id
+
   has_many :manager_projects,
     :class_name=> "Project",
     :foreign_key => :manager_id
@@ -50,17 +52,17 @@ class Person < ActiveRecord::Base
 
     case 
       when current_user.roles == "providence_breaker"
-        teams = self.where(:order => "english_name")
+        teams = self.order("english_name")
       when current_user.roles == "partner"
-        teams = self.where(:order => "english_name")
+        teams = self.order("english_name")
       when current_user.roles == "manager"
-        teams = self.where(:conditions=> "id in (#{ids})", :order => "english_name")
+        teams = self.where("id in (#{ids})").order("english_name")
       when current_user.roles == "senior"
-        teams = self.where(:conditions => "id = #{current_user.person_id}")       
+        teams = self.where("id = #{current_user.person_id}")       
       when current_user.roles == "staff"
-        teams = self.where(:conditions => "id = #{current_user.person_id}")
+        teams = self.where("id = #{current_user.person_id}")
     else
-        teams = self.where(:order => "english_name")
+        teams = self.order("english_name")
     end
     
     return teams

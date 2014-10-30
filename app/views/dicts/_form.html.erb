@@ -1,5 +1,6 @@
-<%= error_messages_for 'dict' %>
-
+<% @dict.errors.full_messages.each do |msg| %>
+  <p><%= msg %></p>
+<% end %>
 <!--[form:dict]-->
 <p><label for="dict_category">Category</label><br/>
 <%= text_field 'dict', 'category'  %></p>
