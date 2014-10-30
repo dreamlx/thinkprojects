@@ -3,13 +3,15 @@ Thinkprojects::Application.routes.draw do
 
   resources :people
   resources :users
+  resources :admins do
+    get :auto_complete_hours, on: :collection
+    get :check_ot,            on: :collection
+  end
   resources :clients
   resources :billings
   resources :dicts
   resources :bookings do
-    member do
-      post :bookall
-    end
+    post :bookall,            on: :member
   end
   resources :projects do
     member do

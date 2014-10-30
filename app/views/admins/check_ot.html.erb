@@ -5,7 +5,7 @@
 
 <%#= "check_ot.html" %>
 <ul>
-<%= @messages %>
+<%= simple_format(@messages) %>
 </ul>
 
 <%= link_to 'Back', :action => 'index'%>

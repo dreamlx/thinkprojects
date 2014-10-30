@@ -1,3 +1,8 @@
+<%= form_for(@period) do |f| %>
+  <% @period.errors.full_messages.each do |msg| %>
+     <p><%= msg %></p>
+  <% end %>
+
   <fieldset>
     <p>
       <label for="Period_number"><%= Period.human_attribute_name("number") %></label>
@@ -20,3 +25,5 @@
       <%= f.date_select :ending_date %>
     </p>
   </fieldset>
+  <%= f.submit %>
+<% end %>

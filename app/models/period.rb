@@ -6,6 +6,7 @@ class Period < ActiveRecord::Base
 
   has_many :billings
 
+  attr_accessible :number, :work_hours, :starting_date, :ending_date
   def self.search_by_sql(search,page)
     
     paginate :per_page => 20, :page => page,

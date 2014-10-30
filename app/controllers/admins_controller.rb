@@ -1,6 +1,5 @@
 class AdminsController < ApplicationController
   def index
-
   end
   
   def auto_complete_hours

@@ -11,10 +11,10 @@
         <td><b><%= link_to user.login,user %></b></td>
         <td><%= user.roles %></td>
         <td>
-          <%= link_to '编辑', [:edit,user] %>
+          <%= link_to '编辑', edit_user_path(user) %>
           <%= link_to '删除', user, :confirm => 'Are you sure?', :method => :delete %>
         </td>
       </tr>
-    <%- end -%>
+    <% end %>
   </tbody>
 </table>
