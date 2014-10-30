@@ -1,0 +1,13 @@
+<div id="user_bar">
+	<% if user_signed_in? %>
+		<%= link_to " |注销",destroy_user_session_path %>
+		<%= link_to " |欢迎，"+current_user.login+"!",current_user %>
+		<%= link_to " |用户中心",current_user %>
+    <% if controller_name == "users" || current_user.roles == 'providence_breaker' %>
+  		<%= link_to " |用户列表", users_path %>
+      <%= link_to " |创建用户" %>
+    <% end %>	
+	<% else %>
+		<%= link_to "登录", new_user_session_path %>
+	<% end %>
+</div>
