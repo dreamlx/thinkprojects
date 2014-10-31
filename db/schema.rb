@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141031020220) do
+ActiveRecord::Schema.define(:version => 20141031070746) do
 
   create_table "billings", :force => true do |t|
     t.timestamp "created_on",                                                                    :null => false
@@ -43,48 +43,17 @@ ActiveRecord::Schema.define(:version => 20141031020220) do
   end
 
   create_table "clients", :force => true do |t|
-    t.string    "chinese_name"
-    t.string    "english_name",                :default => ""
-    t.integer   "person_id",    :limit => 11,  :default => 0,  :null => false
-    t.string    "address_1"
-    t.string    "person1",      :limit => 50
-    t.string    "person2",      :limit => 50
-    t.string    "address_2"
-    t.string    "city_1"
-    t.string    "city_2"
-    t.string    "state_1"
-    t.string    "state_2"
-    t.string    "country_1",    :limit => 100
-    t.string    "country_2",    :limit => 100
-    t.string    "postalcode_1", :limit => 20
-    t.string    "postalcode_2", :limit => 20
-    t.string    "title_1",      :limit => 50
-    t.string    "title_2",      :limit => 50
-    t.integer   "gender1_id",   :limit => 11
-    t.integer   "gender2_id",   :limit => 11
-    t.string    "mobile_1",     :limit => 20
-    t.string    "mobile_2",     :limit => 20
-    t.string    "tel_1",        :limit => 30
-    t.string    "tel_2",        :limit => 30
-    t.string    "fax_1",        :limit => 20
-    t.string    "fax_2",        :limit => 20
-    t.string    "email_1"
-    t.string    "email_2"
-    t.string    "description"
-    t.integer   "category_id",  :limit => 11
-    t.integer   "status_id",    :limit => 11
-    t.integer   "region_id",    :limit => 11
-    t.integer   "industry_id",  :limit => 11
-    t.string    "client_code",  :limit => 10,  :default => "", :null => false
-    t.string    "person3",      :limit => 50,  :default => "", :null => false
-    t.string    "title_3",      :limit => 50,  :default => "", :null => false
-    t.integer   "gender3_id",   :limit => 11,  :default => 0,  :null => false
-    t.string    "mobile_3",     :limit => 20,  :default => "", :null => false
-    t.string    "tel_3",        :limit => 20,  :default => "", :null => false
-    t.string    "fax_3",        :limit => 20,  :default => "", :null => false
-    t.string    "email_3",      :limit => 50,  :default => "", :null => false
-    t.timestamp "created_on",                                  :null => false
-    t.timestamp "updated_on",                                  :null => false
+    t.string   "chinese_name"
+    t.string   "english_name",               :default => ""
+    t.integer  "person_id",    :limit => 11, :default => 0,  :null => false
+    t.string   "description"
+    t.integer  "category_id",  :limit => 11
+    t.integer  "status_id",    :limit => 11
+    t.integer  "region_id",    :limit => 11
+    t.integer  "industry_id",  :limit => 11
+    t.string   "client_code",  :limit => 10, :default => "", :null => false
+    t.datetime "created_on",                                 :null => false
+    t.datetime "updated_on",                                 :null => false
   end
 
   create_table "comments", :force => true do |t|
