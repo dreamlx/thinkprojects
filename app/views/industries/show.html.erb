@@ -1,6 +1,6 @@
-<% for column in Industry.content_columns %>
+<% Industry.content_columns.each do |column| %>
 <p>
-  <b><%= column.human_name %>:</b> <%=h @industry.send(column.name) %>
+  <b><%= column.human_name %>:</b> <%= @industry.send(column.name) %>
 </p>
 <% end %>
 

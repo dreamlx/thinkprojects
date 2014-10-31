@@ -1,22 +1,17 @@
-#forward job_code, must set the title is 'forward_code'
-<%= form_for(:dict, :url => dicts_path, :html => { :method => :get }) do |f| %>
+<%= simple_form_for(:dict, :url => dicts_path, :html => { :method => :get }) do |f| %>
+  <%= f.input :category, required: false %>
+  <%= f.input :title, required: false %>
+  <%= f.button :submit, 'search' %>
+<% end %>
 
- category:<%= text_field("dict", "category") %>
- title:<%= text_field("dict", "title") %>
-<%= submit_tag '查询' %>
-
-<% end  %>
-
-<hr/>
- <%= link_to "New Dict", new_dict_path %>
+<%= link_to "New Dict", new_dict_path %>
 <table>
   <tr>
-  <% for column in Dict.content_columns %>
-    <th><%= column.human_name %></th>
-  <% end %>
+    <% Dict.content_columns.each do |column| %>
+      <th><%= column.human_name %></th>
+    <% end %>
     <th colspan="3"></th>
-  </tr>
-  
+  </tr>  
   <%= render @dicts %>
 </table>
 

@@ -206,7 +206,7 @@
 
   <tr>
     <td><b>Industry</b></td>
-    <td><%=@client.industry.title%></td>
+    <td><%=@client.industry.title if @client.industry %></td>
   </tr>
 
   <tr>

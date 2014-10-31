@@ -1,6 +1,6 @@
 class IndustriesController < ApplicationController
   def index
-    @industries  = Industry.paginate :page => params[:page], :per_page => 10
+    @industries  = Industry.paginate :page => params[:page]
   end
 
   def show

@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
 
   helper :all # include all helpers, all the time
   include ApplicationHelper
-  include UsersHelper
 
   protected
     def permission_denied

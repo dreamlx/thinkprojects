@@ -2,7 +2,7 @@ Thinkprojects::Application.routes.draw do
   devise_for :users
 
   resources :people
-  resources :users
+  resources :users, only: [:index, :show, :edit, :update, :destroy]
   resources :admins do
     get :auto_complete_hours, on: :collection
     get :check_ot,            on: :collection

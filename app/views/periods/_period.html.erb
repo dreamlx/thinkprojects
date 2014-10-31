@@ -1,0 +1,9 @@
+<tr>
+  <td><%= period.number %></td>
+  <td><%= period.work_hours %></td>
+  <td><%= period.starting_date %></td>
+  <td><%= period.ending_date %></td>
+  <td><%= link_to 'View', period %></td>
+  <td><%= link_to 'Edit', edit_period_path(period) %></td>
+  <td><%= link_to 'Destroy', period, :confirm => 'Are you sure?', :method => :delete %></td>
+</tr>

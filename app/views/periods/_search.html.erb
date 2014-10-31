@@ -1,5 +1,4 @@
-<%= form_for(:period, :url => periods_path, :html => { :method => :get }) do |f| %>
-  Number:<%= text_field :period, :number %>
-
- <input type="submit" value="Search" />
+<%= simple_form_for(:period, :url => periods_path, :html => { :method => :get }) do |f| %>
+  <%= f.input :number, required: false %>
+  <%= f.button :submit, 'search' %>
 <% end %>

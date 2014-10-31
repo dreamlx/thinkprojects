@@ -1,16 +1,15 @@
 class Period < ActiveRecord::Base
-  validates_numericality_of :work_hours
-
+  validates :work_hours, numericality: true
   has_many :expenses
   has_many :personalcharges
-
   has_many :billings
 
   attr_accessible :number, :work_hours, :starting_date, :ending_date
-  def self.search_by_sql(search,page)
-    
-    paginate :per_page => 20, :page => page,
-      :conditions=>search,:order=>"number"
+
+  def self.search_by_sql(search,page)  
+    paginate  :page => page, 
+              :conditions => search,
+              :order => "number"
   end
   
   def self.today_period
@@ -20,11 +19,4 @@ class Period < ActiveRecord::Base
     
     return t_period
   end
-  # human names
-  ModelName = "period"
-  ColumnNames ={
-    :number => "number",
-    :starting_date => "starting_date",
-    :ending_date => "ending_date"
-  }
 end

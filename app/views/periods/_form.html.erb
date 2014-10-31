@@ -1,29 +1,7 @@
-<%= form_for(@period) do |f| %>
-  <% @period.errors.full_messages.each do |msg| %>
-     <p><%= msg %></p>
-  <% end %>
-
-  <fieldset>
-    <p>
-      <label for="Period_number"><%= Period.human_attribute_name("number") %></label>
-      <%= f.text_field :number %>
-    </p>
-
-    <p>
-      <label for="Period_work_hours"><%= Period.human_attribute_name("work_hours") %></label>
-      <%= f.text_field :work_hours %>
-    </p>
-
-    <hr/>
-    <p>
-      <label for="Period_starting_date"><%= Period.human_attribute_name("starting_date") %></label>
-      <%= f.date_select :starting_date %>
-    </p>
-
-    <p>
-      <label for="Period_ending_date"><%= Period.human_attribute_name("ending_date") %></label>
-      <%= f.date_select :ending_date %>
-    </p>
-  </fieldset>
-  <%= f.submit %>
+<%= simple_form_for(@period) do |f| %>
+  <%= f.input :number %>
+  <%= f.input :work_hours %>
+  <%= f.input :starting_date, as: :date %>
+  <%= f.input :ending_date, as: :date %>
+  <%= f.button :submit %>
 <% end %>

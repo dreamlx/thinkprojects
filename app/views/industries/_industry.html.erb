@@ -1,0 +1,8 @@
+<tr>
+  <% Industry.content_columns.each do |column| %>
+    <td><%=h industry.send(column.name).humanize %></td>
+  <% end %>
+  <td><%= link_to 'Show', industry %></td>
+  <td><%= link_to 'Edit', edit_industry_path(industry) %></td>
+  <td><%= link_to 'Destroy', industry, :confirm => 'Are you sure?', :method => :delete %></td>
+</tr>

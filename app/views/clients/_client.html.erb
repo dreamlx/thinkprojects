@@ -1,0 +1,9 @@
+<tr>
+  <td><%= client.chinese_name %></td>
+  <td><%= client.english_name %></td>
+  <td><b><%= client.client_code %></b></td>
+  <td><%= client.person.english_name unless client.person.blank?%></td>
+  <td><%= link_to 'Show', client %></td>
+  <td><%= link_to 'Edit', edit_client_path(client) %></td>
+  <td><%= link_to 'Destroy', client, :confirm => 'Are you sure?', :method => :delete %></td>
+</tr>

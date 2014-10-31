@@ -1,12 +1,5 @@
-<%= form_for(@industry) do |f| %>
-  <% @industry.errors.full_messages.each do |msg| %>
-    <p><%= msg %></p>
-  <% end %>
-
-  <p><label for="industry_code">Code</label><br/>
-  <%= f.text_field 'code'  %></p>
-
-  <p><label for="industry_title">Title</label><br/>
-  <%= f.text_field 'title'  %></p>
-  <%= f.submit %>
+<%= simple_form_for(@industry) do |f| %>
+  <%= f.input 'code' %></p>
+  <%= f.input 'title' %></p>
+  <%= f.button :submit %>
 <% end %>

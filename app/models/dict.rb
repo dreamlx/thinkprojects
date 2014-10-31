@@ -11,8 +11,8 @@ class Dict < ActiveRecord::Base
   scope :expense_types, :conditions => "category = 'expense_type'", :order=>'code'
 
   def self.search_by_sql(search,page = 1)
-    paginate :per_page => 20, :page => page,
-      :conditions=>search
+    paginate  :page => page,
+              :conditions => search
   end
 
   def self.get_forward(code='')
