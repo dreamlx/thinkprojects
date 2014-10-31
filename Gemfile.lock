@@ -84,6 +84,7 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.25.1)
     multi_json (1.10.1)
+    nested_form (0.3.2)
     orm_adapter (0.5.0)
     polyglot (0.3.5)
     rack (1.4.5)
@@ -160,6 +161,7 @@ DEPENDENCIES
   iconv
   jquery-rails
   json
+  nested_form
   rails (= 3.2.19)
   sass-rails!
   simple_form

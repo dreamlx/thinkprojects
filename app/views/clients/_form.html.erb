@@ -1,61 +1,23 @@
 
-<%= simple_form_for(@client) do |f| %>
+<%= simple_nested_form_for(@client) do |f| %>
 
-<p>Contact Information<p>
+  <h2>Contact Information</h2>
   <hr>
   <%= f.input :client_code %>
   <%= f.input :chinese_name %>
   <%= f.input :english_name %>
-  <b>Account Owner:</b><br>
-  <%= f.input :person_id, collection: @account_owners.map {|a| ["#{a.english_name}--#{a.employee_number}", a.id]} %>
+  <%= f.input :person, collection: @account_owners.map {|a| ["#{a.english_name}--#{a.employee_number}", a.id]} %>
 
+  <h2>Contacts</h2>
   <hr>
-  <p><b>Contact person1</b><br>
-  <%= f.input :person1 %>
-  <%= f.input :title_1 %>
-  <%= f.input :mobile_1 %>
-  <%= f.input :tel_1 %>
-  <%= f.input :fax_1 %>
-  <%= f.input :email_1 %>
-  <%= f.input :gender1_id, collection: @gender.map {|g| [g.title.capitalize, g.id]} %>
-  <p><b>Address</b><br>
-  <%= f.input :address_1 %>
-  <%= f.input :city_1 %>
-  <%= f.input :state_1 %>
-  <%= f.input :country_1 %>
-  <%= f.input :postalcode_1 %>
+  <%= f.fields_for :contacts %>
+  <p><%= f.link_to_add "Add a contact", :contacts %></p>
+  
+  <h2>General Informaiton</h2>
   <hr>
-
-  <p><b>Contact person2</b><br>
-  <%= f.input :person2 %>
-  <%= f.input :title_2 %>
-  <%= f.input :mobile_2 %>
-  <%= f.input :tel_2 %>
-  <%= f.input :fax_2 %>
-  <%= f.input :email_2 %>
-  <%= f.input :gender2_id, collection: @gender.map {|g| [g.title.capitalize, g.id]} %>
-  <p><b>Address</b><br>
-  <%= f.input :address_2 %>
-  <%= f.input :city_2 %>
-  <%= f.input :state_2 %>
-  <%= f.input :country_2 %>
-  <%= f.input :postalcode_2 %>
-  <hr>
-
-  <p><b>Contact person3</b><br>
-  <%= f.input :person3 %>
-  <%= f.input :title_3 %>
-  <%= f.input :mobile_3 %>
-  <%= f.input :tel_3 %>
-  <%= f.input :fax_3 %>
-  <%= f.input :email_3 %>
-  <%= f.input :gender3_id, collection: @gender.map {|g| [g.title.capitalize, g.id]} %>
-  <hr>
-
-  <p><h>General Informaiton</h></p>
-  <%= f.input :industry_id, collection: Industry.all.map {|i| ["#{i.code}||#{i.title}", i.id]} %>
-  <%= f.input :category_id, collection: @categories.map {|d| ["#{d.code}||#{d.title}", d.id]} %>
-  <%= f.input :status_id, collection: @statuses.map {|d| ["#{d.code}||#{d.title}", d.id]}%>
-  <%= f.input :region_id, collection: @regions.map {|d| ["#{d.code}||#{d.title}", d.id]}%>
+  <%= f.input :industry, collection: Industry.all.map {|i| ["#{i.code}||#{i.title}", i.id]} %>
+  <%= f.input :category, collection: @categories.map {|d| ["#{d.code}||#{d.title}", d.id]} %>
+  <%= f.input :status, collection: @statuses.map {|d| ["#{d.code}||#{d.title}", d.id]}%>
+  <%= f.input :region, collection: @regions.map {|d| ["#{d.code}||#{d.title}", d.id]}%>
   <%= f.button :submit %>
 <% end %>

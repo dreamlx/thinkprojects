@@ -1,0 +1,14 @@
+<p><b>Contact person</b><br>
+<%= f.input :name %>
+<%= f.input :title %>
+<%= f.input :mobile %>
+<%= f.input :tel %>
+<%= f.input :fax %>
+<%= f.input :email, as: :email %>
+<%= f.input :gender, collection: [:male, :female] %>
+<%= f.input :address %>
+<%= f.input :city %>
+<%= f.input :state %>
+<%= f.input :country %>
+<%= f.input :postalcode %>
+<%= f.link_to_remove "Remove this contact" %> 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141029072402) do
+ActiveRecord::Schema.define(:version => 20141031020220) do
 
   create_table "billings", :force => true do |t|
     t.timestamp "created_on",                                                                    :null => false
@@ -106,15 +106,20 @@ ActiveRecord::Schema.define(:version => 20141029072402) do
   end
 
   create_table "contacts", :force => true do |t|
-    t.integer "client_id", :limit => 11,  :default => 0,  :null => false
-    t.string  "name",      :limit => 50,  :default => "", :null => false
-    t.string  "title",     :limit => 50,  :default => "", :null => false
-    t.integer "gender",    :limit => 11,  :default => 0,  :null => false
-    t.string  "mobile",    :limit => 20,  :default => "", :null => false
-    t.string  "tel",       :limit => 20,  :default => "", :null => false
-    t.string  "fax",       :limit => 20,  :default => "", :null => false
-    t.string  "email",     :limit => 50,  :default => "", :null => false
-    t.string  "other",     :limit => 250, :default => "", :null => false
+    t.integer "client_id",  :limit => 11,  :default => 0,  :null => false
+    t.string  "name",       :limit => 50,  :default => "", :null => false
+    t.string  "title",      :limit => 50,  :default => "", :null => false
+    t.integer "gender",     :limit => 11,  :default => 0,  :null => false
+    t.string  "mobile",     :limit => 20,  :default => "", :null => false
+    t.string  "tel",        :limit => 20,  :default => "", :null => false
+    t.string  "fax",        :limit => 20,  :default => "", :null => false
+    t.string  "email",      :limit => 50,  :default => "", :null => false
+    t.string  "other",      :limit => 250, :default => "", :null => false
+    t.text    "address"
+    t.string  "city"
+    t.string  "state"
+    t.string  "country"
+    t.string  "postalcode"
   end
 
   create_table "costs", :force => true do |t|
