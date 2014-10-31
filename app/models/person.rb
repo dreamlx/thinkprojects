@@ -8,9 +8,9 @@ class Person < ActiveRecord::Base
   has_one  :user
   has_many :bookings
   has_many :projects, :through => :bookings
-  has_many  :expenses
+  has_many :expenses
 
-  attr_accessible :chinese_name, :english_name, :employee_number, :charge_rate, :employment_date, :address, :postalcode, :mobile, :tel, :position, :gender, :department_id, :status_id
+  attr_accessible :chinese_name, :english_name, :employee_number, :charge_rate, :employment_date, :address, :postalcode, :mobile, :tel, :position, :gender, :department_id, :status_id, :department, :status
 
   has_many :manager_projects,
     :class_name=> "Project",

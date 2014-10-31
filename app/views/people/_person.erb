@@ -1,0 +1,10 @@
+<tr>
+  <td><%= person.chinese_name %></td>
+  <td><%= person.english_name %></td>
+  <td><%= person.employee_number %></td>
+  <td><%= person.department.title if person.department %></td>
+  <td><%= person.position %></td>
+  <td><%= link_to 'Show', person %></td>
+  <td><%= link_to 'Edit', edit_person_path(person) %></td>
+  <td><%= link_to 'Destroy', person, :confirm => 'Are you sure destroy?', :method => :delete %></td>
+</tr>

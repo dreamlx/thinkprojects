@@ -1,11 +1,4 @@
 <h1><%=  "Editing Employee" %></h1>
-
-<%= form_for(:person, :url => person_path(@person), :html => { :method => :put }) do |f| %>
-  <%= render :partial => 'form',:locals => { :f => f }%>
-  <p>
-    <%= submit_tag 'Update' %>
-  </p>
-<% end %>
-
-<%= link_to 'View', person_path(@person) %> |
+<%= render 'form' %>
+<%= link_to 'View', @person %> |
 <%= link_to 'Back', people_path %>
