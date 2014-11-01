@@ -50,11 +50,11 @@ class ClientsController < ApplicationController
 
   private
     def set_params
-      @industries     = Industry.all
-      @categories     = Dict.where("category ='client_category'").order("code")
-      @statuses       = Dict.where("category ='client_status'").order("code")
-      @regions        = Dict.where("category ='region'").order("code")
+      @industries     = Industry.all.map {|i| ["#{i.code}||#{i.title}", i.id]}
+      @categories     = Dict.where("category ='client_category'").order("code").map {|d| ["#{d.code}||#{d.title}", d.id]}
+      @statuses       = Dict.where("category ='client_status'").order("code").map {|d| ["#{d.code}||#{d.title}", d.id]}
+      @regions        = Dict.where("category ='region'").order("code").map {|d| ["#{d.code}||#{d.title}", d.id]}
       @gender         = Dict.where("category ='gender'").order("code")
-      @account_owners = Person.order('english_name')
+      @account_owners = User.order('english_name').map {|a| ["#{a.english_name}--#{a.employee_number}", a.id]}
     end
 end

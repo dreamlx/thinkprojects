@@ -6,7 +6,7 @@
   <%= f.input :client_code %>
   <%= f.input :chinese_name %>
   <%= f.input :english_name %>
-  <%= f.input :person, collection: @account_owners.map {|a| ["#{a.english_name}--#{a.employee_number}", a.id]} %>
+  <%= f.input :person_id, collection: @account_owners %>
 
   <h2>Contacts</h2>
   <hr>
@@ -15,9 +15,9 @@
   
   <h2>General Informaiton</h2>
   <hr>
-  <%= f.input :industry, collection: Industry.all.map {|i| ["#{i.code}||#{i.title}", i.id]} %>
-  <%= f.input :category, collection: @categories.map {|d| ["#{d.code}||#{d.title}", d.id]} %>
-  <%= f.input :status, collection: @statuses.map {|d| ["#{d.code}||#{d.title}", d.id]}%>
-  <%= f.input :region, collection: @regions.map {|d| ["#{d.code}||#{d.title}", d.id]}%>
+  <%= f.input :industry_id, collection: @industries %>
+  <%= f.input :category_id, collection: @categories %>
+  <%= f.input :status_id, collection: @statuses %>
+  <%= f.input :region_id, collection: @regions %>
   <%= f.button :submit %>
 <% end %>

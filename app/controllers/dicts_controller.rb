@@ -1,6 +1,6 @@
 class DictsController < ApplicationController
   def index
-   dict = Dict.new(params[:dict])
+    dict = Dict.new(params[:dict])
     sql = ' 1 '
     sql += " and title like '%#{dict.title}%'" if dict.title.present?
     sql += " and category like '%#{dict.category}%'" if dict.category.present?
@@ -9,11 +9,6 @@ class DictsController < ApplicationController
 
   def show
     @dict = Dict.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.rhtml
-      format.xml  { render :xml => @dict.to_xml }
-    end
   end
 
   def new
@@ -26,46 +21,27 @@ class DictsController < ApplicationController
 
   def create
     @dict = Dict.new(params[:dict])
-    respond_to do |format|
-      if @dict.save
-        flash[:notice] = 'dict was successfully created.'
-        
-        format.html { redirect_to dict_url(@dict) }
-        format.xml  { head :created, :location => dict_url(@dict) }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @dict.errors.to_xml }
-      end
+    if @dict.save
+      flash[:notice] = 'dict was successfully created.'
+      
+      redirect_to @dict
+    else
+      render "new"
     end
   end
 
   def update
     @dict = Dict.find(params[:id])
-    respond_to do |format|
-      if @dict.update_attributes(params[:dict])
-        
-        flash[:notice] = 'Dict was successfully updated.'
-        format.html { redirect_to dict_url(@dict) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @dict.errors.to_xml }
-      end
+    if @dict.update_attributes(params[:dict])
+      flash[:notice] = 'Dict was successfully updated.'
+      redirect_to @dict
+    else
+      ender "edit"
     end
   end
 
   def destroy
-    @dict = Dict.find(params[:id])
-    @dict.destroy
-
-    #respond_to do |format|
-    #  format.html { redirect_to projects_url }
-    #  format.xml  { head :ok }
-    #end
-    render :update do |page|
-      page.remove "item_#{params[:id]}"
-      #page.replace_html 'flash_notice', "project was deleted"
-    end
+    Dict.find(params[:id]).destroy
+    redirect_to dicts_path
   end
-
 end
