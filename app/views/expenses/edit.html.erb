@@ -1,15 +1,5 @@
 <h1><%=  "Editing Expense" %></h1>
-
-   <% @expense.errors.full_messages.each do |msg| %>
-      <p><%= msg %></p>
-   <% end %>
-
-<%= form_for(:expense, :url => expense_path(@expense), :html => { :method => :put }) do |f| %>
-<%= render :partial => 'form',:locals => { :f => f }%>
-  <p>
-    <%= submit_tag 'Update' %>
-  </p>
-<% end %>
+<%= render 'form' %>
 
 <%= link_to 'View', expense_path(@expense) %> |
 <%= link_to 'Back', expenses_path %>

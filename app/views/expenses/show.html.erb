@@ -9,7 +9,7 @@
   </p>
   <p>
     <label for="Epxense_person">Employee</label>
-    <%=h @expense.person.english_name unless @expense.person.nil? %>
+    <%=h @expense.user.english_name if @expense.user %>
   </p>
   <p>
     <label for="Epxense_desc">Description</label>
@@ -25,11 +25,11 @@
   </p>
     <p>
     <label for="Epxense_client">Client Name</label>
-    <%=h @expense.project.client.english_name unless @expense.project.client.nil? %>
+    <%=h @expense.project.client.english_name if @expense.project %>
   </p>
     <p>
     <label for="Epxense_project_id">Project Code</label>
-    <%=h @expense.project.job_code %>
+    <%=h @expense.project.job_code if @expense.project %>
   </p>
     <p>
     <label for="Epxense_fee">Amount</label>
@@ -37,7 +37,7 @@
   </p>
 </fieldset>
 
-<%= link_to 'Edit', edit_expense_path(@expense) if @expense.state !="approved" and @expense.person_id == current_user.person_id %> |
+<%= link_to 'Edit', edit_expense_path(@expense) if @expense.state !="approved" and @expense.user_id == current_user.id %> |
 <%= link_to 'Back', expenses_path %>
 
 <hr/>

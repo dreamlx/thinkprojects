@@ -3,7 +3,7 @@ class Client < ActiveRecord::Base
   belongs_to  :category, :class_name => "Dict",  :foreign_key => "category_id",  :conditions => "category ='client_category'"
   belongs_to  :status,   :class_name => "Dict",  :foreign_key => "status_id",    :conditions => "category ='client_status'"
   belongs_to  :region,   :class_name => "Dict",  :foreign_key => "region_id",    :conditions => "category ='region'"
-  belongs_to  :person
+  belongs_to  :user
   has_many    :projects
   has_many    :contacts
   validates   :client_code, uniqueness: {on: :create, message: "is already being used"}

@@ -71,9 +71,4 @@ class Person < ActiveRecord::Base
   def my_personalcharges(sql="1")
     Personalcharge.my_personalcharges(self.id,sql)
   end
-
-  def my_expenses(sql="1")
-    Expense.where(:conditions => "person_id = #{self.id}")
-  end
-  
 end

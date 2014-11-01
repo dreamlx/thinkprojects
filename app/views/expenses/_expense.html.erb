@@ -1,0 +1,20 @@
+
+<tr>
+  <td><%= check_box_tag "check_items[#{expense.id}]", expense.id %><%= expense.id %></td>
+  <td><%= expense.charge_date %>(<%= expense.charge_date.to_date.strftime("%A") %>)</td>
+  <td><%= expense.user.english_name unless expense.user.nil? %></td>
+  <td><%= expense.billable ? 'Billable' : 'Non-billable' %></td>
+  <td><%= expense.expense_category %></td>
+  <td><%= expense.project.client.english_name if expense.project %></td>
+  <td><%= expense.project.job_code if expense.project %></td>
+  <td><%= format("%.2f",expense.fee)%></td>
+  <td><%= expense.state.humanize %></td>
+  <td><%= link_to 'Show', expense_path(expense) %></td>
+  <td><%= link_to 'Edit', edit_expense_path(expense) %></td>
+  <td>
+    <%= button_to 'Approval',     :url=>approval_expense_path(expense),     :confirm => " Are you sure approval?" %>
+    <%= button_to 'Disapproval',  :url=>disapproval_expense_path(expense),  :confirm => "Are you sure disapproval?" %>
+		<%= select("","select_zy_id",Project.where(state: 'approved').order("job_code").collect {|p| [ p.job_code, p.id ] }, { :include_blank => "Transfer to:" },{ :onChange=>"switch_form(this.value,'#{transform_expense_path(expense)}',#{expense.id}); " }) if expense.state =="approved" and  !Dict.get_forward(expense.project.job_code).empty? %> 
+    <%= button_to 'Destroy',      :update=> 'expenses',  :url=>expense,     :confirm => 'Are you sure destroy?',  :method => :delete %>
+  </td>
+</tr>

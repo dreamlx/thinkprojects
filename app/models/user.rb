@@ -14,7 +14,9 @@ class User < ActiveRecord::Base
   validates :name, length: {maximum: 100}
   validates :email, presence: true, uniqueness: true, length: {in: 6..100}
 
-  has_one :person
+  has_one   :person
+  has_many  :clients
+  has_many  :expenses
 
   def self.selected_roles
     [['staff','staff'],['senior','senior'],['manager','manager'],['partner','partner'],['hr_admin','hr_admin'],['超级管理员','providence_breaker']]

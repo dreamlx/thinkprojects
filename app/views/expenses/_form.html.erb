@@ -1,45 +1,18 @@
 
-<fieldset>
-  <p>
-    <label>Person:</label>
-    <%= select_employee("expense","person_id") %>
-  </p>
+<%= simple_form_for(@expense) do |f| %>
+    <% if current_user.roles == "providence_breaker" %>
+      <%= f.association :user, collection: User.order('name') %>
+    <% else %>
+      <%= f.input :user_id, collection: [current_user] %>
+    <% end %>
 
-  <p>
-    <label for="Expense_project_id">Project:</label>
-    <%= select_booked_project("expense", "project_id") %>
-  </p>
+    <%#= select_booked_project("expense", "project_id") %>
+    <%= f.input :charge_date %>
+    <%= f.input :approved_by, colletion: User.order("english_name") %>
+    <%= f.input :billable, as: :boolean, boolean_style: :inline  %>
+    <%= f.input :expense_category, collection: Dict.expense_types.collect {|p| [ p.title, p.title ] } %>
+    <%= f.input :fee %>
+    <%= f.input :desc, as: :text %>
+    <%= f.button :submit %>
+<% end %>
 
-  <p>
-    <label for="Expense_charge_date"><%= Expense.human_attribute_name("charge_date") %></label>
-    <%= f.text_field :charge_date ,{:value=> Date.today.to_s,:class=>'tcal'}%>
-  </p>
-  
-  <p>
-    <label for="Expense_approved_by">Approved By:</label>    
-      <%=select("expense", "approved_by",
-       Person.find(:all,:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
-    { :include_blank => true,:selected => @expense.approved_by }
-    )  %>
-  </p>
-
-  <p>
-    <label>Billable</label>
-    <%= f.check_box :billable   %>
-  </p>
-
-  <p><label for="Expense_expense_category">Category:</label>
-    <%= select("expense", "expense_category",
-      Dict.expense_types.collect {|p| [ p.title, p.title ] }, { :include_blank => true,:selected => @expense.expense_category }) %>
-  </p>
-  <p>
-    <label for="Expense_fee">Amount</label>
-    <%= f.text_field :fee, :value=>@expense.fee||0 %>
-  </p>
-
-  <p>
-    <label for="Expense_desc">Description</label>
-    <%= f.text_area :desc %>
-  </p>
-
-</fieldset>

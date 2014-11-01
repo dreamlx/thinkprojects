@@ -77,7 +77,7 @@ module ApplicationHelper
       select( model,id , Project.alive.collect {|p| [ p.job_code + "|" + p.client.english_name, p.id ] }, { :include_blank => false })
     else
       select(model,id,
-      Project.my_bookings(current_user.person_id).collect {|p| [ p.job_code + "|" + p.client.english_name, p.id ] }, { :include_blank => false })
+      Project.my_bookings(current_user.id).collect {|p| [ p.job_code + "|" + p.client.english_name, p.id ] }, { :include_blank => false })
     end
   end
 

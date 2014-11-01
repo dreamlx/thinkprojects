@@ -11,41 +11,40 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141101051648) do
+ActiveRecord::Schema.define(:version => 20141101084434) do
 
   create_table "billings", :force => true do |t|
-    t.timestamp "created_on",                                                                    :null => false
-    t.timestamp "updated_on",                                                                    :null => false
-    t.string    "number",          :limit => 20
-    t.date      "billing_date"
-    t.integer   "person_id",       :limit => 11,                                :default => 0
-    t.decimal   "amount",                        :precision => 10, :scale => 2, :default => 0.0, :null => false
-    t.decimal   "outstanding",                   :precision => 10, :scale => 2, :default => 0.0
-    t.decimal   "service_billing",               :precision => 10, :scale => 2, :default => 0.0, :null => false
-    t.decimal   "expense_billing",               :precision => 10, :scale => 2, :default => 0.0, :null => false
-    t.integer   "days_of_ageing",  :limit => 11
-    t.decimal   "business_tax",                  :precision => 10, :scale => 2, :default => 0.0, :null => false
-    t.string    "status",          :limit => 1,                                 :default => "0", :null => false
-    t.integer   "collection_days", :limit => 11
-    t.integer   "project_id",      :limit => 11,                                :default => 0,   :null => false
-    t.integer   "period_id",       :limit => 11,                                :default => 0,   :null => false
-    t.decimal   "write_off",                     :precision => 10, :scale => 0,                  :null => false
-    t.decimal   "provision",                     :precision => 10, :scale => 0,                  :null => false
+    t.datetime "created_on",                                                                    :null => false
+    t.datetime "updated_on",                                                                    :null => false
+    t.string   "number",          :limit => 20
+    t.date     "billing_date"
+    t.decimal  "amount",                        :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "outstanding",                   :precision => 10, :scale => 2, :default => 0.0
+    t.decimal  "service_billing",               :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "expense_billing",               :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.integer  "days_of_ageing",  :limit => 11
+    t.decimal  "business_tax",                  :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.string   "status",          :limit => 1,                                 :default => "0", :null => false
+    t.integer  "collection_days", :limit => 11
+    t.integer  "project_id",      :limit => 11,                                :default => 0,   :null => false
+    t.integer  "period_id",       :limit => 11,                                :default => 0,   :null => false
+    t.integer  "write_off",       :limit => 10,                                                 :null => false
+    t.integer  "provision",       :limit => 10,                                                 :null => false
+    t.integer  "user_id"
   end
 
   create_table "bookings", :force => true do |t|
-    t.integer  "person_id",  :limit => 11
     t.integer  "hours",      :limit => 11, :default => 0
     t.text     "other"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "project_id", :limit => 11
+    t.integer  "user_id"
   end
 
   create_table "clients", :force => true do |t|
     t.string   "chinese_name"
     t.string   "english_name",               :default => ""
-    t.integer  "person_id",    :limit => 11, :default => 0,  :null => false
     t.string   "description"
     t.integer  "category_id",  :limit => 11
     t.integer  "status_id",    :limit => 11
@@ -54,6 +53,7 @@ ActiveRecord::Schema.define(:version => 20141101051648) do
     t.string   "client_code",  :limit => 10, :default => "", :null => false
     t.datetime "created_on",                                 :null => false
     t.datetime "updated_on",                                 :null => false
+    t.integer  "user_id"
   end
 
   create_table "comments", :force => true do |t|
@@ -119,8 +119,8 @@ ActiveRecord::Schema.define(:version => 20141101051648) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "billable",         :default => true
-    t.integer  "person_id"
     t.integer  "approved_by"
+    t.integer  "user_id"
   end
 
   create_table "incomes", :force => true do |t|
@@ -154,11 +154,11 @@ ActiveRecord::Schema.define(:version => 20141101051648) do
     t.decimal  "service_fee",               :default => 0.0,       :null => false
     t.integer  "project_id",  :limit => 11, :default => 0,         :null => false
     t.integer  "period_id",   :limit => 11, :default => 0,         :null => false
-    t.integer  "person_id",   :limit => 11, :default => 0,         :null => false
     t.text     "desc"
     t.string   "state",                     :default => "pending", :null => false
     t.date     "charge_date"
     t.decimal  "ot_hours",                  :default => 0.0
+    t.integer  "user_id"
   end
 
   create_table "prj_expense_logs", :force => true do |t|

@@ -1,10 +1,5 @@
 class ExpensesController < ApplicationController
-  # # filter_access_to :all
-  #caches_action :index
-  # GET /expenses
-  # GET /expenses.xml
   def index
-    
     order_str =" expenses.updated_at desc "
     sql =" 1 "
     sql += " and expense_category like '%#{params[:expense_category].strip}%' "  if params[:expense_category].present?
@@ -23,39 +18,21 @@ class ExpensesController < ApplicationController
     @expenses = expenses.paginate(:page=> params[:page]||1)
     @sum_amount = 0
     expenses.each{|e| @sum_amount+=e.fee.to_f}
-
-
-    respond_to do |format|
-      format.html # index.rhtml
-      format.xml  { render :xml => @expenses.to_xml }
-    end
   end
 
-  # GET /expenses/1
-  # GET /expenses/1.xml
   def show
     @expense = Expense.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.rhtml
-      format.xml  { render :xml => @expense.to_xml }
-    end
   end
 
-  # GET /expenses/new
   def new
     @expense = Expense.new
     @expense.project_id = params[:prj_id]
-
   end
 
-  # GET /expenses/1;edit
   def edit
     @expense = Expense.find(params[:id])
   end
 
-  # POST /expenses
-  # POST /expenses.xml
   def create
     @expense = Expense.new(params[:expense])
 
@@ -67,34 +44,21 @@ class ExpensesController < ApplicationController
     end
   end
 
-  # PUT /expenses/1
-  # PUT /expenses/1.xml
   def update
     @expense = Expense.find(params[:id])
     @expense.reset
-    respond_to do |format|
-      if @expense.update_attributes(params[:expense])
+    if @expense.update_attributes(params[:expense])
 
-        flash[:notice] = 'Expense was successfully updated.'
-        format.html { redirect_to expense_url(@expense) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @expense.errors.to_xml }
-      end
+      flash[:notice] = 'Expense was successfully updated.'
+      redirect_to @expense
+    else
+      render  "edit"
     end
   end
 
-  # DELETE /expenses/1
-  # DELETE /expenses/1.xml
   def destroy
-    @expense = Expense.find(params[:id])
-    @expense.destroy
-
-    render :update do |page|
-      page.remove "item_#{params[:id]}"
-      #page.replace_html 'flash_notice', "project was deleted"
-    end
+    Expense.find(params[:id]).destroy
+    redirect_to expenses_url
   end
 
   def transform
@@ -184,5 +148,3 @@ class ExpensesController < ApplicationController
     return fdate
   end
 end
-
-
