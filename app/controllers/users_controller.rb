@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   # filter_access_to [:show, :edit, :update], :attribute_check => true
 
   def index
-    @users= User.all
+    @users= User.paginate(:page => params[:page])
   end
 
   def show
