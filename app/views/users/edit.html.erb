@@ -2,11 +2,22 @@
 <%= simple_form_for(@user) do |f| %>
   <%= f.input :login  %>
   <%= f.input :email %>
+  <%= f.input :name  %>
+  <%= f.input :english_name  %>
+  <%= f.input :employee_number  %>
+  <%= f.input :charge_rate %>
+  <%= f.input :employment_date  %>
+  <%= f.input :address  %>
+  <%= f.input :postalcode  %>
+  <%= f.input :mobile  %>
+  <%= f.input :tel  %>
+  <%= f.input :gender, collection: [:male, :female]  %>
+  <%= f.input :department_id, collection: Dict.where("category='department'").map {|p| [ p.title, p.id ]} %>
+  <%= f.input :status_id,  collection: Dict.where("category='person_status'").map {|p| [ p.title, p.id ] } %> 
   <%= f.input :password %>
   <%= f.input :password_confirmation %>
   <% if current_user.roles == 'providence_breaker' %>
     <%= f.input :roles, collection: User.selected_roles %>
-    <%= f.input :person_id, collection: User.selected_persons %>
   <% end %>
   <%= f.button :submit %>
 <% end %>

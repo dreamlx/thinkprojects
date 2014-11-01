@@ -1,0 +1,42 @@
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <!-- <a class="navbar-brand" href="#">SellFly</a> -->
+      <%= link_to 'Home', root_path, class: "navbar-brand" %>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <% if signed_in? %>
+        <ul class="nav navbar-nav">
+          <li class="<%= 'active' if params[:controller] == 'projects' %>"><%= link_to 'project', projects_path %></li>
+          <li class="<%= 'active' if params[:controller] == 'time_costs' %>"><%= link_to 'time cost', personalcharges_path %></li>
+          <li class="<%= 'active' if params[:controller] == 'expenses' %>"><%= link_to 'expenses', expenses_path %></li>
+          <li class="<%= 'active' if params[:controller] == 'users' %>"><%= link_to 'users', users_path %></li>
+          <li class="<%= 'active' if params[:controller] == 'clients' %>"><%= link_to 'clients', clients_path %></li>
+          <li class="<%= 'active' if params[:controller] == 'dicts' %>"><%= link_to 'dicts', dicts_path %></li>
+          <li class="<%= 'active' if params[:controller] == 'industries' %>"><%= link_to 'industries', industries_path %></li>
+          <li class="<%= 'active' if params[:controller] == 'periods' %>"><%= link_to 'periods', periods_path %></li>
+          <li class="<%= 'active' if params[:controller] == 'admins' %>"><%= link_to 'admins', admins_path %></li>
+        </ul>
+      
+        <ul class="nav navbar-nav navbar-right">
+          <li><%= link_to '注销', destroy_user_session_path, method: :delete %></li>
+          <li><%= link_to "用户中心",current_user %></li>
+          <% if controller_name == "users" || current_user.roles == 'providence_breaker' %>
+          <% end %>	
+        </ul>
+      <% else %>
+        <ul class="nav navbar-nav navbar-right">
+          <li><%= link_to t('sign_up'), new_user_registration_path %></li>
+          <li><%= link_to t('sign_in'), new_user_session_path %></li>
+        </ul>
+      <% end %>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>

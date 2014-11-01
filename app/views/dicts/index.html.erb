@@ -5,7 +5,7 @@
 <% end %>
 
 <%= link_to "New Dict", new_dict_path %>
-<table>
+<table class="table table-bordered">
   <tr>
     <% Dict.content_columns.each do |column| %>
       <th><%= column.human_name %></th>

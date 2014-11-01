@@ -16,21 +16,6 @@ class Person < ActiveRecord::Base
     :class_name=> "Project",
     :foreign_key => :manager_id
 
-  belongs_to :GMU,
-    :class_name => "Dict",
-    :foreign_key => "GMU_id",
-    :conditions => "category ='GMU'"
-  
-  belongs_to :status,
-    :class_name => "Dict",
-    :foreign_key => "status_id",
-    :conditions => "category = 'person_status'"
-
-  belongs_to :department,
-    :class_name => "Dict",
-    :foreign_key => "department_id",
-    :conditions => "category = 'department'"
-
   scope :workings, :conditions =>"dicts.title <> 'Resigned' and dicts.category = 'person_status' ", :include=>:status,:order =>"english_name"
 
   def self.search_by_sql(search,page = 1)

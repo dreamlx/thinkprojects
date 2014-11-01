@@ -1,14 +1,10 @@
 class DictsController < ApplicationController
   def index
-     dict = Dict.new(params[:dict])
+   dict = Dict.new(params[:dict])
     sql = ' 1 '
     sql += " and title like '%#{dict.title}%'" if dict.title.present?
     sql += " and category like '%#{dict.category}%'" if dict.category.present?
-    @dicts = Dict.search_by_sql(sql,params[:page])
-    respond_to do |format|
-      format.html # show.rhtml
-      format.xml  { render :xml => @dicts.to_xml }
-    end
+    @dicts = Dict.paginate(:page => params[:page]) #search_by_sql(sql,params[:page])
   end
 
   def show
@@ -22,19 +18,10 @@ class DictsController < ApplicationController
 
   def new
     @dict= Dict.new
-    respond_to do |format|
-      format.html # show.rhtml
-      format.xml  { render :xml => @dict.to_xml }
-    end
   end
 
   def edit
     @dict = Dict.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.rhtml
-      format.xml  { render :xml => @dict.to_xml }
-    end
   end
 
   def create

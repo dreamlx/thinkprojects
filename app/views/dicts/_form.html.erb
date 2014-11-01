@@ -1,6 +1,6 @@
-<%= simple_form_for(@dict) %>
-  <%= f.input :category %></p>
-  <%= f.input :code %></p>
-  <%= f.input :title %></p>
+<%= simple_form_for(@dict) do |f| %>
+  <%= f.input :category %>
+  <%= f.input :code %>
+  <%= f.input :title %>
   <%= f.button :submit %>
 <% end %>

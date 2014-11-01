@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141031070746) do
+ActiveRecord::Schema.define(:version => 20141101051648) do
 
   create_table "billings", :force => true do |t|
     t.timestamp "created_on",                                                                    :null => false
@@ -62,8 +62,8 @@ ActiveRecord::Schema.define(:version => 20141031070746) do
     t.integer  "commentable_id",                  :default => 0
     t.string   "commentable_type", :limit => 15,  :default => ""
     t.integer  "user_id",                         :default => 0
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
   end
 
   create_table "common_fees", :primary_key => "period_id", :force => true do |t|
@@ -137,26 +137,6 @@ ActiveRecord::Schema.define(:version => 20141031070746) do
   create_table "industries", :force => true do |t|
     t.string "code",  :limit => 50, :default => "", :null => false
     t.string "title",               :default => "", :null => false
-  end
-
-  create_table "people", :force => true do |t|
-    t.datetime "created_on",                                     :null => false
-    t.datetime "updated_on",                                     :null => false
-    t.string   "chinese_name",    :limit => 50, :default => ""
-    t.string   "english_name",    :limit => 50, :default => ""
-    t.string   "employee_number", :limit => 10
-    t.integer  "department_id",   :limit => 11
-    t.string   "position",        :limit => 50
-    t.decimal  "charge_rate",                   :default => 0.0
-    t.date     "employment_date"
-    t.string   "address"
-    t.string   "postalcode",      :limit => 10
-    t.string   "mobile",          :limit => 20
-    t.string   "tel",             :limit => 20
-    t.string   "extension",       :limit => 10
-    t.string   "gender"
-    t.integer  "status_id",       :limit => 11
-    t.integer  "GMU_id",          :limit => 11, :default => 0
   end
 
   create_table "periods", :force => true do |t|
@@ -246,6 +226,20 @@ ActiveRecord::Schema.define(:version => 20141031070746) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.string   "english_name"
+    t.string   "employee_number"
+    t.integer  "department_id"
+    t.string   "position"
+    t.decimal  "charge_rate"
+    t.date     "employment_date"
+    t.string   "address"
+    t.string   "postalcode"
+    t.string   "mobile"
+    t.string   "tel"
+    t.string   "extension"
+    t.string   "gender"
+    t.integer  "status_id"
+    t.integer  "GMU_id"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

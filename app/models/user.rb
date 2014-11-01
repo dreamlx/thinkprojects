@@ -6,7 +6,10 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :encryptable, :encryptor => :restful_authentication_sha1
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :login, :name, :roles, :person_id
+  attr_accessible :email, :password, :password_confirmation, :remember_me, 
+                  :login, :name, :roles, :person_id,
+                  :english_name, :employee_number, :charge_rate, :employment_date, 
+                  :address, :postalcode, :mobile, :tel, :gender, :department_id, :status_id
   validates :login, presence: true, length: {in: 3..40}
   validates :name, length: {maximum: 100}
   validates :email, presence: true, uniqueness: true, length: {in: 6..100}
@@ -35,7 +38,22 @@ class User < ActiveRecord::Base
     write_attribute :email, (value ? value.downcase : nil)
   end
 
-   def role_symbols
+  def role_symbols
     @role_symbols ||= roles
- end
+  end
+
+  belongs_to :GMU,
+    :class_name => "Dict",
+    :foreign_key => "GMU_id",
+    :conditions => "category ='GMU'"
+  
+  belongs_to :status,
+    :class_name => "Dict",
+    :foreign_key => "status_id",
+    :conditions => "category = 'person_status'"
+
+  belongs_to :department,
+    :class_name => "Dict",
+    :foreign_key => "department_id",
+    :conditions => "category = 'department'"
 end

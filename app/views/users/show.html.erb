@@ -1,19 +1,21 @@
 <% title "用户中心" %>
 <table>
-  <tbody>
-    <tr>
-      <th>帐号：</th>
-      <td><%=link_to @user.login ,[:edit,@user] %></td>
-    </tr>
-    <tr>
-      <th>邮箱：</th>
-      <td><%= @user.email %></td>
-    </tr>
-    <tr>
-      <th>角色</th>
-      <td><%= h @user.roles %></td>
-    </tr>
-  </tbody>
+  <% User.content_columns.each do |column| %>
+  <tr>
+    <th><%= column.human_name %>:</th>
+    <td><%= @user.send(column.name) %></td>
+  </tr>
+  <% end %>
+
+  <tr>
+    <th>Department:</th>
+    <td><%= @user.department.title unless @user.department.nil? %></td>
+  </tr>
+
+  <tr>
+    <th>State:</th>
+    <td><%= @user.status.title unless @user.status.nil? %></td>
+  </tr>
 </table>
 <%= link_to '编辑', edit_user_path(@user) %> ||
 <%= link_to "返回", users_path %>

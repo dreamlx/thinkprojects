@@ -5,25 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><%=h(yield(:title)||controller.action_name)%></title>
-    <%= stylesheet_link_tag 'application'%>
-    <%= stylesheet_link_tag 'tablecloth','dropdown','themes','tcal' %>
-    <%= javascript_include_tag 'application', 'webCalender','tcal'%>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
 
     <%= yield(:head)%>
   </head>
   <body>
     <div class="container">
-      <div id="user_bar">
-        <%= render "layouts/user_bar"%>
-      </div>
-
-      <div id="top_menu">
-        <%= render 'layouts/topmenu' %>
-      </div>
-
+      <%= render 'layouts/header' %>
       <p class="notice"><%= notice %></p>
       <p class="alert"><%= alert %></p>
-
       <%= yield %>
     </div>
   </body>
