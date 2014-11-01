@@ -3,8 +3,7 @@
   <p>This action will check all working hours and auto refill SEF project by self study hours</p>
   <%= form_for(:admin, :url => {:action=>"auto_complete_hours"}, :html => { :method => :get }) do |f| %>
     <p>
-      Period:<%= select("", "period_id",
-        Period.find(:all,:order=>"number desc").collect {|p| [ p.number, p.id ] }, { :include_blank => false }) %>
+      Period:<%= select("", "period_id", Period.find(:all,:order=>"number desc").collect {|p| [ p.number, p.id ] }, { :include_blank => false }) %>
       Project:
       <%= select("", "prj_id", Project.find(:all, :conditions=>"job_code like '%SEF%'").collect {|p| [ p.job_code, p.id ] }, { :include_blank => false }) %>
       Period hours: <%= text_field_tag "period_hours","0" %>

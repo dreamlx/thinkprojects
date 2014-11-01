@@ -7,7 +7,7 @@ class Personalcharge < ActiveRecord::Base
   validates_numericality_of :ot_hours
   belongs_to :project
   belongs_to :period 
-  belongs_to :person
+  belongs_to :user
   state_machine :initial => :pending do
     event :approval do
       transition all =>:approved
@@ -21,7 +21,7 @@ class Personalcharge < ActiveRecord::Base
 
   end
 
-
+  attr_accessible :user_id, :period_id, :charge_date, :hours, :ot_hours, :desc
   def self.sum_by_sql(sql)
     sum_p = self.new
     sum_p.hours = self.sum(:hours,:conditions=>sql,:include=>:period)
@@ -36,9 +36,9 @@ class Personalcharge < ActiveRecord::Base
   end
 
   def self.group_hours(condition)
-    sql = "select sum(hours) as hours,person_id,charge_date from personalcharges left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id where "
+    sql = "select sum(hours) as hours,user_id,charge_date from personalcharges left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id where "
     sql += condition
-    sql += " group by person_id, charge_date "
+    sql += " group by user_id, charge_date "
     sql += "having charge_date is not null"
     items = self.find_by_sql(sql)
     return items
@@ -57,18 +57,18 @@ class Personalcharge < ActiveRecord::Base
     when current_user.roles == "partner"
       sql += " and project_id in (#{prj_ids})"
     when current_user.roles == "manager"
-      sql += " and (person_id = #{current_user.person_id})"
+      sql += " and (user_id = #{current_user.id})"
     when current_user.roles == "senior"
-      sql += " and (person_id = #{current_user.person_id})"        
+      sql += " and (user_id = #{current_user.id})"        
     when current_user.roles == "staff"
-      sql += " and (person_id = #{current_user.person_id})"
+      sql += " and (user_id = #{current_user.id})"
     else
     end
 
     self.paginate_by_sql("select personalcharges.* from personalcharges " +
-    "left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id left join people on personalcharges.person_id = people.id " +
+    "left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id left join users on personalcharges.user_id = users.id " +
     "where " + sql + 
-    " order by personalcharges.charge_date desc,personalcharges.created_on desc,people.english_name, periods.number,  projects.job_code, personalcharges.hours,personalcharges.state desc",
+    " order by personalcharges.charge_date desc,personalcharges.created_on desc,users.english_name, periods.number,  projects.job_code, personalcharges.hours,personalcharges.state desc",
     :page => page, :per_page => 20)
   end
 
@@ -86,43 +86,43 @@ class Personalcharge < ActiveRecord::Base
     when current_user.roles == "partner"
       sql += " and project_id in (#{prj_ids})"
     when current_user.roles == "manager"
-      sql += " and (person_id = #{current_user.person_id})"
+      sql += " and (user_id = #{current_user.id})"
     when current_user.roles == "senior"
-      sql += " and (person_id = #{current_user.person_id})"        
+      sql += " and (user_id = #{current_user.id})"        
     when current_user.roles == "staff"
-      sql += " and (person_id = #{current_user.person_id})"
+      sql += " and (user_id = #{current_user.id})"
     else
     end
 
     self.where(:conditions=> sql,
-    :joins=>" left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id left join people on personalcharges.person_id = people.id",
-    :order=>" personalcharges.charge_date desc,personalcharges.created_on desc,people.english_name, periods.number,  projects.job_code, personalcharges.hours,personalcharges.state desc ")
+    :joins=>" left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id left join users on personalcharges.user_id = users.id",
+    :order=>" personalcharges.charge_date desc,personalcharges.created_on desc,users.english_name, periods.number,  projects.job_code, personalcharges.hours,personalcharges.state desc ")
 
   end
 
-  def self.my_group_hours(person_id,condition)
-    condition += " and ( projects.manager_id = #{person_id} or person_id = #{person_id})"
-    sql = "select sum(hours) as hours,person_id,charge_date from personalcharges left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id where "
+  def self.my_group_hours(user_id,condition)
+    condition += " and ( projects.manager_id = #{user_id} or user_id = #{user_id})"
+    sql = "select sum(hours) as hours,user_id,charge_date from personalcharges left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id where "
     sql += condition
-    sql += " group by personalcharges.person_id, charge_date "
+    sql += " group by personalcharges.user_id, charge_date "
     sql += "having charge_date is not null"
     items = self.find_by_sql(sql)
     return items
   end
 
 
-  def self.iam_partner(person_id,sql="1")
-    #sql += " and projects.partner_id = #{person_id}"
+  def self.iam_partner(user_id,sql="1")
+    #sql += " and projects.partner_id = #{user_id}"
     self.where(:conditions =>sql,:include=>:project)
   end
 
-  def self.iam_manager(person_id,sql="1")
-    sql += " and projects.manager_id = #{person_id}"
+  def self.iam_manager(user_id,sql="1")
+    sql += " and projects.manager_id = #{user_id}"
     self.where(:conditions =>sql,:include=>:project)
   end
 
-  def self.iam_member(person_id)
-    self.where(:conditions =>" person_id = #{person_id}")
+  def self.iam_member(user_id)
+    self.where(user_id: user_id)
   end
 
   def ot_pay_hours

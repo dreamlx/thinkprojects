@@ -1,7 +1,7 @@
 
 <tr id="item_<%= personalcharge.id %>" class="personalcharge_item " bgcolor='<%= @warn_color%>' title=" created at:<%= personalcharge.created_on%>">
 	<!--td><%=h personalcharge.id %></td-->
-	<td><%=  personalcharge.person.english_name unless personalcharge.person.nil?%></td>
+	<td><%=  personalcharge.person.english_name if personalcharge.user %></td>
 	<td><%= check_box_tag "check_items[#{personalcharge.id}]", personalcharge.id if personalcharge.state == "pending" %> <%=  personalcharge.period.number       unless personalcharge.period.nil? %></td>
 	<td ><%=  personalcharge.charge_date %></td>
 	<td ><div title="<%= personalcharge.project.client.english_name unless personalcharge.project.nil? %>" href="#"><%=  personalcharge.project.job_code    unless personalcharge.project.nil?%></div></td>

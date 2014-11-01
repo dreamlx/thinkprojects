@@ -29,13 +29,13 @@ class PersonalchargesController < ApplicationController
     #OT 参考 over ti
     #approved_condition = " and personalcharges.state = 'approved' "
     approved_condition = ""
-    sql_ot =" select sum(hours) hours, personalcharges.person_id, personalcharges.period_id, personalcharges.project_id, personalcharges.charge_date charge_date from personalcharges 
+    sql_ot =" select sum(hours) hours, personalcharges.user_id, personalcharges.period_id, personalcharges.project_id, personalcharges.charge_date charge_date from personalcharges 
     left join projects on personalcharges.project_id = projects.id 
     left join periods on personalcharges.period_id = periods.id
     where #{sql2}
     #{approved_condition}
     and charge_date is not null
-    group by charge_date,person_id
+    group by charge_date,user_id
     " 
     session[:personalcharge_ot] =sql_ot
     @approved_personalcharges = Personalcharge.find_by_sql(sql_ot)
@@ -47,10 +47,6 @@ class PersonalchargesController < ApplicationController
     #@ot_hours       = OverTime.ot_hours(effective_hours)
     #@ot_pay_hours   = OverTime.ot_pay_hours(effective_hours)
     
-    respond_to do |format|
-      format.html # index.rhtml
-      format.xml  { render :xml => @personalcharges.to_xml }
-    end
 
     #caching
     personalcharges = Personalcharge.my_personalcharges(current_user,sql)
@@ -160,27 +156,21 @@ class PersonalchargesController < ApplicationController
   def update
     @personalcharge = Personalcharge.find(params[:id])
 
-    respond_to do |format|
-      if @personalcharge.update_attributes(params[:personalcharge])
-        @personalcharge.reset
-        flash[:notice] = 'Personalcharge was successfully updated.'
-        person = Person.find(@personalcharge.person_id)
-        @personalcharge.service_fee = @personalcharge.hours * person.charge_rate
-        @personalcharge.save
-        format.html { redirect_to personalcharge_url(@personalcharge) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @personalcharge.errors.to_xml }
-      end
+    if @personalcharge.update_attributes(params[:personalcharge])
+      @personalcharge.reset
+      flash[:notice] = 'Personalcharge was successfully updated.'
+      person = Person.find(@personalcharge.person_id)
+      @personalcharge.service_fee = @personalcharge.hours * person.charge_rate
+      @personalcharge.save
+      redirect_to @personalcharge
+    else
+      render "edit"
     end
   end
 
   def destroy
     Personalcharge.find(params[:id]).destroy 
-    render :update do |page|
-      page.remove "item_#{params[:id]}"
-    end
+    redirect_to personalcharges_url
   end
 
   def batch_actions

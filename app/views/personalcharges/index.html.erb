@@ -5,8 +5,8 @@
 <%= link_to 'New TimeCost', :action => 'new', :id=>params[:id], :person_id => params[:person_id]  %>
 
 <form name="myform" action="personalcharges/batch_actions" method="post">
-  <%= render :partial => 'homepage/all_op' %>
-  <table>
+  <%#= render :partial => 'homepage/all_op' %>
+  <table  class="table table-bordered">
     <tr>
       <!--th>ID</th-->
     	<th>Employee name</th>  
