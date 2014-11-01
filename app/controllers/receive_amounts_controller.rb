@@ -22,15 +22,13 @@ class ReceiveAmountsController < ApplicationController
     @receive_amount = ReceiveAmount.new(params[:receive_amount])
     if @receive_amount.save
       flash[:notice] = 'ReceiveAmount was successfully created.'
-      #redirect_to :action => 'list', :billing_id => @receive_amount.billing_id
       redirect_to :controller => 'billings', :action =>'show', :id => @receive_amount.billing_id
     else
-      render :action => 'new'
+      render 'new'
     end
   end
 
-  def edit
-    
+  def edit 
     @receive_amount = ReceiveAmount.find(params[:id])
     @billing = Billing.find(@receive_amount.billing_id)
   end
@@ -39,7 +37,6 @@ class ReceiveAmountsController < ApplicationController
     @receive_amount = ReceiveAmount.find(params[:id])
     if @receive_amount.update_attributes(params[:receive_amount])
       flash[:notice] = 'ReceiveAmount was successfully updated.'
-      #redirect_to :action => 'show', :id => @receive_amount
       redirect_to :controller => 'billings', :action =>'show', :id => @receive_amount.billing_id
     else
       render :action => 'edit'

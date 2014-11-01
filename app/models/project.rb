@@ -22,7 +22,7 @@ class Project < ActiveRecord::Base
   belongs_to :PFA_reason,   :class_name => "Dict",    :foreign_key => "PFA_reason_id",  :conditions => "category = 'PFA_reason'"
   belongs_to :revenue,      :class_name => "Dict",    :foreign_key => "revenue_id",     :conditions => "category = 'revenue_type'"
   belongs_to :risk,         :class_name => "Dict",    :foreign_key => "risk_id",        :conditions => "category = 'risk'"
-  belongs_to :manager,      :class_name => "Person",  :foreign_key => "manager_id"
+  belongs_to :manager,      :class_name => "User",    :foreign_key => "manager_id"
 
   scope :alive, :conditions =>"state = 'approved'", :order=>'job_code'
   

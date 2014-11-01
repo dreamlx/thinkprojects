@@ -1,30 +1,8 @@
-
-<%= form_for(:project, :url => projects_path, :html => { :method => :get }) do |f| %>
-
-  <table>
-    <tr>
-      <td>
-        Job_code:<%= f.text_field :job_code,{:size=>12}  %>
-      </td>
-      <td>
-        <%= Project.human_attribute_name("client_name") %>
-        <%#= f.text_field :client_name, {:size=>20} %>
-      </td>
-      <td>
-        Member:
-        <%#= f.select("booking_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => "All" }) %>
-      </td>
-      <td>
-        Status:
-        <%= f.select("state", ["pending","approved","disapproved","closed"].collect {|p| [p.humanize,p] }, { :include_blank => "All" }) %>
-      </td>
-      <td>
-        Order by:
-        <%#= f.select("order_by",["job_code","created_on","client_name"].collect{|p| [p,p]},{ :include_blank => "All" }) %>
-      </td>
-
-      <td><%= submit_tag '查询' %></td>
-    </tr>
-  </table>
-
+<%= simple_form_for(:project, :url => projects_path, :html => { :method => :get }) do |f| %>
+  <%= f.input :job_code, required: false %>
+  <%= f.input :client_name, required: false %>
+  <%#= f.select("booking_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => "All" }) %>
+  <%= f.input :state, collection: ["pending","approved","disapproved","closed"], required: false %>
+  <%= f.input :order_by, collection: ["job_code","created_on","client_name"] , required: false%>
+  <%= f.button :submit, '查询' %>
 <% end %>
