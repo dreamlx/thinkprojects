@@ -1,0 +1,17 @@
+<tr>
+  <td><%=billing.project.job_code%></td>
+
+  <% Billing.content_columns.each do |column| %>
+    <% next if column.human_name == 'Created on' || column.human_name =='Updated on'%>
+    <%if column.human_name =='Status'%>
+      <td><%= "outstanding" if billing.send(column.name).to_i == 0 %>
+      <%= "received" if billing.send(column.name).to_i == 1 %></td>
+    <% else %>
+      <td><%=h billing.send(column.name) %></td>
+    <% end %>
+  <% end %>
+
+  <td><%= link_to 'Show', billing %></td>
+  <td><%= link_to 'Edit', edit_billing_path(billing) if billing.status == '0'%></td>
+  <td><%= link_to 'Destroy', billing, :confirm => 'Are you sure?' if billing.status == '0'%></td>
+</tr>

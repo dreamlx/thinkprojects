@@ -15,7 +15,7 @@
       <% if signed_in? %>
         <ul class="nav navbar-nav">
           <li class="<%= 'active' if params[:controller] == 'projects' %>"><%= link_to 'project', projects_path %></li>
-          <li class="<%= 'active' if params[:controller] == 'time_costs' %>"><%= link_to 'time cost', personalcharges_path %></li>
+          <li class="<%= 'active' if params[:controller] == 'personalcharges' %>"><%= link_to 'personalcharge', personalcharges_path %></li>
           <li class="<%= 'active' if params[:controller] == 'expenses' %>"><%= link_to 'expenses', expenses_path %></li>
           <li class="<%= 'active' if params[:controller] == 'users' %>"><%= link_to 'users', users_path %></li>
           <li class="<%= 'active' if params[:controller] == 'clients' %>"><%= link_to 'clients', clients_path %></li>
@@ -23,6 +23,7 @@
           <li class="<%= 'active' if params[:controller] == 'industries' %>"><%= link_to 'industries', industries_path %></li>
           <li class="<%= 'active' if params[:controller] == 'periods' %>"><%= link_to 'periods', periods_path %></li>
           <li class="<%= 'active' if params[:controller] == 'admins' %>"><%= link_to 'admins', admins_path %></li>
+          <li class="<%= 'active' if params[:controller] == 'billings' %>"><%= link_to 'billings', billings_path %></li>
         </ul>
       
         <ul class="nav navbar-nav navbar-right">

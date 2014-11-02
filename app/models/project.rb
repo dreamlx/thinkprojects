@@ -44,8 +44,8 @@ class Project < ActiveRecord::Base
     end
   end
 
-  def self.my_bookings(person_id)
-    Person.find(person_id).my_bookings
+  def self.my_bookings(user_id)
+    User.find(user_id).my_bookings
   end
   
   def is_booking?(id)

@@ -1,0 +1,16 @@
+<% for column in Billing.content_columns %>
+  <p>
+    <b><%= column.human_name %>:</b>
+    <%= @billing.send(column.name) %>
+  </p>
+<% end %>
+<p>
+  <%=@billing.project.job_code%>
+</p>
+<p>
+  <b>Prepared by</b>
+<td><%=@billing.user.english_name%></td>
+</p>
+
+  <%= link_to 'Edit', edit_billing_path(@billing) if @billing.status == '0'%> |
+  <%= link_to 'Back', billings_path %>

@@ -9,12 +9,12 @@ class BillingsController < ApplicationController
     sql+= " and status =1"  if @billing.status == 'received'
     sql += " and billing_date <= '#{@period.ending_date}'"  unless @period.ending_date.blank?
     sql += " and billing_date >= '#{@period.starting_date}'  " unless @period.starting_date.blank?
-    @billings  = Billing.paginate :page => params[:page],:conditions =>sql
+    @billings  = Billing.where(sql).paginate(page: params[:page])
   end
 
   def show
     @billing = Billing.find(params[:id])
-    @receive_amounts = ReceiveAmount.where(billing_id: @billing.id])
+    @receive_amounts = ReceiveAmount.where(billing_id: @billing.id)
     if @billing.status != '1'
       @billing_amount = ReceiveAmount.sum('receive_amount', :conditions =>['billing_id = ?', @billing.id ])||0
       @billing.outstanding = @billing.amount - @billing_amount

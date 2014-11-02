@@ -44,6 +44,17 @@ class User < ActiveRecord::Base
     @role_symbols ||= roles
   end
 
+  def my_bookings
+    mybookings = Booking.joins(" left join projects on projects.id = bookings.project_id").where(user_id: self.id).select("distinct project_id,job_code, state, user_id")
+    myprojects=[]
+    for mybooking in mybookings
+      myprojects << mybooking.project if mybooking.state == "approved"
+    end
+
+    prjs =myprojects.sort_by{|p| p.job_code}
+    return prjs
+  end
+
   belongs_to :GMU,
     :class_name => "Dict",
     :foreign_key => "GMU_id",

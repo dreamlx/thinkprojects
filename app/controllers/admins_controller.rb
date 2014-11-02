@@ -43,7 +43,7 @@ class AdminsController < ApplicationController
     period = Period.find(params[:period_id])
     period_hours =  params[:period_hours]
 
-    @people = Person.workings
+    @people = User.workings
    
     @messages="<table><tr><td>epmloyee</td><td>personalcharge hours</td> <td>work hours </td><td>OT</td></tr>"
     @people.each do|p|
@@ -54,6 +54,4 @@ class AdminsController < ApplicationController
     end
     @messages +="</table>"
   end
-  
-
 end

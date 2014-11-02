@@ -1,0 +1,19 @@
+<%= simple_form_for(@billing) do |f| %>
+  <%= f.input :project_id, collection: Project.my_bookings(current_user).map {|p| [ p.job_code, p.id ] } %>
+  <%= f.input :period_id, collection: Period.order("number").map {|p| [ p.number, p.id ] } %>
+   <%= f.input :user_id, collection: User.order("english_name").map {|p| [ p.english_name, p.id ] } %>
+  <%= f.input :number %>
+  <%= f.input :billing_date %>
+  <%= f.input :service_billing %>
+  <%= f.input :expense_billing %>
+  <%= f.input :days_of_ageing %>
+  <%= f.input :business_tax %>
+  <%= f.input :write_off %>
+  <%= f.input :provision %>
+  <%= f.input :status, collection: [["Outstanding","0"], ["Received", "1"]] %>
+  <%= f.input :collection_days %>
+  <%= f.button :submit %>
+<% end %>
+
+
+
