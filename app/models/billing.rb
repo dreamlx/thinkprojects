@@ -1,5 +1,5 @@
 class Billing < ActiveRecord::Base
-  validates_presence_of :project_id
+  validates :project_id, presence: true
   belongs_to :project
   belongs_to :user
   belongs_to :person

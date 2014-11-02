@@ -18,12 +18,14 @@ class User < ActiveRecord::Base
   has_many  :clients
   has_many  :expenses
 
+  scope :workings, :conditions =>"dicts.title <> 'Resigned' and dicts.category = 'person_status' ", :include=>:status,:order =>"english_name"
+
   def self.selected_roles
     [['staff','staff'],['senior','senior'],['manager','manager'],['partner','partner'],['hr_admin','hr_admin'],['超级管理员','providence_breaker']]
   end
 
-  def self.selected_persons
-    Person.order("english_name").map {|p| [ p.english_name+"||"+p.employee_number, p.id ]}
+  def self.selected_users
+    User.order("english_name").map {|p| [ "#{p.english_name} || #{p.employee_number}", p.id ]}
   end
 
   def self.authenticate(login, password)

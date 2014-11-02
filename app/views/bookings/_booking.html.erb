@@ -1,21 +1,8 @@
-
-<table>
+<% if booking.user %>
 	<tr>
-		<th>Person</th>
-		<th>Rate</th>
-		<th>Hours</th>
-		<th>OP</th>
+	  <td><%= booking.user.english_name||booking.user.name %></td>
+	  <td><%= booking.user.charge_rate  %></td>
+	  <td><%= booking.hours %></td>
+	  <td><%= link_to 'Destroy', [booking.project, booking], :confirm => 'Are you sure?', :method => :delete if  booking.project.state != "closed" && booking.user_id != @project.manager_id%></td>
 	</tr>
-
-	<% @bookings.each do |booking| %>
-		<% unless booking.person.nil?%>
-		<tr id="item_<%= booking.id %>">
-			<td><%=h booking.person.english_name||booking.person.chinese_name %></td>
-			<td><%=h booking.person.charge_rate  %></td>
-			<td><%=h booking.hours %></td>
-			<td><%= link_to 'Destroy', :update => 'bookings',:url => booking_url(:project_id=>@project,:id=>booking), :confirm => 'Are you sure?', :method => :delete if  booking.project.state !="closed" and booking.person_id != @project.manager_id%></td>
-		</tr>
-		<% end %>
-		<% end %>
-	</table>
-
+<% end %>

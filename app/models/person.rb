@@ -16,7 +16,7 @@ class Person < ActiveRecord::Base
     :class_name=> "Project",
     :foreign_key => :manager_id
 
-  scope :workings, :conditions =>"dicts.title <> 'Resigned' and dicts.category = 'person_status' ", :include=>:status,:order =>"english_name"
+  
 
   def self.search_by_sql(search,page = 1)
     paginate :per_page => 20, :page => page,

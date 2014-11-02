@@ -10,9 +10,6 @@ Thinkprojects::Application.routes.draw do
   resources :clients
   resources :billings
   resources :dicts
-  resources :bookings do
-    post :bookall,            on: :member
-  end
   resources :projects do
     member do
       post :transform
@@ -21,7 +18,9 @@ Thinkprojects::Application.routes.draw do
       post :close
       post :addcomment
     end
-    resources :bookings
+    resources :bookings do
+      post :bookall,            on: :collection
+    end
   end
   resources :expenses do
     member do
