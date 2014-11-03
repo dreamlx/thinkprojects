@@ -14,6 +14,7 @@ class BillingsController < ApplicationController
 
   def show
     @billing = Billing.find(params[:id])
+    @receive_amount = ReceiveAmount.new
     @receive_amounts = ReceiveAmount.where(billing_id: @billing.id)
     if @billing.status != '1'
       @billing_amount = ReceiveAmount.sum('receive_amount', :conditions =>['billing_id = ?', @billing.id ])||0
@@ -34,7 +35,7 @@ class BillingsController < ApplicationController
 
   def new
     billing_number_set
-    @type = Dict.where(:conditions => "category ='billing_type'")
+    @type = Dict.where(category: "billing_type")
     @billing = Billing.new  
     @billing.number = @billing_number.title + @str_number
     @now_period = get_now_period
@@ -46,7 +47,7 @@ class BillingsController < ApplicationController
 
   def create
     @billing = Billing.new(params[:billing])
-    @billing_number = Dict.where(:conditions =>" category ='billing_number' ").first
+    @billing_number = Dict.where(category: 'billing_number').first
     @number = @billing_number.code.to_i + 1
     @billing_number.code = @number.to_s
     update_collection_days

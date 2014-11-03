@@ -5,12 +5,34 @@
   </p>
 <% end %>
 <p>
+  <b>Job Code</b>
   <%=@billing.project.job_code%>
 </p>
 <p>
   <b>Prepared by</b>
 <td><%=@billing.user.english_name%></td>
 </p>
+<%= link_to 'Edit', edit_billing_path(@billing) if @billing.status == '0'%> |
+<%= link_to 'Back', billings_path %>
 
-  <%= link_to 'Edit', edit_billing_path(@billing) if @billing.status == '0'%> |
-  <%= link_to 'Back', billings_path %>
+<!-- new receive amount -->
+<% if @billing.status == '0'%>
+  <h1>New receive amount</h1>
+  <%= render 'receive_amounts/form' %>
+<% end %>
+
+<!-- receive amount list -->
+<table class="table table-bordered">
+  <tr>
+    <th>Invoice No</th>
+    <th>Receive Date</th>
+    <th>Receive Amount</th>
+    <th>Billing Number</th>
+    <th>Engagement Partner</th>
+    <th>Job Code</th>
+    <th colspan=3>Operations</th>
+  </tr>
+  <% if  @receive_amounts.count != 0 %>
+    <%= render @receive_amounts %>
+  <% end %>
+</table>

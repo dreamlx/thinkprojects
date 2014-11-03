@@ -8,7 +8,9 @@ Thinkprojects::Application.routes.draw do
     get :check_ot,            on: :collection
   end
   resources :clients
-  resources :billings
+  resources :billings do
+    resources :receive_amounts, only: [:edit, :create, :update, :destroy]
+  end
   resources :dicts
   resources :projects do
     member do

@@ -1,8 +1,0 @@
-<% for column in ReceiveAmount.content_columns %>
-<p>
-  <b><%= column.human_name %>:</b> <%=h @receive_amount.send(column.name) %>
-</p>
-<% end %>
-
-<%= link_to 'Edit', :action => 'edit', :id => @receive_amount %> |
-<%= link_to 'Back', :action => 'show', :controller => 'billings', :id => @receive_amount.billing_id %>
