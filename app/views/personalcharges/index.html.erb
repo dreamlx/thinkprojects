@@ -4,40 +4,27 @@
 <%#= link_to 'Export data', :controller=>"reports", :action => "personalcharges_export"  %>||
 <%= link_to 'New TimeCost', :action => 'new', :id=>params[:id], :person_id => params[:person_id]  %>
 
-<form name="myform" action="personalcharges/batch_actions" method="post">
-  <%#= render :partial => 'homepage/all_op' %>
-  <table  class="table table-bordered">
-    <tr>
-      <!--th>ID</th-->
-    	<th>Employee name</th>  
-		<th>Period</th>
-      <th>Charge date</th>
-      <th width="75px">Job code</th>
-      <th>Hours</th>
-      <th>Including OT hours</th>
-      <th>Description</th>
-      <th>State</th>
-      <th colspan="4">OP</th>
-    </tr>
-<% sum_current_person_daily_hours = 0%>
-    <% for personalcharge in @personalcharges %>
+<form>
+  <%= render 'shared/all_op' %>
+</form>
+<table  class="table table-bordered">
+  <tr>
+  	<th>Employee name</th>  
+	  <th>Period</th>
+    <th>Charge date</th>
+    <th>Job code</th>
+    <th>Hours</th>
+    <th>Including OT hours</th>
+    <th>Description</th>
+    <th>State</th>
+    <th colspan="4">Operations</th>
+  </tr>
+  <% sum_current_person_daily_hours = 0 %>
+  <%= render @personalcharges %>
+</table>
 
-		<% @warn_color = warn_ot_hours(personalcharge,@personalcharges) %>
-      <%= render :partial => 'item', :locals => {
-        :personalcharge => personalcharge, :warn_color => @warn_color
-      } unless personalcharge.project.nil?%>
-
-    <%end%>
-
-  </table>
-
-</form><label id="spinner" style="display:none;">please waiting...</label>
-<%= button_to "Get OverTime",
-:url=> {:action=> "get_ot",:approved_personalcharges=> @approved_personalcharges, :effective_hours => @effective_hours}, :method =>:post,
-:update => "the-ot"
- %>
+<%= button_to "Get OverTime", :url=> {:action=> "get_ot",:approved_personalcharges=> @approved_personalcharges, :effective_hours => @effective_hours}, :method =>:post,:update => "the-ot" %>
 
 <div id="the-ot"></div>
 
 <%= will_paginate @personalcharges %>
-<br />

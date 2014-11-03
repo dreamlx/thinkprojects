@@ -80,11 +80,9 @@ class BillingsController < ApplicationController
         end
         update_collection_days
         @billing.save
-        format.html { redirect_to billing_url(@billing) }
-        format.xml  { head :ok }
+        redirect_to billing_url(@billing)
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @billing.errors.to_xml }
+        render "edit"
       end
     end
   end

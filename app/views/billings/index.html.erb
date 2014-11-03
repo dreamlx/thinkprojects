@@ -4,7 +4,7 @@
   <%= f.input :number %>
   <b>Project:</b><br/>
   <%= select_my_projects("billing", "project_id") %>
-  <%= f.input :status, collection: [['all',''],['outstanding','outstanding'],['received','received']] %>
+  <%= f.input :status, collection: Billing.selected_status %>
   <label for="period_starting_date">Starting date</label>
   <%= text_field 'period','starting_date', 'size'=>"15" %><br>
   <label for="period_ending_date">Ending date</label>

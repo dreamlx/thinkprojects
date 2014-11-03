@@ -1,6 +1,6 @@
 <%= simple_form_for(@personalcharge) do |f| %>
   <%= f.association :user, colletion: User.order('name') %>
-  <%#=  select_booked_project("personalcharge","project_id") %>
+  <%=  select_booked_project("personalcharge","project_id") %>
   <%= f.input :period_id, colletion: Period.all.map {|p| [p.number, p.id]} %>
   <%= f.input :charge_date %>
   <%= f.input :hours  %>

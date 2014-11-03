@@ -25,8 +25,7 @@ gem 'jquery-rails'
 # Deploy with Capistrano
 # gem 'capistrano'
 
-# To use debugger
-# gem 'ruby-debug'
+gem 'byebug'
 
 gem 'acts_as_commentable', '3.0.1'
 gem 'will_paginate'

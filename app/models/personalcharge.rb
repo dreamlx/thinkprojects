@@ -1,10 +1,8 @@
 class Personalcharge < ActiveRecord::Base
   acts_as_commentable
-  validates_presence_of :person_id
-  validates_presence_of :charge_date
 
-  validates_numericality_of :hours
-  validates_numericality_of :ot_hours
+  validates :hours, numericality: true
+  validates :ot_hours, numericality: true
   belongs_to :project
   belongs_to :period 
   belongs_to :user
@@ -21,7 +19,7 @@ class Personalcharge < ActiveRecord::Base
 
   end
 
-  attr_accessible :user_id, :period_id, :charge_date, :hours, :ot_hours, :desc
+  attr_accessible :user_id, :period_id, :charge_date, :hours, :ot_hours, :desc, :project_id
   def self.sum_by_sql(sql)
     sum_p = self.new
     sum_p.hours = self.sum(:hours,:conditions=>sql,:include=>:period)

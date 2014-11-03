@@ -13,6 +13,6 @@
   <%= f.input :estimated_hours %><%= label_title("estimated_hours") %>
   <%= f.input :budgeted_service_fee %>
   <%= f.input :budgeted_expense %><%= label_title("budgeted_expense") %>
-  <%#= @project.manager.nil?? select_employee("project", "manager_id") : @project.manager.english_name %>
+  <%= @project.manager.nil?? select_employee("project", "manager_id") : @project.manager.english_name %><br>
   <%= f.button :submit %>
 <% end %>

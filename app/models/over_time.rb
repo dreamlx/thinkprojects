@@ -73,7 +73,7 @@ class OverTime
       
       sum_hours = 0
     items.each{|item|
-      sum_hours += item.hours if (item.charge_date == current_item.charge_date and item.person_id == current_item.person_id)
+      sum_hours += item.hours if (item.charge_date == current_item.charge_date and item.user_id == current_item.user_id)
       }
       if sum_hours - @@otsetup["allow_charge_hours"] >0
         flag = true

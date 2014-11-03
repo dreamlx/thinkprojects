@@ -21,15 +21,17 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.new(params[:project])
     @project = format_jobcode(@project)
-    
+    byebug
     if @project.save
+      byebug
       @booking = Booking.new #项目创建者就是默认booking人员
-      @booking.person_id = @project.manager_id
+      @booking.user_id = @project.manager_id
       @booking.project_id = @project.id
       @project.bookings<<@booking
       flash[:notice] = 'Project was successfully created.'
       redirect_to @project
     else
+      byebug
       render "new"
     end
   end
@@ -58,9 +60,7 @@ class ProjectsController < ApplicationController
     project.approval
 
     flash[:notice] = "Project <#{project.job_code}> state was changed, current state is '#{project.state}'"
-    render :update do |page|
-      page.replace_html "item_#{project.id}", :partial => "item",:locals => { :project => project } 
-    end
+    redirect_to projects_path
   end
 
   def disapproval
@@ -162,7 +162,7 @@ class ProjectsController < ApplicationController
     end
 
     def format_jobcode(project)
-      project.job_code =project.client.client_code+project.GMU.code+project.service_code.code if project.job_code
+      project.job_code =project.client.client_code+Dict.find(project.GMU_id).code+project.service_code.code if project.job_code
       project.job_code = project.job_code.upcase
       return project
     end

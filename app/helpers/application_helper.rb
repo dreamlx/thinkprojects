@@ -30,41 +30,41 @@ module ApplicationHelper
     if current_user.roles == "providence_breaker"
       select_people(model,id)
     else
-      select_person(model,id)
+      select_User(model,id)
     end
 
   end
 
-  def select_person(model,id)
+  def select_User(model,id)
     select(model, id,
-    Person.where(:id => current_user.person_id).collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
+    User.where(id: current_user.id).collect {|p| [ "#{p.english_name} || #{p.employee_number}", p.id ] },
     { :include_blank => false }
     )
   end
 
   def select_people(model,id)
     select(model, id,
-    Person.order("english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
+    User.order("english_name").collect {|p| [ "#{p.english_name} || #{p.employee_number}", p.id ] },
     { :include_blank => "All" }
     )
   end
 
   def select_partner(model,id)
     select(model, id,
-    Person.where("position like '%director%' or position like 'partner' ").order("english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
+    User.where("position like '%director%' or position like 'partner' ").order("english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
     { :include_blank => "All" }
     )
   end
 
   def select_manager(model,id)
     select(model, id,
-    Person.where(:conditions=>"position like '%manager%'  ",:order=>"english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
+    User.where("position like '%manager%'").order("english_name").collect {|p| [ p.english_name+"||"+p.employee_number, p.id ] },
     { :include_blank => "All" }
     )
   end
 
   def select_period(model,id,select_params = "")
-    select(model, id, Period.where(:order=>"number DESC").collect {|p| [ p.number, p.number ] }, { :include_blank => "All", :selected=>select_params })
+    select(model, id, Period.order("number DESC").collect {|p| [ p.number, p.number ] }, { :include_blank => "All", :selected=>select_params })
   end
 
   def select_my_projects(model,id)
