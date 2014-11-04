@@ -1,24 +1,22 @@
-
 <tr>
-	<td><%=  personalcharge.user.english_name if personalcharge.user %></td>
-	<td><%= check_box_tag "check_items[#{personalcharge.id}]", personalcharge.id if personalcharge.state == "pending" %> <%=  personalcharge.period.number  if personalcharge.period %></td>
-	<td ><%=  personalcharge.charge_date %></td>
-	<td ><%=  personalcharge.project.job_code if personalcharge.project %></td>
+	<td><%= personalcharge.user.english_name if personalcharge.user %></td>
+	<td><%= check_box_tag "check_items[#{personalcharge.id}]", personalcharge.id if personalcharge.state == "pending" %>
+			<%= personalcharge.period.number  if personalcharge.period %></td>
+	<td><%= personalcharge.charge_date %></td>
+	<td><%= personalcharge.project.job_code if personalcharge.project %></td>
 	<td><%= format("%.2f",personalcharge.hours)%></td>
 	<td><%= format("%.2f",personalcharge.ot_hours||0)%></td>
 	<td><%= personalcharge.desc%></td>
-	<td><%=h personalcharge.state.humanize %></td>
-	<td><%= link_to 'Show', personalcharge_path(personalcharge) %></td>
-
+	<td><%= personalcharge.state.humanize %></td>
+	<td><%= link_to 'Show', personalcharge %></td>
 	<td><%= link_to 'Edit', edit_personalcharge_path(personalcharge) %></td>
 	<td>
-		<%= button_to "approval", approval_personalcharge_path(personalcharge), confirm: 'Are you sure?' %>
+		<%= button_to "approval", approval_personalcharge_path(personalcharge), 
+									confirm: 'Are you sure?' %>
 		<%= button_to "disapproval", disapproval_personalcharge_path(personalcharge), 
-			:confirm => 'Are you sure?' %>
-		<%= select("","select_zy_id",Project.find(:all,:conditions=>" state = 'approved' ", :order=>"job_code").collect {|p| [ p.job_code, p.id ] }, { :include_blank => "Transfer to:" },{ :onChange=>"switch_form(this.value,'#{transform_personalcharge_path(personalcharge)}',#{personalcharge.id}); " }) if personalcharge.state =="approved" and  !Dict.get_forward(personalcharge.project.job_code).empty?  %> 
+									:confirm => 'Are you sure?' %>
+		<%= select("","select_zy_id",Project.where(state: 'approved').order("job_code").collect {|p| [ p.job_code, p.id ] }, { :include_blank => "Transfer to:" },{ :onChange=>"switch_form(this.value,'#{transform_personalcharge_path(personalcharge)}',#{personalcharge.id}); " }) if personalcharge.state =="approved" and  !Dict.get_forward(personalcharge.project.job_code).empty?  %> 
 		<%= button_to 'Destroy', personalcharge,
-			:update=> 'personalcharges',
-			:confirm => 'Are you sure destroy this item?',
-			:method => :delete %>
+									confirm: 'Are you sure destroy this item?',	method: :delete %>
 	</td>
 </tr>

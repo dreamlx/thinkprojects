@@ -1,6 +1,5 @@
 <h1>Listing Billings</h1>
 <%= simple_form_for(:billing, :url => billings_path, :html => { :method => :get }) do |f| %>
-
   <%= f.input :number %>
   <b>Project:</b><br/>
   <%= select_my_projects("billing", "project_id") %>
@@ -16,15 +15,12 @@
 <table class="table table-bordered">
   <tr>
     <th>Job code</th>
-
     <% Billing.content_columns.each do |column| %>
       <% next if column.human_name =='Created on' or column.human_name =='Updated on'%>
       <th><%= column.human_name %></th>
     <% end %>
     <th colspan=3>Operations</th>
   </tr>
-
   <%= render @billings %>
 </table>
-
 <%= will_paginate @billings %>

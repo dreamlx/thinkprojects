@@ -1,18 +1,17 @@
 <%= simple_form_for(@project) do |f| %>
   <%= f.input :job_code %>
-  <%= select("project", "client_id",
-    Client.order("english_name").collect {|p| [ p.client_code+"||"+p.english_name, p.id ] }, { :include_blank => false }) %>
-  <%= select("project", "GMU_id",
-    Dict.order("code",:conditions =>"category ='GMU'").collect {|p| [ p.code+"||"+p.title, p.id ] }, { :include_blank => false }) %>
-  <%= f.input :description %>
-  <%= select("project", "service_id",
-    Dict.where(category: 'service_code').order("code").collect {|p| [ p.code+"||"+p.title, p.id ] }, { :include_blank => false }) %>
+  <%= f.input :client_id, collection: Client.selected_clients %>
+  <%= f.input :GMU_id,    collection: Dict.selected_gmus %>
+  
+  <%= f.input :service_id, collection: Dict.selected_service_codes %>
   <%= f.input :starting_date %>
   <%= f.input :ending_date %>
-  <%= f.input :estimated_annual_fee %><%= label_title("estimated_annual_fee") %>
-  <%= f.input :estimated_hours %><%= label_title("estimated_hours") %>
+  <%= f.input :estimated_annual_fee %>
+  <%= f.input :estimated_hours %>
   <%= f.input :budgeted_service_fee %>
-  <%= f.input :budgeted_expense %><%= label_title("budgeted_expense") %>
-  <%= @project.manager.nil?? select_employee("project", "manager_id") : @project.manager.english_name %><br>
+  <%= f.input :budgeted_expense %>
+  <p><strong>Manager:</strong></p>
+  <%= @project.manager.nil?? select_employee("project", "manager_id") : @project.manager.english_name %>
+  <%= f.input :description %><br>
   <%= f.button :submit %>
 <% end %>

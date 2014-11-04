@@ -37,19 +37,18 @@
   </p>
 </fieldset>
 
-<%= link_to 'Edit', edit_expense_path(@expense) if @expense.state !="approved" and @expense.user_id == current_user.id %> |
+<% if @expense.state !="approved" and @expense.user_id == current_user.id %>
+  <%= link_to 'Edit', edit_expense_path(@expense)  %> |
+<% end %>
 <%= link_to 'Back', expenses_path %>
-
-<hr/>
 
 <h3>Disapproval description</3>
 
-<% 
-    if @expense.comments.any?
-       for comment in @expense.comments
-%>
-<p><%= comment.created_at.strftime(" %m/%d/%Y")  %> <br/><%= Person.find(comment.user_id).english_name + ": " + comment.comment ||"" %></p>
-<%         
-       end
-    end 
-%>
+<% if @expense.comments.any? %>
+  <% for comment in @expense.comments %>
+    <p>
+      <%= comment.created_at.to_date  %> <br/>
+      <%= "#{comment.user.english_name} : #{comment.comment}" %>
+    </p>
+  <% end %>
+<% end %>

@@ -12,8 +12,8 @@
   <%= f.input :mobile  %>
   <%= f.input :tel  %>
   <%= f.input :gender, collection: [:male, :female]  %>
-  <%= f.input :department_id, collection: Dict.where("category='department'").map {|p| [ p.title, p.id ]} %>
-  <%= f.input :status_id,  collection: Dict.where("category='person_status'").map {|p| [ p.title, p.id ] } %> 
+  <%= f.input :department_id, collection: Dict.selected_deps %>
+  <%= f.input :status_id,  collection: Dict.selected_person_status %> 
   <%= f.input :password %>
   <%= f.input :password_confirmation %>
   <% if current_user.roles == 'providence_breaker' %>

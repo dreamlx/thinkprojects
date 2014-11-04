@@ -1,43 +1,39 @@
 <p>
-  <label for="Project_job_code"><%= Project.human_attribute_name("job_code") %></label>
+  <strong>Job code</strong><br>
   <%= @project.job_code||"--" %>
 </p>
-
 <p>
-  <label for="Project_description"><%= Project.human_attribute_name("description") %></label>
+  <strong>description</strong><br>
   <%= @project.description ||"--"%>
 </p>
-
 <p>
-  <label for="Project_starting_date"><%= Project.human_attribute_name("starting_date") %></label>
-  <%=h @project.starting_date %>
-</p>
-
-<p>
-  <label for="Project_ending_date"><%= Project.human_attribute_name("ending_date") %></label>
-  <%=h @project.ending_date %>
-</p>
-
-<p>
-  <label for="Project_estimated_annual_fee" ><strong><%= ("Estimated total fee") %></strong></label>
-  <%=h @project.estimated_annual_fee||0 %><%= label_title("estimated_annual_fee") %>
+  <strong>Starting date</strong><br>
+  <%= @project.starting_date %>
 </p>
 <p>
-  <label for="Project_estimated_hours" ><%= Project.human_attribute_name("estimated_hours") %></label>
-  <%=h @project.estimated_hours ||0%><%= label_title("estimated_hours") %>
+  <strong>Ending date</strong><br>
+  <%= @project.ending_date %>
 </p>
-
 <p>
-  <label for="Project_budgeted_service_fee"><%= Project.human_attribute_name("budgeted_service_fee") %></label>
-  <%=h @project.budgeted_service_fee ||""%>
+  <strong>Estimated annual fee</strong><br>
+  <%= @project.estimated_annual_fee||0 %>
 </p>
-
 <p>
-  <label for="Project_budgeted_expense" ><%= Project.human_attribute_name("budgeted_expense") %></label>
-  <%=h @project.budgeted_expense ||""%><%= label_title("budgeted_expense") %>
+  <strong>Estimated hours</strong><br>
+  <%= @project.estimated_hours ||0%>
+</p>
+<p>
+  <strong>Bugegeted service fee</strong><br>
+  <%= @project.budgeted_service_fee ||""%>
+</p>
+<p>
+  <strong>Budgeted expense</strong><br>
+  <%= @project.budgeted_expense ||""%>
 </p>
 
-<%= link_to 'Edit', edit_project_path(@project) if @project.state == "pending" or @project.state == "disapproved"%> |
+<% if @project.state == "pending" or @project.state == "disapproved" %>
+  <%= link_to 'Edit', edit_project_path(@project) %> |
+<% end %>
 <%= link_to 'Back', projects_path %>
 
 <!-- bookings -->

@@ -1,18 +1,18 @@
-
 <%= simple_form_for(@expense) do |f| %>
-    <% if current_user.roles == "providence_breaker" %>
-      <%= f.association :user, collection: User.order('name') %>
-    <% else %>
-      <%= f.input :user_id, collection: [current_user] %>
-    <% end %>
+  <% if current_user.roles == "providence_breaker" %>
+    <%= f.association :user, collection: User.selected_users %>
+  <% else %>
+    <%= f.input :user_id, collection: [current_user] %>
+  <% end %>
 
-    <%#= select_booked_project("expense", "project_id") %>
-    <%= f.input :charge_date %>
-    <%= f.input :approved_by, colletion: User.order("english_name") %>
-    <%= f.input :billable, as: :boolean, boolean_style: :inline  %>
-    <%= f.input :expense_category, collection: Dict.expense_types.collect {|p| [ p.title, p.title ] } %>
-    <%= f.input :fee %>
-    <%= f.input :desc, as: :text %>
-    <%= f.button :submit %>
+  <p><strong>Project:</strong></p>
+  <%= select_booked_project("expense", "project_id") %>
+  <%= f.input :charge_date %>
+  <p><strong>Approve By:</strong></p>
+  <%= f.select :approved_by, User.selected_users %>
+  <%= f.input :billable, as: :boolean, boolean_style: :inline  %>
+  <%= f.input :expense_category, collection: Dict.selected_expense_types %>
+  <%= f.input :fee %>
+  <%= f.input :desc, as: :text %>
+  <%= f.button :submit %>
 <% end %>
-

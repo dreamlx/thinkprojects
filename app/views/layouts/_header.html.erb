@@ -24,6 +24,7 @@
           <li class="<%= 'active' if params[:controller] == 'periods' %>"><%= link_to 'periods', periods_path %></li>
           <li class="<%= 'active' if params[:controller] == 'admins' %>"><%= link_to 'admins', admins_path %></li>
           <li class="<%= 'active' if params[:controller] == 'billings' || params[:controller] == 'receive_amounts' %>"><%= link_to 'billings', billings_path %></li>
+          <li class="<%= 'active' if params[:controller] == 'prj_expense_logs' || params[:controller] == 'receive_amounts' %>"><%= link_to 'prj_expense_logs', prj_expense_logs_path %></li>
         </ul>
       
         <ul class="nav navbar-nav navbar-right">

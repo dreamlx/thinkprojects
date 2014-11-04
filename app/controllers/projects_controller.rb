@@ -21,9 +21,7 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.new(params[:project])
     @project = format_jobcode(@project)
-    byebug
     if @project.save
-      byebug
       @booking = Booking.new #项目创建者就是默认booking人员
       @booking.user_id = @project.manager_id
       @booking.project_id = @project.id
@@ -31,7 +29,6 @@ class ProjectsController < ApplicationController
       flash[:notice] = 'Project was successfully created.'
       redirect_to @project
     else
-      byebug
       render "new"
     end
   end

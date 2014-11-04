@@ -1,10 +1,10 @@
 <h1>Listing clients</h1>
-
 <%= simple_form_for(:client, :url => clients_path, :html => { :method => :get }) do |f| %>
   <%= f.input :client_code, required: false %>
   <%= f.input :chinese_name, required: false %>
   <%= f.button :submit, 'seach' %>
 <% end %>
+<%= link_to 'New client', new_client_path %>
 <table class="table table-bordered">
   <tr>
     <th>Chinese name</th>
@@ -15,6 +15,4 @@
   </tr>
   <%= render @clients %>
 </table>
-
 <%= will_paginate @clients %>
-<%= link_to 'New client', new_client_path %>

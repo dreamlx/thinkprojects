@@ -1,5 +1,5 @@
 <% title "用户列表" %>
-<%= simple_form_for(:person, :url => people_path, :html => { :method => :get }) do |f| %>
+<%= simple_form_for(:user, :url => users_path, :html => { :method => :get }) do |f| %>
   <%= f.input :employee_number, required: false %>
   <%= f.input :english_name, required: false %>
   <%= f.input :chinese_name, required: false %>

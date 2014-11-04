@@ -1,9 +1,20 @@
+<%= simple_form_for(:expense, :url => expenses_path, :html => { :method => :get }) do |f| %>
+  <%= f.input :expense_category, collection: Dict.selected_expense_types %>
+  <%= select_my_projects("", "prj_id") %>
+  <% if current_user.roles =="providence_breaker" %>
+    <%= select_people("","person_id")  %>
+  <% else %>
+    <%= select("", "person_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => "All" }) %>
+  <% end %>
 
-<%= form_for(:expense, :url => expenses_path, :html => { :method => :get }) do |f| %>
-  <%#= render :partial => "search" %>
+  <%= f.input :client_name %>
+  <%= f.input :start_date %> to
+  <%= f.input :end_date %>
+  <%= f.input :state, collection: ["pending","approved","disapproved"] %>
+  <%= f.button :submit %>
 <% end %>
-<%#= link_to 'Export data', :controller=>"reports", :action => "expenses_export" %>||<%= link_to 'New expense', :action => 'new' %>
-<form name="myform" action="expenses/batch_actions" method="post">
+<%#= link_to 'Export data', :controller=>"reports", :action => "expenses_export" %>
+<%= link_to 'New expense', :action => 'new' %>
 <%= render 'shared/all_op' %>
 <table class="table table-bordered">
   <tr>
@@ -18,13 +29,11 @@
     <th>State</th>
     <th colspan="3">OP</th>
   </tr>
-
   <%= render @expenses %>
   <tr>
     <td colspan="7">Total</td>
-    <td id="sum_amount"><%= format("%.2f",@sum_amount) %></td>
+    <td><%= format("%.2f",@sum_amount) %></td>
     <td colspan="4"></td>
   </tr>
 </table>
-</form>
 <%= will_paginate @expenses %>

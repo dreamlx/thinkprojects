@@ -1,8 +1,7 @@
-
-  <div class="all_op">
-    <ul>
-      <li><%= check_box_tag "check_all", "yes", false,{:onclick=>"DoAll('check_items',this.checked);"}%>Check All</li>
-      <li><%= select "", "do_action",[['approval','approval'],['disapproval','disapproval'],['destroy','destroy']], {:include_blank=>"请选择"} %></li>
-      <li><%= submit_tag "submit",:confirm => 'Are you sure submit all actions?'%></li>
-    </ul>
-  </div>
+<div class="all_op">
+  <ul>
+    <li><%= check_box_tag "check_all", "yes", false,{:onclick=>"DoAll('check_items',this.checked);"}%>Check All</li>
+    <li><%= select "", "do_action",[['approval','approval'],['disapproval','disapproval'],['destroy','destroy']], {:include_blank=>"请选择"} %></li>
+    <li><%= submit_tag "submit",:confirm => 'Are you sure submit all actions?'%></li>
+  </ul>
+</div>

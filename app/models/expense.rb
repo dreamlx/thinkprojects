@@ -1,9 +1,7 @@
 class Expense < ActiveRecord::Base
   acts_as_commentable
-  validates_presence_of :charge_date
-  # validates_presence_of :person_id
-  # validates_presence_of :type
-  validates_numericality_of :fee
+  validates :charge_date, :user_id, presence: true
+  validates :fee, numericality: true
 
   belongs_to :project
   belongs_to :period

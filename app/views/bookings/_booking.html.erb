@@ -3,6 +3,12 @@
 	  <td><%= booking.user.english_name||booking.user.name %></td>
 	  <td><%= booking.user.charge_rate  %></td>
 	  <td><%= booking.hours %></td>
-	  <td><%= link_to 'Destroy', [booking.project, booking], :confirm => 'Are you sure?', :method => :delete if  booking.project.state != "closed" && booking.user_id != @project.manager_id%></td>
+    <% if  booking.project.state != "closed" && booking.user_id != @project.manager_id %>
+  	  <td>
+        <%= link_to 'Destroy', [booking.project, booking], 
+                    confirm: 'Are you sure?', 
+                    method: :delete %>
+      </td>
+    <% end %>
 	</tr>
 <% end %>

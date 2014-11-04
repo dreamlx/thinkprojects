@@ -12,12 +12,8 @@ class ExpensesController < ApplicationController
     sql += " and expenses.state = '#{params[:state]}'" if params[:state].present?
 
     session[:expense_sql] =sql
-
-    expenses = Expense.my_expenses(current_user, sql)
-
-    @expenses = expenses.paginate(:page=> params[:page]||1)
-    @sum_amount = 0
-    expenses.each{|e| @sum_amount+=e.fee.to_f}
+    @expenses = Expense.my_expenses(current_user, sql).paginate(:page=> params[:page]||1)
+    @sum_amount = @expenses.sum("fee")
   end
 
   def show
@@ -40,7 +36,7 @@ class ExpensesController < ApplicationController
       flash[:notice] = 'Expense was successfully created.'
       redirect_to @expense
     else
-      render :action => "new"
+      render "new"
     end
   end
 
@@ -62,7 +58,7 @@ class ExpensesController < ApplicationController
   end
 
   def transform
-    expense =    Expense.find(params[:source_id])
+    expense = Expense.find(params[:source_id])
     if params[:target_id].present?
       @target_project = Project.find(params[:target_id])
 
@@ -91,7 +87,6 @@ class ExpensesController < ApplicationController
     flash[:notice] = "Expense state was changed, current state is '#{expense.state}'"
     render :update do |page|
       page.replace_html "item_#{expense.id}", :partial => "item",:locals => { :expense => expense }
-
     end
   end
 
@@ -118,9 +113,6 @@ class ExpensesController < ApplicationController
           p.disapproval if p.state == "pending"
         when params[:do_action] == "destroy"
           p.destroy if p.state == "pending"
-
-        else
-
         end
       }
     end

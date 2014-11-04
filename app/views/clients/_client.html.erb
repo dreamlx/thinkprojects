@@ -5,5 +5,5 @@
   <td><%= client.user.english_name if client.user %></td>
   <td><%= link_to 'Show', client %></td>
   <td><%= link_to 'Edit', edit_client_path(client) %></td>
-  <td><%= link_to 'Destroy', client, :confirm => 'Are you sure?', :method => :delete %></td>
+  <td><%= link_to 'Destroy', client, confirm: 'Are you sure?', method: :delete %></td>
 </tr>
