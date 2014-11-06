@@ -1,0 +1,9 @@
+<%= search_form_for @q do |f| %>
+  <%= f.input :expense_category_eq, collection: Dict.selected_expense_types %>
+  <%= f.input :project_id_eq, collection: Project.order(:job_code) %>
+  <%= f.input :user_english_name_cont %>
+  <%= f.input :charge_date_eq, collection: Expense.all.map{|e| [e.charge_date, e.charge_date]} %>
+  <%#= f.input :end_date %>
+  <%= f.input :state, collection: ["pending","approved","disapproved"] %>
+  <%= f.button :submit, 'Search' %>
+<% end %>

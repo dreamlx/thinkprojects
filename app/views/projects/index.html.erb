@@ -1,8 +1,5 @@
-<%= render :partial => "search" %>
+<%= render "search" %>
 <%= link_to "New Project", new_project_path %>
-<form name="myform" action="projects/batch_actions" method="post">
-	<%= render :partial => 'shared/all_op' %>
-</form>
 <table class="table table-bordered">
 	<tr>
 		<th></th>

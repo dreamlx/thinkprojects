@@ -28,11 +28,6 @@ class Personalcharge < ActiveRecord::Base
     return sum_p
   end
 
-  def self.search(page)
-    paginate :per_page => 10, :page => page,
-    :order => 'created_on'
-  end
-
   def self.group_hours(condition)
     sql = "select sum(hours) as hours,user_id,charge_date from personalcharges left join projects on personalcharges.project_id = projects.id left join periods on personalcharges.period_id = periods.id where "
     sql += condition

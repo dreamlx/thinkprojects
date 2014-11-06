@@ -1,15 +1,17 @@
 class BillingsController < ApplicationController
   def index
-    @billing = Billing.new(params[:billing])
-    @period = Period.new(params[:period])
-    sql = ' 1 '
-    sql+= " and project_id = #{@billing.project_id}" unless @billing.project_id.blank? or @billing.project_id == 0
-    sql+= " and number like '#{@billing.number}%'" unless @billing.number.blank?
-    sql+= " and status = 0"  if @billing.status == 'outstanding'
-    sql+= " and status =1"  if @billing.status == 'received'
-    sql += " and billing_date <= '#{@period.ending_date}'"  unless @period.ending_date.blank?
-    sql += " and billing_date >= '#{@period.starting_date}'  " unless @period.starting_date.blank?
-    @billings  = Billing.where(sql).paginate(page: params[:page])
+    # @billing = Billing.new(params[:billing])
+    # @period = Period.new(params[:period])
+    # sql = ' 1 '
+    # sql+= " and project_id = #{@billing.project_id}" unless @billing.project_id.blank? or @billing.project_id == 0
+    # sql+= " and number like '#{@billing.number}%'" unless @billing.number.blank?
+    # sql+= " and status = 0"  if @billing.status == 'outstanding'
+    # sql+= " and status =1"  if @billing.status == 'received'
+    # sql += " and billing_date <= '#{@period.ending_date}'"  unless @period.ending_date.blank?
+    # sql += " and billing_date >= '#{@period.starting_date}'  " unless @period.starting_date.blank?
+    # @billings  = Billing.where(sql).paginate(page: params[:page])
+    @q = Billing.search(params[:q])
+    @billings = @q.result.includes(:project).paginate(page: params[:page])
   end
 
   def show
@@ -69,21 +71,19 @@ class BillingsController < ApplicationController
 
   def update
     @billing = Billing.find(params[:id])
-    respond_to do |format|
-      if @billing.update_attributes(params[:billing])
-        flash[:notice] = @billing.project.job_code + ' -- Billing was successfully updated.'
-        get_tax
-        get_amount
-        outstanding_net=  @billing.outstanding - @billing.write_off
-        if outstanding_net == 0
-          @billing.status = '1'
-        end
-        update_collection_days
-        @billing.save
-        redirect_to billing_url(@billing)
-      else
-        render "edit"
+    if @billing.update_attributes(params[:billing])
+      flash[:notice] = @billing.project.job_code + ' -- Billing was successfully updated.'
+      get_tax
+      get_amount
+      outstanding_net=  @billing.outstanding - @billing.write_off
+      if outstanding_net == 0
+        @billing.status = '1'
       end
+      update_collection_days
+      @billing.save
+      redirect_to billing_url(@billing)
+    else
+      render "edit"
     end
   end
 

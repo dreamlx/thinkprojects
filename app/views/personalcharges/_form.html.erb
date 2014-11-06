@@ -1,10 +1,10 @@
 <%= simple_form_for(@personalcharge) do |f| %>
-  <%= f.association :user, colletion: User.order('name') %>
-  <%=  select_booked_project("personalcharge","project_id") %>
-  <%= f.input :period_id, colletion: Period.all.map {|p| [p.number, p.id]} %>
+  <%= f.association :user, colletion: User.order('name'), selected: current_user.id %>
+  <%= select_booked_project("personalcharge","project_id") %>
+  <%= f.input :period_id, collection: Period.all.map {|p| [p.number, p.id]} %>
   <%= f.input :charge_date %>
-  <%= f.input :hours  %>
+  <%= f.input :hours %>
   <%= f.input :ot_hours %>
-  <%= f.input :desc, as: :text  %></p>
+  <%= f.input :desc, as: :text %>
   <%= f.button :submit %>
 <% end %>

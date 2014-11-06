@@ -1,5 +1,10 @@
 <h1><%=  "Listing Period" %></h1>
-<%= render "search" %>
+<!-- search -->
+<%= search_form_for(@q) do |f| %>
+  <%= f.input :number_cont, as: :search %>
+  <%= f.button :submit, 'search' %>
+<% end %>
+<!-- end of search -->
 <%= link_to "New Period", new_period_path %>
 <table class="table table-bordered">
   <tr>

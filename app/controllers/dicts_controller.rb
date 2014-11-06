@@ -1,10 +1,11 @@
 class DictsController < ApplicationController
   def index
-    dict = Dict.new(params[:dict])
-    sql = ' 1 '
-    sql += " and title like '%#{dict.title}%'" if dict.title.present?
-    sql += " and category like '%#{dict.category}%'" if dict.category.present?
-    @dicts = Dict.paginate(:page => params[:page]) #search_by_sql(sql,params[:page])
+    # dict = Dict.new(params[:dict])
+    # sql = ' 1 '
+    # sql += " and title like '%#{dict.title}%'" if dict.title.present?
+    # sql += " and category like '%#{dict.category}%'" if dict.category.present?
+    @q = Dict.search(params[:q])
+    @dicts = @q.result.paginate(:page => params[:page]) #search_by_sql(sql,params[:page])
   end
 
   def show

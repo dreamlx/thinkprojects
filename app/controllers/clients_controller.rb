@@ -1,14 +1,15 @@
 class ClientsController < ApplicationController
   def index
-    @client = Client.new(params[:client])
-    sql = "1"
-    sql += " and client_code like '%"+@client.client_code+"%' " if @client.client_code
-    sql += " and chinese_name like '%"+@client.chinese_name+"%' " if @client.chinese_name
-    if !@client.client_code.empty?
-      @clients = Client.where(sql).order(english_name).paginate(page: params[:page])
-    else
-      @clients  = Client.order('english_name').paginate(page: params[:page])
-    end
+    # @client = Client.new(params[:client])
+    # sql = "1"
+    # sql += " and client_code like '%"+@client.client_code+"%' " if @client.client_code
+    # sql += " and chinese_name like '%"+@client.chinese_name+"%' " if @client.chinese_name
+    # if !@client.client_code.empty?
+    #   @clients = Client.where(sql).order(english_name).paginate(page: params[:page])
+    # else
+    @q = Client.search(params[:q])
+    @clients  = @q.result.order('english_name').paginate(page: params[:page])
+    # end
   end
 
   def show

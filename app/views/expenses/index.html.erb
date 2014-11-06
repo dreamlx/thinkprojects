@@ -1,21 +1,6 @@
-<%= simple_form_for(:expense, :url => expenses_path, :html => { :method => :get }) do |f| %>
-  <%= f.input :expense_category, collection: Dict.selected_expense_types %>
-  <%= select_my_projects("", "prj_id") %>
-  <% if current_user.roles =="providence_breaker" %>
-    <%= select_people("","person_id")  %>
-  <% else %>
-    <%= select("", "person_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => "All" }) %>
-  <% end %>
-
-  <%= f.input :client_name %>
-  <%= f.input :start_date %> to
-  <%= f.input :end_date %>
-  <%= f.input :state, collection: ["pending","approved","disapproved"] %>
-  <%= f.button :submit %>
-<% end %>
+<%= render 'search' %>
 <%#= link_to 'Export data', :controller=>"reports", :action => "expenses_export" %>
 <%= link_to 'New expense', :action => 'new' %>
-<%= render 'shared/all_op' %>
 <table class="table table-bordered">
   <tr>
     <th>No</th>

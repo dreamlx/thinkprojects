@@ -1,34 +1,8 @@
 
 class PersonalchargesController < ApplicationController
   def index
-    sql = " 1 "
-    sql += " and person_id=#{params[:person_id]}" if params[:person_id].present?
-    if params[:period_from] == params[:period_to] and params[:period_from].present?
-      sql += " and periods.number = '#{params[:period_from]}' "
-      sql += " and periods.number  = '#{params[:period_to]}' "   
-    else
-      sql += " and periods.number >= '#{params[:period_from]}' "   if params[:period_from].present?
-      sql += " and periods.number   <= '#{params[:period_to]}' "     if params[:period_to].present?
-    end
-    sql += " and project_id=#{params[:prj_id]}"       if params[:prj_id].present?
-    sql2 = sql
-    sql += " and personalcharges.state = '#{params[:state]}'" if params[:state].present?
-    session[:personalcharge_sql]=sql
-    page = params[:page]||1
-    @personalcharges = Personalcharge.time_cost_paginate(current_user,sql,page,20)
-    approved_condition = ""
-    sql_ot =" select sum(hours) hours, personalcharges.user_id, personalcharges.period_id, personalcharges.project_id, personalcharges.charge_date charge_date from personalcharges 
-    left join projects on personalcharges.project_id = projects.id 
-    left join periods on personalcharges.period_id = periods.id
-    where #{sql2}
-    #{approved_condition}
-    and charge_date is not null
-    group by charge_date,user_id" 
-    session[:personalcharge_ot] =sql_ot
-    @approved_personalcharges = Personalcharge.find_by_sql(sql_ot)
-    @effective_hours = OverTime.remove_ineffective_hours(@approved_personalcharges)
-    personalcharges = Personalcharge.my_personalcharges(current_user,sql)
-    approved_personalcharges = Personalcharge.find_by_sql(sql_ot)
+    @q = Personalcharge.search(params[:q])
+    @personalcharges = @q.result.includes(:period, :project).paginate(:page => params[:page])
   end
 
   def new

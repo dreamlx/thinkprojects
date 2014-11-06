@@ -1,12 +1,7 @@
-<%= form_for(:personalcharge, :url => personalcharges_path, :html => { :method => :get }) do |f| %>
-  <%= render :partial => "search" %>
-<% end %>
+<%= render "search" %>
 <%#= link_to 'Export data', :controller=>"reports", :action => "personalcharges_export"  %>||
-<%= link_to 'New TimeCost', :action => 'new', :id=>params[:id], :person_id => params[:person_id]  %>
+<%= link_to 'New TimeCost', new_personalcharge_path  %>
 
-<form>
-  <%= render 'shared/all_op' %>
-</form>
 <table  class="table table-bordered">
   <tr>
   	<th>Employee name</th>  
@@ -19,7 +14,6 @@
     <th>State</th>
     <th colspan="4">Operations</th>
   </tr>
-  <% sum_current_person_daily_hours = 0 %>
   <%= render @personalcharges %>
 </table>
 

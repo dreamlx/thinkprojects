@@ -39,6 +39,7 @@ gem 'thin' # fix warning issues
 gem 'simple_form'
 gem 'country_select'
 gem "nested_form"
+gem 'ransack'
 
 gem 'bootstrap-sass', '~> 3.3.0'
 gem 'autoprefixer-rails'

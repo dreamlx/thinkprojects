@@ -1,18 +1,20 @@
 class ExpensesController < ApplicationController
   def index
-    order_str =" expenses.updated_at desc "
-    sql =" 1 "
-    sql += " and expense_category like '%#{params[:expense_category].strip}%' "  if params[:expense_category].present?
-    #sql += " and projects.job_code like '%#{params[:job_code].strip}%' "  if params[:job_code].present?
-    sql += " and project_id=#{params[:prj_id]}"       if params[:prj_id].present?
-    sql += " and clients.english_name like '%#{params[:client_name].strip}%' "  if params[:client_name].present?
-    sql += " and expenses.charge_date <= '#{format_date(params[:end_date])}'" if params[:end_date].present?
-    sql += " and expenses.charge_date >= '#{format_date(params[:start_date])}'" if params[:start_date].present?
-    sql += " and expenses.person_id = #{params[:person_id]}" if params[:person_id].present?
-    sql += " and expenses.state = '#{params[:state]}'" if params[:state].present?
+    # order_str =" expenses.updated_at desc "
+    # sql =" 1 "
+    # sql += " and expense_category like '%#{params[:expense_category].strip}%' "  if params[:expense_category].present?
+    # #sql += " and projects.job_code like '%#{params[:job_code].strip}%' "  if params[:job_code].present?
+    # sql += " and project_id=#{params[:prj_id]}"       if params[:prj_id].present?
+    # sql += " and clients.english_name like '%#{params[:client_name].strip}%' "  if params[:client_name].present?
+    # sql += " and expenses.charge_date <= '#{format_date(params[:end_date])}'" if params[:end_date].present?
+    # sql += " and expenses.charge_date >= '#{format_date(params[:start_date])}'" if params[:start_date].present?
+    # sql += " and expenses.person_id = #{params[:person_id]}" if params[:person_id].present?
+    # sql += " and expenses.state = '#{params[:state]}'" if params[:state].present?
 
-    session[:expense_sql] =sql
-    @expenses = Expense.my_expenses(current_user, sql).paginate(:page=> params[:page]||1)
+    # session[:expense_sql] =sql
+    @q = Expense.search(params[:q])
+    # @expenses = Expense.my_expenses(current_user, sql).paginate(:page=> params[:page]||1)
+    @expenses = @q.result.includes(:user, :project).paginate(:page=> params[:page])
     @sum_amount = @expenses.sum("fee")
   end
 

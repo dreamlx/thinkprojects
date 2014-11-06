@@ -1,8 +1,7 @@
-<%= simple_form_for(:project, :url => projects_path, :html => { :method => :get }) do |f| %>
-  <%= f.input :job_code, required: false %>
-  <%= f.input :client_name, required: false %>
-  <%#= f.select("booking_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => "All" }) %>
-  <%= f.input :state, collection: ["pending","approved","disapproved","closed"], required: false %>
-  <%= f.input :order_by, collection: ["job_code","created_on","client_name"] , required: false%>
-  <%= f.button :submit, '查询' %>
+<%= search_form_for @q do |f| %>
+  <%= f.input :job_code_cont, as: :search %>
+  <%= f.input :client_english_name_cont, as: :search %>
+  <%= f.input :bookings_user_id_eq, collection: User.selected_users, as: :select %>
+  <%= f.input :state_eq, collection: ["pending","approved","disapproved","closed"] %>
+  <%= f.button :submit, 'Search' %>
 <% end %>

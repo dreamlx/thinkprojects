@@ -1,10 +1,11 @@
 <% title "用户列表" %>
-<%= simple_form_for(:user, :url => users_path, :html => { :method => :get }) do |f| %>
-  <%= f.input :employee_number, required: false %>
-  <%= f.input :english_name, required: false %>
-  <%= f.input :chinese_name, required: false %>
+<!-- search -->
+<%= search_form_for(@q) do |f| %>
+  <%= f.input :employee_number_or_english_name_or_name_cont, as: :search %>
   <%= f.button :submit, '查询' %>
-<% end  %>
+<% end %>
+<!-- end of search -->
+
 <table class="table table-bordered">
   <tbody>
     <tr>

@@ -1,7 +1,6 @@
 <h1>Listing clients</h1>
-<%= simple_form_for(:client, :url => clients_path, :html => { :method => :get }) do |f| %>
-  <%= f.input :client_code, required: false %>
-  <%= f.input :chinese_name, required: false %>
+<%= search_form_for(@q) do |f| %>
+  <%= f.input :client_code_or_chinese_name_or_english_name_cont, as: :search %>
   <%= f.button :submit, 'seach' %>
 <% end %>
 <%= link_to 'New client', new_client_path %>

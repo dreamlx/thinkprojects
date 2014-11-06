@@ -69,7 +69,7 @@ module ApplicationHelper
 
   def select_my_projects(model,id)
     select( model,id , 
-    Project.my_projects(current_user,"1","job_code").collect {|p| [ p.job_code, p.id ] }, { :include_blank => "All" })
+    Project.my_projects.collect {|p| [ p.job_code, p.id ] }, { :include_blank => "All" })
   end
 
   def select_booked_project(model,id)

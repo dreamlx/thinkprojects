@@ -1,6 +1,7 @@
 class IndustriesController < ApplicationController
   def index
-    @industries  = Industry.paginate :page => params[:page]
+    @q = Industry.search(params[:q])
+    @industries  = @q.result.paginate :page => params[:page]
   end
 
   def show

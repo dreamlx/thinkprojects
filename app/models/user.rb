@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
                   :english_name, :employee_number, :charge_rate, :employment_date, 
                   :address, :postalcode, :mobile, :tel, :gender, :department_id, :status_id
   validates :login, presence: true, length: {in: 3..40}
-  validates :name, length: {maximum: 100}
+  validates :name,  length:   {maximum: 100}
   validates :email, presence: true, uniqueness: true, length: {in: 6..100}
 
   has_one   :person
@@ -55,6 +55,36 @@ class User < ActiveRecord::Base
 
     prjs =myprojects.sort_by{|p| p.job_code}
     return prjs
+  end
+
+  def self.my_teams(current_user)
+    projects = Project.all
+    my_bookings = []
+    projects.each{|project| my_bookings<< project.bookings if project.is_booking?(current_user.id) }
+    my_bookings =   Hash[*my_bookings.map {|obj| [obj.user_id, obj]}.flatten].values
+
+    ids=""
+    my_bookings.each{|booking| ids += (booking.user_id.to_s+",")} 
+    ids += " 0 "
+
+    teams = self.where("id in (#{ids})").order("english_name")
+
+    case 
+      when current_user.roles == "providence_breaker"
+        teams = self.order("english_name")
+      when current_user.roles == "partner"
+        teams = self.order("english_name")
+      when current_user.roles == "manager"
+        teams = self.where("id in (#{ids})").order("english_name")
+      when current_user.roles == "senior"
+        teams = self.where("id = #{current_user.person_id}")       
+      when current_user.roles == "staff"
+        teams = self.where("id = #{current_user.person_id}")
+    else
+        teams = self.order("english_name")
+    end
+    
+    return teams
   end
 
   belongs_to :GMU,

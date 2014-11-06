@@ -1,6 +1,5 @@
-<%= simple_form_for(:dict, :url => dicts_path, :html => { :method => :get }) do |f| %>
-  <%= f.input :category, required: false %>
-  <%= f.input :title, required: false %>
+<%= search_form_for(@q) do |f| %>
+  <%= f.input :category_or_title_cont, as: :search %>
   <%= f.button :submit, 'search' %>
 <% end %>
 
@@ -16,4 +15,3 @@
 </table>
 
 <%= will_paginate @dicts%>
-

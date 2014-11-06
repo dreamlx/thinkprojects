@@ -1,5 +1,4 @@
 <%= simple_form_for(@project) do |f| %>
-  <%= f.input :job_code %>
   <%= f.input :client_id, collection: Client.selected_clients %>
   <%= f.input :GMU_id,    collection: Dict.selected_gmus %>
   

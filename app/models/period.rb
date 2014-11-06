@@ -4,6 +4,10 @@ class Period < ActiveRecord::Base
   has_many :personalcharges
   has_many :billings
 
+  def name
+    number
+  end
+
   attr_accessible :number, :work_hours, :starting_date, :ending_date
 
   def self.search_by_sql(search,page)  

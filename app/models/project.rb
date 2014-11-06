@@ -46,6 +46,10 @@ class Project < ActiveRecord::Base
     end
   end
 
+  def name
+    job_code
+  end
+
   def self.my_bookings(user_id)
     User.find(user_id).my_bookings
   end
@@ -60,15 +64,11 @@ class Project < ActiveRecord::Base
     self.manager_id == id ? true : false
   end
   
-  def self.my_projects(current_user,sql="1",order_str="projects.created_on") 
-    if current_user.roles == 'providence_breaker' 
-      #all projects or current_user.roles == "parnter"
+  def self.my_projects(user)
+    if user.roles == 'providence_breaker' 
       projects = Project.all
     else
-      # the booking projects including me
-      sql += " and bookings.person_id = #{current_user.person_id}"
-      projects = Project.all #find(:all, :conditions => sql, :order=> order_str, :include=>[:client, :bookings] )
-    end
-    return projects   
+      projects = Project.include(:client, :bookings).where(user_id: user.id).order(:created_on)
+    end 
   end
 end

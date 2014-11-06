@@ -17,7 +17,7 @@
 									confirm: 'Are you sure close?'%>
 		<% if project.state =="closed" and current_user.roles == 'providence_breaker' %>
 			<%= button_to 'ReOpen', close_project_path(project), 
-										confirm: 'Are you sure reopen it ?' %>
+									confirm: 'Are you sure reopen it ?' %>
 		<% end %>
 		<% if project.state =="approved" and  !Dict.get_forward(project.job_code).empty? %>
 			<%= select("","select_zy_id",Project.where(state: 'approved').order("job_code").collect {|p| [ p.job_code, p.id ] }, { :include_blank => "Transfer to:" },{ :onChange=>"switch_form(this.value,'#{transform_project_path(project)}',#{project.id}); " })  %>

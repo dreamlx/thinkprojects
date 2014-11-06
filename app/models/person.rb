@@ -12,9 +12,7 @@ class Person < ActiveRecord::Base
 
   attr_accessible :chinese_name, :english_name, :employee_number, :charge_rate, :employment_date, :address, :postalcode, :mobile, :tel, :position, :gender, :department_id, :status_id, :department, :status
 
-  has_many :manager_projects,
-    :class_name=> "Project",
-    :foreign_key => :manager_id
+  has_many :manager_projects, :class_name=> "Project", :foreign_key => :manager_id
 
   
 
@@ -23,38 +21,8 @@ class Person < ActiveRecord::Base
       :conditions=>search
   end
 
-  def self.my_teams(current_user)
-    projects = Project.all
-    my_bookings = []
-    projects.each{|project| my_bookings<< project.bookings if project.is_booking?(current_user.person_id) }
-    my_bookings =   Hash[*my_bookings.map {|obj| [obj.person_id, obj]}.flatten].values
-
-    ids=""
-    my_bookings.each{|booking| ids += (booking.person_id.to_s+",")} 
-    ids += " 0 "
-
-    teams = self.where("id in (#{ids})").order("english_name")
-
-    case 
-      when current_user.roles == "providence_breaker"
-        teams = self.order("english_name")
-      when current_user.roles == "partner"
-        teams = self.order("english_name")
-      when current_user.roles == "manager"
-        teams = self.where("id in (#{ids})").order("english_name")
-      when current_user.roles == "senior"
-        teams = self.where("id = #{current_user.person_id}")       
-      when current_user.roles == "staff"
-        teams = self.where("id = #{current_user.person_id}")
-    else
-        teams = self.order("english_name")
-    end
-    
-    return teams
-  end
-
-  def my_projects(sql="1",order_str="projects.created_on")
-    myprojects = Project.my_projects(sql,order_str,self)
+  def my_projects
+    myprojects = Project.my_projects
   end
   
   def my_personalcharges(sql="1")
