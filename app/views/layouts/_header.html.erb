@@ -19,19 +19,20 @@
           <li class="<%= 'active' if params[:controller] == 'expenses' %>"><%= link_to 'expenses', expenses_path %></li>
           <li class="<%= 'active' if params[:controller] == 'users' %>"><%= link_to 'users', users_path %></li>
           <li class="<%= 'active' if params[:controller] == 'clients' %>"><%= link_to 'clients', clients_path %></li>
-          <li class="<%= 'active' if params[:controller] == 'dicts' %>"><%= link_to 'dicts', dicts_path %></li>
-          <li class="<%= 'active' if params[:controller] == 'industries' %>"><%= link_to 'industries', industries_path %></li>
           <li class="<%= 'active' if params[:controller] == 'periods' %>"><%= link_to 'periods', periods_path %></li>
-          <li class="<%= 'active' if params[:controller] == 'admins' %>"><%= link_to 'admins', admins_path %></li>
           <li class="<%= 'active' if params[:controller] == 'billings' || params[:controller] == 'receive_amounts' %>"><%= link_to 'billings', billings_path %></li>
           <li class="<%= 'active' if params[:controller] == 'prj_expense_logs' || params[:controller] == 'receive_amounts' %>"><%= link_to 'prj_expense_logs', prj_expense_logs_path %></li>
-        </ul>
-      
-        <ul class="nav navbar-nav navbar-right">
-          <li><%= link_to '注销', destroy_user_session_path, method: :delete %></li>
-          <li><%= link_to "用户中心",current_user %></li>
-          <% if controller_name == "users" || current_user.roles == 'providence_breaker' %>
-          <% end %>	
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Setting <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li class="<%= 'active' if params[:controller] == 'dicts' %>"><%= link_to 'dicts', dicts_path %></li>
+              <li class="<%= 'active' if params[:controller] == 'industries' %>"><%= link_to 'industries', industries_path %></li>
+              <li class="divider"></li>
+              <li><%= link_to '注销', destroy_user_session_path, method: :delete %></li>
+              <li><%= link_to "用户中心",current_user %></li>
+            </ul>
+          </li>
+          
         </ul>
       <% else %>
         <ul class="nav navbar-nav navbar-right">
