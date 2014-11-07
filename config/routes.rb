@@ -7,8 +7,7 @@ Thinkprojects::Application.routes.draw do
   resources :dicts
   resources :clients
   resources :prj_expense_logs
-  resources :users, only: [:index, :show, :edit, :update, :destroy]
-  resources :admins do
+  resources :users, only: [:index, :show, :edit, :update, :destroy] do
     get :auto_complete_hours, on: :collection
     get :check_ot,            on: :collection
   end
