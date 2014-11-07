@@ -27,21 +27,11 @@ class Expense < ActiveRecord::Base
     end
   end
 
-  def self.paginate_by_sql(search,page = 1, order_str = " created_at ")
-    paginate :per_page => 20, :page => page,
-      :conditions=>search,
-      :joins=>" left join projects on project_id = projects.id left join clients on client_id = clients.id",
-      :order=>order_str
-  end
-
-  def self.my_expenses(current_user,sql="1", order_str="expenses.charge_date desc,expenses.state desc")
-    
+  def self.my_expenses(current_user,sql="1", order_str="expenses.charge_date desc,expenses.state desc") 
     case 
       when current_user.roles == "providence_breaker"
-
       when current_user.roles == "partner"
         projects = Project.my_projects(current_user)
-
         prj_ids = ""
         projects.each{|p| prj_ids += " #{p.id}," }
         prj_ids += "0"
@@ -68,7 +58,7 @@ class Expense < ActiveRecord::Base
 
   def approved_name
       if self.approved_by
-        Person.find(self.approved_by).english_name
+        User.find(self.approved_by).english_name
 
       else
         ""

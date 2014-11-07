@@ -1,15 +1,8 @@
 <%= simple_form_for(@expense) do |f| %>
-  <% if current_user.roles == "providence_breaker" %>
-    <%= f.association :user, collection: User.selected_users %>
-  <% else %>
-    <%= f.input :user_id, collection: [current_user] %>
-  <% end %>
-
-  <p><strong>Project:</strong></p>
-  <%= select_booked_project("expense", "project_id") %>
+  <%= f.association :user, collection: User.selected_users %>
+  <%= f.input :project_id, collection: Project.alive %>
   <%= f.input :charge_date %>
-  <p><strong>Approve By:</strong></p>
-  <%= f.select :approved_by, User.selected_users %>
+  <%= f.input :approved_by, collection: User.selected_users %>
   <%= f.input :billable, as: :boolean, boolean_style: :inline  %>
   <%= f.input :expense_category, collection: Dict.selected_expense_types %>
   <%= f.input :fee %>

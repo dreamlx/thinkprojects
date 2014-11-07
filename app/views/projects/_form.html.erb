@@ -9,8 +9,7 @@
   <%= f.input :estimated_hours %>
   <%= f.input :budgeted_service_fee %>
   <%= f.input :budgeted_expense %>
-  <p><strong>Manager:</strong></p>
-  <%= @project.manager.nil?? select_employee("project", "manager_id") : @project.manager.english_name %>
+  <%= f.input :manager_id, collection: User.selected_users %>
   <%= f.input :description %><br>
   <%= f.button :submit %>
 <% end %>

@@ -1,11 +1,8 @@
 #coding: utf-8
 class UsersController < ApplicationController
-  # # filter_access_to :all
-  # filter_access_to [:show, :edit, :update], :attribute_check => true
-
   def index
     @q = User.search(params[:q])
-    @users= @q.result.paginate(:page => params[:page]) #search_by_sql(sql,params[:page])
+    @users= @q.result.paginate(:page => params[:page])
   end
 
   def show

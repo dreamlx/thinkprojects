@@ -14,25 +14,26 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <% if signed_in? %>
         <ul class="nav navbar-nav">
-          <li class="<%= 'active' if params[:controller] == 'projects' %>"><%= link_to 'project', projects_path %></li>
-          <li class="<%= 'active' if params[:controller] == 'personalcharges' %>"><%= link_to 'personalcharge', personalcharges_path %></li>
+          <li class="<%= 'active' if params[:controller] == 'projects' %>"><%= link_to 'projects', projects_path %></li>
+          <li class="<%= 'active' if params[:controller] == 'personalcharges' %>"><%= link_to 'personalcharges', personalcharges_path %></li>
           <li class="<%= 'active' if params[:controller] == 'expenses' %>"><%= link_to 'expenses', expenses_path %></li>
           <li class="<%= 'active' if params[:controller] == 'users' %>"><%= link_to 'users', users_path %></li>
           <li class="<%= 'active' if params[:controller] == 'clients' %>"><%= link_to 'clients', clients_path %></li>
           <li class="<%= 'active' if params[:controller] == 'periods' %>"><%= link_to 'periods', periods_path %></li>
           <li class="<%= 'active' if params[:controller] == 'billings' || params[:controller] == 'receive_amounts' %>"><%= link_to 'billings', billings_path %></li>
-          <li class="<%= 'active' if params[:controller] == 'prj_expense_logs' || params[:controller] == 'receive_amounts' %>"><%= link_to 'prj_expense_logs', prj_expense_logs_path %></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Setting <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
               <li class="<%= 'active' if params[:controller] == 'dicts' %>"><%= link_to 'dicts', dicts_path %></li>
               <li class="<%= 'active' if params[:controller] == 'industries' %>"><%= link_to 'industries', industries_path %></li>
+              <li class="<%= 'active' if params[:controller] == 'prj_expense_logs' || params[:controller] == 'receive_amounts' %>"><%= link_to 'prj_expense_logs', prj_expense_logs_path %></li>
               <li class="divider"></li>
               <li><%= link_to '注销', destroy_user_session_path, method: :delete %></li>
               <li><%= link_to "用户中心",current_user %></li>
             </ul>
           </li>
-          
         </ul>
       <% else %>
         <ul class="nav navbar-nav navbar-right">

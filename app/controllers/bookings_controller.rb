@@ -1,8 +1,8 @@
 class BookingsController < ApplicationController
   before_filter :find_project
   def create
-    @booking = Booking.new(params[:booking])
-    if (@project.bookings << @booking)
+    @booking = @project.bookings.build(params[:booking])
+    if @booking.save
       redirect_to(@project, :notice => 'Booking was successfully created.')
     else
       redirect_to(@project, :notice => 'employee already exist, please destroy record first.')
@@ -11,17 +11,17 @@ class BookingsController < ApplicationController
 
   def destroy
     @booking = @project.bookings.find(params[:id])
-    @booking.destroy unless @booking.id == @project.manager_id
-    redirect_to @project
+    if @booking.user_id != @project.manager_id
+      @booking.destroy
+      redirect_to @project, notice: "Success"
+    else
+      redirect_to @project, notice: "The user is manager"
+    end
   end
 
   def bookall
-    employees = User.workings
-    employees.each do |employee|
-      book= Booking.new
-      book.user_id = employee.id
-      book.hours = 0
-      @project.bookings << book
+    User.workings.each do |employee|
+      @project.bookings.create(user_id: employee.id, hours: 0)
     end
     redirect_to(@project, :notice => 'Booking was successfully created.')
   end

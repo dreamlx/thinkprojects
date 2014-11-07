@@ -1,12 +1,12 @@
 class Project < ActiveRecord::Base
   acts_as_commentable
-  validates_uniqueness_of           :job_code
-  validates_presence_of             :manager_id,:message => "Please select one person as project creator "
-  validates_presence_of             :client_id
-  validates_numericality_of         :estimated_hours
-  validates_numericality_of         :estimated_annual_fee
-  validates_numericality_of         :budgeted_expense
-  validates_numericality_of         :budgeted_service_fee
+  validates :job_code, uniqueness: true
+  validates :manager_id, presence: true
+  validates :client_id, presence: true
+  validates :estimated_hours, numericality: true
+  validates :estimated_annual_fee, numericality: true
+  validates :budgeted_expense, numericality: true
+  validates :budgeted_service_fee, numericality: true
   
   attr_accessible :job_code, :state, :client_id, :manager_id,
                   :GMU_id, :description, :service_id, :starting_date, :ending_date, 
@@ -50,25 +50,7 @@ class Project < ActiveRecord::Base
     job_code
   end
 
-  def self.my_bookings(user_id)
-    User.find(user_id).my_bookings
-  end
-  
-  def is_booking?(id)
-    flag = false
-    #bug#self.bookings.each{|b| flag =true if b.person_id == id} 
-    return flag
-  end
-
-  def is_manager?(id)
-    self.manager_id == id ? true : false
-  end
-  
   def self.my_projects(user)
-    if user.roles == 'providence_breaker' 
-      projects = Project.all
-    else
-      projects = Project.include(:client, :bookings).where(user_id: user.id).order(:created_on)
-    end 
+    Project.all
   end
 end

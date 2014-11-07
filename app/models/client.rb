@@ -12,8 +12,8 @@ class Client < ActiveRecord::Base
 
   attr_accessible :client_code, :chinese_name, :english_name, :user_id, 
                   :industry_id, :category_id, :status_id, :region_id, :contacts_attributes
-  
+
   def self.selected_clients
-    order("english_name").map {|p| ["#{p.client_code} || #{p.english_name}", p.id ] }
+    order("english_name").map {|c| ["#{c.client_code} || #{c.english_name}", c.id ] }
   end
 end

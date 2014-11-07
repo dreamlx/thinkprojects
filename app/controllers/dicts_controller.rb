@@ -1,11 +1,7 @@
 class DictsController < ApplicationController
   def index
-    # dict = Dict.new(params[:dict])
-    # sql = ' 1 '
-    # sql += " and title like '%#{dict.title}%'" if dict.title.present?
-    # sql += " and category like '%#{dict.category}%'" if dict.category.present?
     @q = Dict.search(params[:q])
-    @dicts = @q.result.paginate(:page => params[:page]) #search_by_sql(sql,params[:page])
+    @dicts = @q.result.paginate(:page => params[:page])
   end
 
   def show
@@ -22,10 +18,8 @@ class DictsController < ApplicationController
 
   def create
     @dict = Dict.new(params[:dict])
-    if @dict.save
-      flash[:notice] = 'dict was successfully created.'
-      
-      redirect_to @dict
+    if @dict.save      
+      redirect_to @dict, notice: 'dict was successfully created.'
     else
       render "new"
     end
@@ -34,8 +28,7 @@ class DictsController < ApplicationController
   def update
     @dict = Dict.find(params[:id])
     if @dict.update_attributes(params[:dict])
-      flash[:notice] = 'Dict was successfully updated.'
-      redirect_to @dict
+      redirect_to @dict, notice: 'Dict was successfully updated.'
     else
       ender "edit"
     end

@@ -54,15 +54,13 @@ class ProjectsController < ApplicationController
   def approval
     project = Project.find(params[:id])
     project.approval
-    flash[:notice] = notice_message(project.job_code, project.state)
-    redirect_to projects_path
+    redirect_to projects_path, notice: notice_message(project.job_code, project.state)
   end
 
   def disapproval
     project = Project.find(params[:id])
     project.disapproval
-    flash[:notice] = notice_message(project.job_code, project.state)
-    redirect_to projects_path
+    redirect_to projects_path, notice: notice_message(project.job_code, project.state)
   end
   
   def close
@@ -72,8 +70,7 @@ class ProjectsController < ApplicationController
     else
       project.approval
     end
-    flash[:notice] = notice_message(project.job_code, project.state)
-    redirect_to projects_path
+    redirect_to projects_path, notice: notice_message(project.job_code, project.state)
   end
   
   def transform

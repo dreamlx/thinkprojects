@@ -1,15 +1,5 @@
 class BillingsController < ApplicationController
   def index
-    # @billing = Billing.new(params[:billing])
-    # @period = Period.new(params[:period])
-    # sql = ' 1 '
-    # sql+= " and project_id = #{@billing.project_id}" unless @billing.project_id.blank? or @billing.project_id == 0
-    # sql+= " and number like '#{@billing.number}%'" unless @billing.number.blank?
-    # sql+= " and status = 0"  if @billing.status == 'outstanding'
-    # sql+= " and status =1"  if @billing.status == 'received'
-    # sql += " and billing_date <= '#{@period.ending_date}'"  unless @period.ending_date.blank?
-    # sql += " and billing_date >= '#{@period.starting_date}'  " unless @period.starting_date.blank?
-    # @billings  = Billing.where(sql).paginate(page: params[:page])
     @q = Billing.search(params[:q])
     @billings = @q.result.includes(:project).paginate(page: params[:page])
   end
@@ -110,6 +100,33 @@ class BillingsController < ApplicationController
       if @billing.status == "1"
         @billing.collection_days = @billing.days_of_ageing
         @billing.outstanding =@billing.amount
+      end
+    end
+
+    def get_now_period
+      cookie_period_id = cookies[:the_time]
+      if cookie_period_id != ""
+        sql_condition  = " id = '#{cookie_period_id}'"
+      else
+        sql_condition = "id = 0"
+      end
+      now_period = Period.where(sql_condition ).first || Period.today_period
+
+    end
+
+    def billing_number_set
+      @billing_number = Dict.find_by_category(:billing_number)
+      @number = @billing_number.code.to_i + 1
+
+      case @number
+      when @number <10
+        @str_number = "000" + @number.to_s
+      when @number <100
+        @str_number = "00" + @number.to_s
+      when @number <1000
+        @str_number = "0" + @number.to_s
+      when
+        @str_number = @number.to_s
       end
     end
 end

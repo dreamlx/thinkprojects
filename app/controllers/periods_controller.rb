@@ -1,9 +1,7 @@
 class PeriodsController < ApplicationController
   def index
-    # sql = "1  and number like '%#{params[:period][:number]}%'" unless params[:period].nil?
-    # @periods = Period.search_by_sql(sql,params[:page]||1)
     @q = Period.search(params[:q])
-    @periods = @q.result.paginate(page: params[:page])
+    @periods = @q.result.order(:number).paginate(page: params[:page])
   end
 
   def show

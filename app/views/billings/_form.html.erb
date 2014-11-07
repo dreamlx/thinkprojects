@@ -1,7 +1,7 @@
 <%= simple_form_for(@billing) do |f| %>
-  <%= f.input :project_id, collection: Project.my_bookings(current_user).map {|p| [ p.job_code, p.id ] } %>
-  <%= f.input :period_id, collection: Period.selected_numbers %>
-  <%= f.input :user_id, collection: User.selected_users %>
+  <%= f.input :project_id, collection: Project.all %>
+  <%= f.input :period_id, collection: Period.order(:number) %>
+  <%= f.input :user_id, collection: User.order(:english_name) %>
   <%= f.input :number %>
   <%= f.input :billing_date %>
   <%= f.input :service_billing %>

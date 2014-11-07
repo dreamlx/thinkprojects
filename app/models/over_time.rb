@@ -1,5 +1,5 @@
 class OverTime
-  attr_accessor :working_days, :daily_working_hours, :holidays, :ineffective_code
+  attr_accessible :working_days, :daily_working_hours, :holidays, :ineffective_code
   @@otsetup = YAML.load_file(Rails.root + "config/overtime_setup.yml")
   def initialize
 

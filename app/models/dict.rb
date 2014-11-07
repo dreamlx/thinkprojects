@@ -1,17 +1,12 @@
 class Dict < ActiveRecord::Base
   attr_accessible :category, :code, :title
 
-  def self.search_by_sql(search,page = 1)
-    paginate  :page => page,
-              :conditions => search
+  def self.get_forward(code='')
+    where(" code like '#{code}%'")
   end
 
   def self.selected_expense_types
     where(category: 'expense_type').order('code').map {|p| [ p.title, p.title ] }
-  end
-
-  def self.get_forward(code='')
-    where(" code like '#{code}%'")
   end
 
   def self.selected_categories
