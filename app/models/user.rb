@@ -11,10 +11,15 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true, length: {in: 6..100}
   has_many  :clients
   has_many  :expenses
+  has_many  :bookings
+  has_many  :personalcharges
+  has_many  :projects, through: :bookings
   belongs_to :GMU,        class_name: "Dict", foreign_key: "GMU_id",        :conditions => "category ='GMU'" 
   belongs_to :status,     class_name: "Dict", foreign_key: "status_id",     :conditions => "category = 'person_status'"
   belongs_to :department, class_name: "Dict", foreign_key: "department_id", :conditions => "category = 'department'"
-  scope :workings, :conditions =>"dicts.title <> 'Resigned' and dicts.category = 'person_status' ", :include=>:status,:order =>"english_name"
+  def self.workings
+    includes(:status).where("dicts.title <> 'Resigned' and dicts.category = 'person_status' ").order("english_name")
+  end
 
   def self.selected_roles
     [['staff','staff'],['senior','senior'],['manager','manager'],['partner','partner'],['hr_admin','hr_admin'],['超级管理员','providence_breaker']]

@@ -128,11 +128,14 @@ GEM
       json (~> 1.4)
     responders (1.1.1)
       railties (>= 3.2, < 4.2)
+    ruby-ole (1.2.11.7)
     sass (3.4.7)
     simple_form (2.1.1)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
     slop (3.6.0)
+    spreadsheet (1.0.0)
+      ruby-ole (>= 1.0)
     sprockets (2.2.2.backport2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -151,6 +154,8 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
+    to_xls (1.5.3)
+      spreadsheet
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -187,5 +192,6 @@ DEPENDENCIES
   sqlite3
   state_machine
   thin
+  to_xls
   uglifier (>= 1.0.3)
   will_paginate

@@ -17,6 +17,7 @@ class Project < ActiveRecord::Base
   has_many :personalcharges,  :dependent => :destroy
   has_many :bookings,         :dependent => :destroy
   has_many :members,          :through => :bookings, :source => :person
+  has_many :users,            through: :bookings
   
   belongs_to :client
   belongs_to :GMU,          :class_name => "Dict",    :foreign_key => "GMU_id",         :conditions => "category ='GMU'"
@@ -48,9 +49,5 @@ class Project < ActiveRecord::Base
 
   def name
     job_code
-  end
-
-  def self.my_projects(user)
-    Project.all
   end
 end

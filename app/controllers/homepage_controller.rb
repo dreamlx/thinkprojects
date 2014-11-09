@@ -1,7 +1,7 @@
 class HomepageController < ApplicationController
   def index
     if user_signed_in?
-      @projects = Project.my_projects(current_user)
+      @projects = current_user.projects
       check_period
     end
   end

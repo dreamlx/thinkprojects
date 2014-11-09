@@ -26,8 +26,7 @@ class ProjectsController < ApplicationController
                         @project.service_code.code
     @project.bookings.build(user_id: current_user.id)
     if @project.save
-      flash[:notice] = 'Project was successfully created.'
-      redirect_to @project
+      redirect_to @project, notice: 'Project was successfully created.'
     else
       render "new"
     end
@@ -38,8 +37,7 @@ class ProjectsController < ApplicationController
     
     if @project.update_attributes(params[:project])        
       @project.reset
-      flash[:notice] = 'Project was successfully updated.'
-      redirect_to @project
+      redirect_to @project, notice: 'Project was successfully updated.'
     else
       render "edit"
     end
@@ -86,8 +84,7 @@ class ProjectsController < ApplicationController
     else
       @zy_project = nil
     end
-    flash[:notice] = 'Project was successfully forward.'
-    redirect_to projects_url
+    redirect_to projects_url, notice: 'Project was successfully forward.'
   end
 
   def addcomment

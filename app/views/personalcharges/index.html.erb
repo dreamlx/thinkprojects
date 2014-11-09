@@ -1,5 +1,5 @@
 <%= render "search" %>
-<%#= link_to 'Export data', :controller=>"reports", :action => "personalcharges_export"  %>||
+<%= link_to 'Export data', personalcharges_path(format: 'xls')  %>||
 <%= link_to 'New TimeCost', new_personalcharge_path  %>
 
 <table  class="table table-bordered">
@@ -17,8 +17,25 @@
   <%= render @personalcharges %>
 </table>
 
-<%= button_to "Get OverTime", :url=> {:action=> "get_ot",:approved_personalcharges=> @approved_personalcharges, :effective_hours => @effective_hours}, :method =>:post,:update => "the-ot" %>
-
-<div id="the-ot"></div>
-
 <%= will_paginate @personalcharges %>
+
+<div>
+  <h3>check&amp; auto insert Self study</h3>
+  <p>This action will check all working hours and auto project by self study hours</p>
+  <%= simple_form_for(:project_period, url: auto_complete_hours_personalcharges_path, :html => { :method => :get }) do |f| %>
+    <%= f.input :period_id, collection: Period.order("number desc") %>
+    <%= f.input :prj_id, collection: Project.all %>
+    <%= f.input :period_hours %>
+    <%= f.button :submit, '提交' %>
+  <% end %>
+</div>
+<hr/>
+<div>
+  <h3>check OT</h3>
+  <%= form_for(:admin, :url => check_ot_personalcharges_path, :html => { :method => :get }) do |f| %>
+    Period:<%= select("", "period_id",
+      Period.find(:all,:order=>"number desc").collect {|p| [ p.number, p.id ] }, { :include_blank => false }) %>
+    Period hours: <%= text_field_tag "period_hours","0" %>
+    <%= submit_tag '提交' %>
+  <% end %>
+</div>

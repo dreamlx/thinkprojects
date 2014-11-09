@@ -20,8 +20,7 @@ class PeriodsController < ApplicationController
     @period = Period.new(params[:period])
 
     if @period.save
-      flash[:notice] = 'Period was successfully created.'
-      redirect_to @period
+      redirect_to @period, notice: 'Period was successfully created.'
     else
       render "new"
     end
@@ -31,8 +30,7 @@ class PeriodsController < ApplicationController
     @period = Period.find(params[:id])
 
     if @period.update_attributes(params[:period])
-      flash[:notice] = 'Period was successfully updated.'
-      redirect_to @period
+      redirect_to @period, notice: 'Period was successfully updated.'
     else
       render "edit"
     end

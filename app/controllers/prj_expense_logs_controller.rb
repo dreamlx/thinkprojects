@@ -14,8 +14,7 @@ class PrjExpenseLogsController < ApplicationController
   def create
     @prj_expense_log = PrjExpenseLog.new(params[:prj_expense_log])
     if @prj_expense_log.save
-      flash[:notice] = 'PrjExpenseLog was successfully created.'
-      redirect_to @prj_expense_log
+      redirect_to @prj_expense_log, notice: 'PrjExpenseLog was successfully created.'
     else
       render 'new'
     end
@@ -28,8 +27,7 @@ class PrjExpenseLogsController < ApplicationController
   def update
     @prj_expense_log = PrjExpenseLog.find(params[:id])
     if @prj_expense_log.update_attributes(params[:prj_expense_log])
-      flash[:notice] = 'PrjExpenseLog was successfully updated.'
-      redirect_to @prj_expense_log
+      redirect_to @prj_expense_log, notice: 'PrjExpenseLog was successfully updated.'
     else
       render 'edit'
     end

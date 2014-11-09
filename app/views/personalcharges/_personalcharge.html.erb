@@ -1,5 +1,5 @@
 <tr>
-	<td><%= personalcharge.user.english_name if personalcharge.user %></td>
+	<td><%= personalcharge.user.name if personalcharge.user %></td>
 	<td><%= check_box_tag "check_items[#{personalcharge.id}]", personalcharge.id if personalcharge.state == "pending" %>
 			<%= personalcharge.period.number  if personalcharge.period %></td>
 	<td><%= personalcharge.charge_date %></td>

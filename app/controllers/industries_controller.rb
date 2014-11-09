@@ -15,8 +15,7 @@ class IndustriesController < ApplicationController
   def create
     @industry = Industry.new(params[:industry])
     if @industry.save
-      flash[:notice] = 'Industry was successfully created.'
-      redirect_to industries_path
+      redirect_to industries_path, notice: 'Industry was successfully created.'
     else
       render 'new'
     end
@@ -29,8 +28,7 @@ class IndustriesController < ApplicationController
   def update
     @industry = Industry.find(params[:id])
     if @industry.update_attributes(params[:industry])
-      flash[:notice] = 'Industry was successfully updated.'
-      redirect_to @industry
+      redirect_to @industry, notice: 'Industry was successfully updated.'
     else
       render 'edit'
     end

@@ -7,10 +7,7 @@ Thinkprojects::Application.routes.draw do
   resources :dicts
   resources :clients
   resources :prj_expense_logs
-  resources :users, only: [:index, :show, :edit, :update, :destroy] do
-    get :auto_complete_hours, on: :collection
-    get :check_ot,            on: :collection
-  end
+  resources :users, only: [:index, :show, :edit, :update, :destroy]
   resources :billings do
     resources :receive_amounts, only: [:edit, :create, :update, :destroy]
   end
@@ -32,10 +29,11 @@ Thinkprojects::Application.routes.draw do
     post :addcomment, on: :member
   end
   resources :personalcharges do
-    post :transform, on: :member
-    post :approval, on: :member
-    post :disapproval, on: :member
-    post :addcomment, on: :member
-    get :get_ot, on: :collection
+    post :transform,          on: :member
+    post :approval,           on: :member
+    post :disapproval,        on: :member
+    post :addcomment,         on: :member
+    get :check_ot,            on: :collection
+    get :auto_complete_hours, on: :collection
   end
 end

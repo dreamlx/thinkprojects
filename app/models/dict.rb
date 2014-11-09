@@ -1,5 +1,6 @@
 class Dict < ActiveRecord::Base
   attr_accessible :category, :code, :title
+  has_many :users
 
   def self.get_forward(code='')
     where(" code like '#{code}%'")

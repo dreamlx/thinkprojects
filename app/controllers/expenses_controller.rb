@@ -3,6 +3,11 @@ class ExpensesController < ApplicationController
     @q = Expense.search(params[:q])
     @expenses = @q.result.includes(:user, :project).paginate(:page=> params[:page])
     @sum_amount = @expenses.sum("fee")
+    expenses = current_user.expenses
+    respond_to do |format|
+      format.html
+      format.xls { send_data expenses.to_xls,:filename=>"expenses.xls", :disposition => 'attachment' }
+    end  
   end
 
   def show
