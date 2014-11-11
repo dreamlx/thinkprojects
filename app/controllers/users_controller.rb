@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   def index
     @q = User.search(params[:q])
     @users= @q.result.paginate(:page => params[:page])
+    authorize! :read, @users
   end
 
   def show
