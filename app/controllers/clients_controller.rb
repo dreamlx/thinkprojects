@@ -1,4 +1,5 @@
 class ClientsController < ApplicationController
+  load_and_authorize_resource
   def index
     @q = Client.search(params[:q])
     @clients  = @q.result.order('english_name').paginate(page: params[:page])

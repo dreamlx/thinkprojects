@@ -1,4 +1,5 @@
 class PersonalchargesController < ApplicationController
+  load_and_authorize_resource
   def index
     @q = Personalcharge.search(params[:q])
     @personalcharges = @q.result.includes(:period, :project).paginate(:page => params[:page])

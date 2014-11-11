@@ -1,4 +1,5 @@
 class ExpensesController < ApplicationController
+  load_and_authorize_resource
   def index
     @q = Expense.search(params[:q])
     @expenses = @q.result.includes(:user, :project).paginate(:page=> params[:page])

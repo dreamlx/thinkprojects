@@ -1,4 +1,5 @@
 class PeriodsController < ApplicationController
+  load_and_authorize_resource
   def index
     @q = Period.search(params[:q])
     @periods = @q.result.order(:number).paginate(page: params[:page])

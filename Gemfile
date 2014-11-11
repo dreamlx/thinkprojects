@@ -34,6 +34,7 @@ gem 'iconv'
 
 gem 'devise'
 gem 'devise-encryptable' # migrate from restful-authentication
+gem 'cancancan'
 gem 'thin' # fix warning issues
 
 gem 'simple_form'

@@ -1,5 +1,6 @@
 #coding: utf-8
 class ProjectsController < ApplicationController
+  load_and_authorize_resource
   def index
     @q = Project.search(params[:q])
     @projects = @q.result.includes(:client).paginate(:page => params[:page])

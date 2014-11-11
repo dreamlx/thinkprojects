@@ -1,4 +1,5 @@
 class ReceiveAmountsController < ApplicationController
+  load_and_authorize_resource
   before_filter :set_billing
   def edit
     @receive_amount = ReceiveAmount.find(params[:id])

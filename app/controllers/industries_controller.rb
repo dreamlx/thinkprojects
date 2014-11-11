@@ -1,4 +1,5 @@
 class IndustriesController < ApplicationController
+  load_and_authorize_resource
   def index
     @q = Industry.search(params[:q])
     @industries  = @q.result.paginate :page => params[:page]

@@ -1,4 +1,5 @@
 class DictsController < ApplicationController
+  load_and_authorize_resource
   def index
     @q = Dict.search(params[:q])
     @dicts = @q.result.paginate(:page => params[:page])

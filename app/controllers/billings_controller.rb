@@ -1,4 +1,5 @@
 class BillingsController < ApplicationController
+  load_and_authorize_resource
   def index
     @q = Billing.search(params[:q])
     @billings = @q.result.includes(:project).paginate(page: params[:page])
