@@ -52,24 +52,23 @@ class ProjectsController < ApplicationController
 
   def approval
     project = Project.find(params[:id])
+    project.comments.create(comment: 'approve the project', user_id: current_user.id)
     project.approval
-    redirect_to projects_path, notice: notice_message(project.job_code, project.state)
+    redirect_to project, notice: notice_message(project.job_code, project.state)
   end
 
   def disapproval
     project = Project.find(params[:id])
+    project.comments.create(comment: 'disapprove the project', user_id: current_user.id)
     project.disapproval
-    redirect_to projects_path, notice: notice_message(project.job_code, project.state)
+    redirect_to project, notice: notice_message(project.job_code, project.state)
   end
   
   def close
     project = Project.find(params[:id])
-    if project.state == 'approved'
-      project.close
-    else
-      project.approval
-    end
-    redirect_to projects_path, notice: notice_message(project.job_code, project.state)
+    project.comments.create(comment: 'close the project', user_id: current_user.id)
+    project.close
+    redirect_to project, notice: notice_message(project.job_code, project.state)
   end
   
   def transform
@@ -86,13 +85,6 @@ class ProjectsController < ApplicationController
       @zy_project = nil
     end
     redirect_to projects_url, notice: 'Project was successfully forward.'
-  end
-
-  def addcomment
-    project = Project.find(params[:id])
-    comment = Comment.new(params[:comment])
-    project.add_comment comment unless comment.nil?
-    redirect_to project_url(project)
   end
 
   private

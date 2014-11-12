@@ -1,4 +1,4 @@
-<h1>Editing TimeCost</h1>
+<h1><%= "#{t('edit')}#{t('personalcharge')}" %></h1>
 <%= render 'form' %>
-<%= link_to 'Show', personalcharge_path(@personalcharge) %> |
-<%= link_to 'Back', personalcharges_path %>
+<%= link_to t('show'), personalcharge_path(@personalcharge) %> |
+<%= link_to t('back'), personalcharges_path %>

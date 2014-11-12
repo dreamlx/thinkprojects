@@ -1,20 +1,20 @@
 <p>
-  <strong>Number</strong><br>
+  <strong><%= t('period_number') %></strong><br>
   <%= @period.number %>
 </p>
 <p>
-  <strong>Work hours</strong><br>
+  <strong><%= t('work_hours') %></strong><br>
   <%= @period.work_hours %>
 </p>
 <p>
-  <strong>Starting date</strong><br>
+  <strong><%= t('starting_date') %></strong><br>
   <%= @period.starting_date %>
 </p>
 
 <p>
-  <strong>Ending date</strong><br>
+  <strong><%= t('ending_date') %></strong><br>
   <%= @period.ending_date %>
 </p>
 
-<%= link_to 'Edit', edit_period_path(@period) %> |
-<%= link_to 'Back', periods_path %>
+<%= link_to t('edit'), edit_period_path(@period) %> |
+<%= link_to t('back'), periods_path %>

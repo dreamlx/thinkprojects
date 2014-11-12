@@ -16,7 +16,6 @@ class Personalcharge < ActiveRecord::Base
     event :reset do
       transition all => :pending
     end
-
   end
 
   attr_accessible :user_id, :period_id, :charge_date, :hours, :ot_hours, :desc, :project_id

@@ -1,18 +1,18 @@
 <%= render "search" %>
-<%= link_to 'Export data', personalcharges_path(format: 'xls')  %>||
-<%= link_to 'New TimeCost', new_personalcharge_path  %>
+<%= link_to t('export_data'), personalcharges_path(format: 'xls')  %> ||
+<%= link_to t('new_personalcharge'), new_personalcharge_path  %>
 
 <table  class="table table-bordered">
   <tr>
-  	<th>Employee name</th>  
-	  <th>Period</th>
-    <th>Charge date</th>
-    <th>Job code</th>
-    <th>Hours</th>
-    <th>Including OT hours</th>
-    <th>Description</th>
-    <th>State</th>
-    <th colspan="4">Operations</th>
+  	<th><%= t('user') %></th>  
+	  <th><%= t('period') %></th>
+    <th><%= t('charge_date') %></th>
+    <th><%= t('job_code') %></th>
+    <th><%= t('hours') %></th>
+    <th><%= t('including_ot_hours') %></th>
+    <th><%= t('desc') %></th>
+    <th><%= t('state') %></th>
+    <th colspan="4"><%= t('operations') %></th>
   </tr>
   <%= render @personalcharges %>
 </table>

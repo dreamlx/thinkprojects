@@ -1,8 +1,8 @@
 <% Industry.content_columns.each do |column| %>
 <p>
-  <b><%= column.human_name %>:</b> <%= @industry.send(column.name) %>
+  <b><%= t(column.name) %>:</b> <%= @industry.send(column.name) %>
 </p>
 <% end %>
 
-<%= link_to 'Edit', edit_industry_path(@industry) %> |
-<%= link_to 'Back', industries_path %>
+<%= link_to t('edit'), edit_industry_path(@industry) %> |
+<%= link_to t('back'), industries_path %>

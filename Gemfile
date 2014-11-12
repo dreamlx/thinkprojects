@@ -29,6 +29,7 @@ gem 'byebug'
 
 gem 'acts_as_commentable', '3.0.1'
 gem 'will_paginate'
+gem 'i18n'
 gem 'state_machine'
 gem 'iconv'
 

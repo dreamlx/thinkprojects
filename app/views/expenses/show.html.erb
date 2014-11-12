@@ -1,54 +1,49 @@
-<fieldset>
 <p>
-    <label for="Epxense_id">No.</label>
-    <%=h @expense.id %>
-  </p>
+  <label>ID</label>
+  <%= @expense.id %>
+</p>
 <p>
-    <label for="Epxense_charge_date">Date</label>
-    <%=h @expense.charge_date %>
-  </p>
+  <label><%= t('charge_date') %></label>
+  <%=h @expense.charge_date %>
+</p>
+<p>
+  <label><%= t('user') %></label>
+  <%=h @expense.user.english_name if @expense.user %>
+</p>
+<p>
+  <label><%= t('desc') %></label>
+  <%=h @expense.desc %>
+</p>
+<p>
+  <label><%= t('billable') %></label>
+  <%=h @expense.billable%>
+</p>
+<p>
+  <label><%= t('category') %></label>
+  <%=h @expense.expense_category %>
+</p>
   <p>
-    <label for="Epxense_person">Employee</label>
-    <%=h @expense.user.english_name if @expense.user %>
-  </p>
+  <label><%= t('client_name') %></label>
+  <%=h @expense.project.client.english_name if @expense.project %>
+</p>
   <p>
-    <label for="Epxense_desc">Description</label>
-    <%=h @expense.desc %>
-  </p>
+  <label><%= t('job_code') %></label>
+  <%=h @expense.project.job_code if @expense.project %>
+</p>
   <p>
-    <label>Billable</label>
-    <%=h @expense.billable%>
-  </p>
-  <p>
-    <label for="Epxense_type">Category</label>
-    <%=h @expense.expense_category %>
-  </p>
-    <p>
-    <label for="Epxense_client">Client Name</label>
-    <%=h @expense.project.client.english_name if @expense.project %>
-  </p>
-    <p>
-    <label for="Epxense_project_id">Project Code</label>
-    <%=h @expense.project.job_code if @expense.project %>
-  </p>
-    <p>
-    <label for="Epxense_fee">Amount</label>
-    <%=h @expense.fee %>
-  </p>
-</fieldset>
+  <label><%= t('fee') %></label>
+  <%=h @expense.fee %>
+</p>
 
 <% if @expense.state !="approved" and @expense.user_id == current_user.id %>
-  <%= link_to 'Edit', edit_expense_path(@expense)  %> |
+  <%= link_to t('edit'), edit_expense_path(@expense)  %> |
 <% end %>
-<%= link_to 'Back', expenses_path %>
+<%= link_to t('back'), expenses_path %>
 
-<h3>Disapproval description</3>
-
-<% if @expense.comments.any? %>
-  <% for comment in @expense.comments %>
-    <p>
-      <%= comment.created_at.to_date  %> <br/>
-      <%= "#{comment.user.english_name} : #{comment.comment}" %>
-    </p>
-  <% end %>
+<h3><%= t('disapproved_desc') %></3>
+<% for comment in @expense.comments %>
+  <p>
+    <%= comment.created_at.to_date  %> <br/>
+    <%= "#{comment.user.english_name} : #{comment.comment}" %>
+  </p>
 <% end %>

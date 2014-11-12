@@ -181,6 +181,7 @@ DEPENDENCIES
   country_select
   devise
   devise-encryptable
+  i18n
   iconv
   jquery-rails
   json

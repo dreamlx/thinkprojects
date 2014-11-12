@@ -1,4 +1,4 @@
-<h1>Editing dict</h1>
+<h1><%= "#{t('edit')}#{t('dict')}" %></h1>
 <%= render 'form' %>
-<%= link_to 'Show', @dict %> |
-<%= link_to 'Back', dicts_path %>
+<%= link_to t('show'), @dict %> |
+<%= link_to t('back'), dicts_path %>

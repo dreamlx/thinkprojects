@@ -1,4 +1,4 @@
 <h1><%=  "Editing Project" %></h1>
 <%= render 'form' %>
-<%= link_to 'View', project_path(@project) %> |
-<%= link_to 'Back', projects_path %>
+<%= link_to t('show'), project_path(@project) %> |
+<%= link_to t('back'), projects_path %>

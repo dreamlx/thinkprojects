@@ -1,20 +1,68 @@
-<table>
-  <% User.content_columns.each do |column| %>
+<table class="table table-bordered">
   <tr>
-    <th><%= column.human_name %>:</th>
-    <td><%= @user.send(column.name) %></td>
+    <th><%= t('login') %></th>
+    <td><%= @user.login %></td>
   </tr>
-  <% end %>
-
   <tr>
-    <th>Department:</th>
+    <th><%= t('name') %></th>
+    <td><%= @user.name %></td>
+  </tr>
+  <tr>
+    <th><%= t('roles') %></th>
+    <td><%= @user.roles %></td>
+  </tr>
+  <tr>
+    <th><%= t('english_name') %></th>
+    <td><%= @user.english_name %></td>
+  </tr>
+  <tr>
+    <th><%= t('employee_number') %></th>
+    <td><%= @user.employee_number %></td>
+  </tr>
+  <tr>
+    <th><%= t('position') %></th>
+    <td><%= @user.position %></td>
+  </tr>
+  <tr>
+    <th><%= t('charge_rate') %></th>
+    <td><%= @user.charge_rate %></td>
+  </tr>
+  <tr>
+    <th><%= t('employment_date') %></th>
+    <td><%= @user.employment_date %></td>
+  </tr>
+  <tr>
+    <th><%= t('gender') %></th>
+    <td><%= @user.gender %></td>
+  </tr>
+  <tr>
+    <th><%= t('department') %></th>
     <td><%= @user.department.title unless @user.department.nil? %></td>
   </tr>
-
   <tr>
-    <th>State:</th>
+    <th><%= t('state') %></th>
     <td><%= @user.status.title unless @user.status.nil? %></td>
   </tr>
+  <tr>
+    <th><%= t('address') %></th>
+    <td><%= @user.address %></td>
+  </tr>
+  <tr>
+    <th><%= t('postalcode') %></th>
+    <td><%= @user.postalcode %></td>
+  </tr>
+  <tr>
+    <th><%= t('mobile') %></th>
+    <td><%= @user.mobile %></td>
+  </tr>
+  <tr>
+    <th><%= t('tel') %></th>
+    <td><%= @user.tel %></td>
+  </tr>
+  <tr>
+    <th><%= t('extension') %></th>
+    <td><%= @user.extension %></td>
+  </tr>
 </table>
-<%= link_to '编辑', edit_user_path(@user) %> ||
-<%= link_to "返回", users_path %>
+<%= link_to t('edit'), edit_user_path(@user) %> ||
+<%= link_to t('back'), users_path %>

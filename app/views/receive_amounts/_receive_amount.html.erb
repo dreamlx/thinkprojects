@@ -6,8 +6,8 @@
   <td><%=receive_amount.billing.user.english_name%></td>
   <td><%=receive_amount.billing.project.job_code%></td>
   <% if @billing.status !='1' %>
-    <td><%= link_to 'Edit', edit_billing_receive_amount_path(id: receive_amount.id, billing_id: receive_amount.billing.id) %></td>
-    <td><%= link_to 'Destroy', [receive_amount.billing, receive_amount], 
+    <td><%= link_to t('edit'), edit_billing_receive_amount_path(id: receive_amount.id, billing_id: receive_amount.billing.id) %></td>
+    <td><%= link_to t('destroy'), [receive_amount.billing, receive_amount], 
                     :confirm => 'Are you sure?', 
                     :method => :delete %></td>
   <% else %>

@@ -5,66 +5,61 @@
 <p>
   <table class="table table-bordered">
     <tr>
-      <td><b>client code</b></td>
+      <td><b><%= t('client_code') %></b></td>
       <td><%=@client.client_code%></td>
     </tr>
 
     <tr>
-      <td><b>chinese name</b></td>
+      <td><b><%= t('chinese_name') %></b></td>
       <td><%= @client.chinese_name %></td>
     </tr>
 
     <tr>
-      <td><b>English name</b></td>
+      <td><b><%= t('english_name') %></b></td>
       <td><%= @client.english_name %></td>
     </tr>
 
     <tr>
-      <td><b>Account Owner</b></td>
+      <td><b><%= t('account_owner') %></b></td>
       <td><%= @client.user.english_name if @client.user %></td>
     </tr>
 
     <tr>
-      <th colspan=2>Conctacts</th>
+      <th colspan=2><%= t('contacts') %></th>
     </tr>
     <%= render @client.contacts %>
 
     <tr>
-      <th colspan=2>General Information</th>
+      <th colspan=2><%= t('general_info') %></th>
     </tr>
 
     <tr>
-      <td><b>Client category</b></td>
+      <td><b><%= t('client_category') %></b></td>
       <td><%= @client.category.title %></td>
     </tr>
 
     <tr>
-      <td><b>Client status</b></td>
+      <td><b><%= t('client_status') %></b></td>
       <td><%= @client.status.title %></td>
     </tr>
 
     <tr>
-      <td><b>Client Region of origin</b></td>
+      <td><b><%= t('client_region') %></b></td>
       <td><%= @client.region.title %></td>
     </tr>
 
     <tr>
-      <td><b>Industry</b></td>
+      <td><b><%= t('client_industry') %></b></td>
       <td><%= @client.industry.title if @client.industry %></td>
     </tr>
 
     <tr>
-      <td><b>Client code</b></td>
-      <td><%= @client.client_code %></td>
-    </tr>
-
-    <tr>
-      <td><b>Last modiffied</b></td>
+      <td><b><%= t('last_modified') %></b></td>
       <td><%= @client.updated_on %></td>
     </tr>
 
   </table>
 </p>
 
-<%= link_to 'Edit', edit_client_path(@client) %> |
-<%= link_to 'Back', clients_path %>
+<%= link_to t('edit'), edit_client_path(@client) %> |
+<%= link_to t('back'), clients_path %>

@@ -1,40 +1,41 @@
 <p>
-  <strong>Job code</strong><br>
-  <%= @project.job_code||"--" %>
+  <strong><%= t('job_code') %></strong><br>
+  <%= @project.job_code %>
 </p>
 <p>
-  <strong>description</strong><br>
+  <strong><%= t('desc') %></strong><br>
   <%= @project.description ||"--"%>
 </p>
 <p>
-  <strong>Starting date</strong><br>
+  <strong><%= t('starting_date') %></strong><br>
   <%= @project.starting_date %>
 </p>
 <p>
-  <strong>Ending date</strong><br>
+  <strong><%= t('ending_date') %></strong><br>
   <%= @project.ending_date %>
 </p>
 <p>
-  <strong>Estimated annual fee</strong><br>
+  <strong><%= t('estimated_annual_fee') %></strong><br>
   <%= @project.estimated_annual_fee||0 %>
 </p>
 <p>
-  <strong>Estimated hours</strong><br>
+  <strong><%= t('estimated_hours') %></strong><br>
   <%= @project.estimated_hours ||0%>
 </p>
 <p>
-  <strong>Bugegeted service fee</strong><br>
+  <strong><%= t('budgeted_service_fee') %></strong><br>
   <%= @project.budgeted_service_fee ||""%>
 </p>
 <p>
-  <strong>Budgeted expense</strong><br>
+  <strong><%= t('budgeted_expense') %></strong><br>
   <%= @project.budgeted_expense ||""%>
 </p>
 
 <% if @project.state == "pending" or @project.state == "disapproved" %>
-  <%= link_to 'Edit', edit_project_path(@project) %> |
+  <%= link_to t('edit'), edit_project_path(@project) %> |
 <% end %>
-<%= link_to 'Back', projects_path %>
+<%= link_to t('back'), projects_path %>
+<hr>
 
 <!-- bookings -->
 <% if current_user.id == @project.manager_id ||
@@ -47,29 +48,26 @@
         <%  @booking.project_id = @project.id %>
         <%= f.input :user_id, collection: User.selected_users %>
         <%= f.input :hours %>
-        <%= f.button :submit, "Add booking" %>
+        <%= f.button :submit %>
       <% end  %>
       <!-- end of new booking -->
     <% end  %>
-    <%= button_to 'Booking all', bookall_project_bookings_path(project_id: @project), :confirm => "Are you sure booking all employees?" %>
+    <%= button_to t('book_all'), bookall_project_bookings_path(project_id: @project), confirm: t('are_you_sure_to_book_all_employee') %>
     <!-- bookings list -->
     <table class="table table-bordered">
       <tr>
-        <th>Person</th>
-        <th>Rate</th>
-        <th>Hours</th>
-        <th>OP</th>
+        <th><%= t('user') %></th>
+        <th><%= t('charge_rate') %></th>
+        <th><%= t('hours') %></th>
+        <th><%= t('operations') %></th>
       </tr>
       <%= render @project.bookings %>
     </table>
   </div>
 <% end  %>
-
+<hr>
 <!-- comments -->
-<h3>Disapproval description</3>
-<% if @project.comments.any? %>
-  <% @project.comments.each do |comment| %>
-    <p><%= comment.created_at.to_date %><br/>
-    <%= User.find(comment.user_id).english_name + ": " + comment.comment %></p>
-  <% end %>
+<h3><%= t('disapproved_desc') %></h3>
+<% @project.comments.each do |comment| %>
+  <%= comment.user.english_name + " " + comment.comment + ' at ' + comment.created_at.to_s %></p>
 <% end %>

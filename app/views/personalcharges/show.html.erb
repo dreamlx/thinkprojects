@@ -1,28 +1,28 @@
-<h1>Show personalcharge</h1>
-<span><strong>Job code</strong> : <%=@personalcharge.project.job_code if @personalcharge.project %></span><br/>
+<h1><%= "#{t('show')}#{t('personalcharge')}" %></h1>
+<strong><%= t('job_code') %></strong> : 
+<%=@personalcharge.project.job_code if @personalcharge.project %><br/>
 
-<span><strong>Employee</strong>:<%=@personalcharge.user.english_name if @personalcharge.user %></span><br/>
+<strong><%= t('user') %></strong>:
+<%=@personalcharge.user.english_name if @personalcharge.user %><br/>
 
-<span><strong>period</strong> : <%=@personalcharge.period.number if @personalcharge.period %></span><br/>
+<span><strong><%= t('period') %></strong> : 
+<%=@personalcharge.period.number if @personalcharge.period %></span><br/>
 <hr/>
 <% for column in Personalcharge.content_columns %>
-<p>
-  <b><%= column.human_name %>:</b> <%=h @personalcharge.send(column.name)||"--" %>
-</p>
-
+  <p>
+    <b><%= t("#{column.name}") %>:</b> 
+    <%= @personalcharge.send(column.name) %>
+  </p>
 <% end %>
 
-<%= link_to 'Edit', edit_personalcharge_path(@personalcharge) %> |
-<%= link_to 'Back', personalcharges_path %>
+<%= link_to t('edit'), edit_personalcharge_path(@personalcharge) %> |
+<%= link_to t('back'), personalcharges_path %>
 
-
-<% if @personalcharge.comments.any?	%>
-	<h3>Disapproval description</3>
-	<% @personalcharge.comments.each do |comment| %>
-    <hr/>
-    <p>
-      <%= comment.created_at.strftime(" %m/%d/%Y") +"<br/>"  %>
-      <%= User.find(comment.user_id).english_name + ": " + comment.comment %>
-    </p>
-  <% end %>
+<h3><%= t('disapproved_desc') %></3>
+<% @personalcharge.comments.each do |comment| %>
+  <hr/>
+  <p>
+    <%= comment.created_at.strftime(" %m/%d/%Y") +"<br/>"  %>
+    <%= comment.user.english_name + ": " + comment.comment %>
+  </p>
 <% end %>

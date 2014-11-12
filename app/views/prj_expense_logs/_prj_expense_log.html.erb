@@ -2,8 +2,8 @@
   <% for column in PrjExpenseLog.content_columns %>
     <td><%=h prj_expense_log.send(column.name) %></td>
   <% end %>
-  <td><%= link_to 'Show', prj_expense_log %></td>
-  <td><%= link_to 'Edit', edit_prj_expense_log_path(prj_expense_log) %></td>
-  <td><%= link_to 'Destroy', prj_expense_log, 
+  <td><%= link_to t('show'), prj_expense_log %></td>
+  <td><%= link_to t('edit'), edit_prj_expense_log_path(prj_expense_log) %></td>
+  <td><%= link_to t('destroy'), prj_expense_log, 
                   confirm: 'Are you sure?', method: :delete %></td>
 </tr>

@@ -11,7 +11,7 @@
     <% end %>
   <% end %>
 
-  <td><%= link_to 'Show', billing %></td>
-  <td><%= link_to 'Edit', edit_billing_path(billing) if billing.status == '0'%></td>
-  <td><%= link_to 'Destroy', billing, :confirm => 'Are you sure?' if billing.status == '0'%></td>
+  <td><%= link_to t('show'), billing %></td>
+  <td><%= link_to t('edit'), edit_billing_path(billing) if billing.status == '0'%></td>
+  <td><%= link_to t('destroy'), billing, confirm: t('are_you_sure') if billing.status == '0'%></td>
 </tr>

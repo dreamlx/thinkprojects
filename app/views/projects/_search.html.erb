@@ -1,7 +1,20 @@
 <%= search_form_for @q do |f| %>
-  <%= f.input :job_code_cont, as: :search %>
-  <%= f.input :client_english_name_cont, as: :search %>
-  <%= f.input :bookings_user_id_eq, collection: User.selected_users, as: :select %>
-  <%= f.input :state_eq, collection: ["pending","approved","disapproved","closed"] %>
-  <%= f.button :submit, 'Search' %>
+  <%= f.input :job_code_cont, 
+              as: :search, 
+              label: t('job_code_cont'), 
+              required: false %>
+  <%= f.input :client_english_name_cont, 
+              as: :search, 
+              label: t('client_english_name_cont'), 
+              required: false %>
+  <%= f.input :bookings_user_id_eq, 
+              collection: User.selected_users, 
+              as: :select, 
+              label: t('bookings_user_id_eq'), 
+              required: false %>
+  <%= f.input :state_eq, 
+              collection: ["pending","approved","disapproved","closed"], 
+              label: t('state'), 
+              required: false %>
+  <%= f.button :submit, t('search') %>
 <% end %>

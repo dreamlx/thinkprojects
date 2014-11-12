@@ -1,4 +1,4 @@
-<h1>Editing industry</h1>
+<h1><%= "#{t('edit')}#{t('industry')}" %></h1>
 <%= render 'form' %>
-<%= link_to 'Show', edit_industry_path(@industry) %> |
-<%= link_to 'Back', industries_path %>
+<%= link_to t('show'), edit_industry_path(@industry) %> |
+<%= link_to t('back'), industries_path %>

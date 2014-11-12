@@ -12,8 +12,8 @@
   <b>Prepared by</b>
 <td><%=@billing.user.english_name%></td>
 </p>
-<%= link_to 'Edit', edit_billing_path(@billing) if @billing.status == '0'%> |
-<%= link_to 'Back', billings_path %>
+<%= link_to t('edit'), edit_billing_path(@billing) if @billing.status == '0'%> |
+<%= link_to t('back'), billings_path %>
 
 <!-- new receive amount -->
 <% if @billing.status == '0'%>

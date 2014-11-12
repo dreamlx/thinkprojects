@@ -1,15 +1,17 @@
-<h1>Listing industries</h1>
 <%= search_form_for(@q) do |f| %>
-  <%= f.input :code_or_title_cont, as: :search %>
-  <%= f.button :submit, 'Search' %>
+  <%= f.input :code_or_title_cont, 
+              as: :search,
+              label: t('code_or_title_cont'),
+              required: false %>
+  <%= f.button :submit, t('search') %>
 <% end %>
-<%= link_to 'New industry', new_industry_path %>
+<%= link_to "#{t('new')}#{t('industry')}", new_industry_path %>
 <table class="table table-bordered">
   <tr>
     <% Industry.content_columns.each do |column| %>
-      <th><%= column.human_name %></th>
+      <th><%= t(column.name) %></th>
     <% end %>
-    <th colspan="3">Operations</th>
+    <th colspan="3"><%= t('operations') %></th>
   </tr>
   <%= render @industries %>
 </table>
