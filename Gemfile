@@ -43,10 +43,10 @@ gem 'country_select'
 gem "nested_form"
 gem 'ransack'
 
-gem 'bootstrap-sass', '~> 3.3.0'
+gem 'bootstrap-sass', '3.2.0.2'
 gem 'autoprefixer-rails'
-gem 'sprockets-rails', '=2.0.0.backport1'
-gem 'sprockets', '=2.2.2.backport2'
-gem 'sass-rails', github: 'guilleiguaran/sass-rails', branch: 'backport'
+gem 'sprockets-rails'
+gem 'sprockets'
+gem 'sass-rails'
 
 gem 'to_xls'
