@@ -21,7 +21,7 @@ class Project < ActiveRecord::Base
   
   belongs_to :client
   # belongs_to :GMU,          :class_name => "Dict",    :foreign_key => "GMU_id",         :conditions => "category ='GMU'"
-  belongs_to :GMU,        -> { where category: 'GMU' },               class_name: "Dict", foreign_key: "GMU_id"
+  belongs_to :GMU,          -> { where category: 'GMU' },            class_name: "Dict", foreign_key: "GMU_id"
   # belongs_to :service_code, :class_name => "Dict",    :foreign_key => "service_id",     :conditions => "category = 'service_code'"
   belongs_to :service_code, -> { where category:'service_code' }, :class_name => "Dict",    :foreign_key => "service_id"
   # belongs_to :PFA_reason,   :class_name => "Dict",    :foreign_key => "PFA_reason_id",  :conditions => "category = 'PFA_reason'"
@@ -32,8 +32,8 @@ class Project < ActiveRecord::Base
   belongs_to :risk,         -> { where category:'risk'},          :class_name => "Dict",    :foreign_key => "risk_id"
   belongs_to :manager,      :class_name => "User",    :foreign_key => "manager_id"
 
-  scope :alive, :conditions =>"state = 'approved'", :order=>'job_code'
-  
+  # scope :alive, :conditions =>"state = 'approved'", :order=>'job_code'
+  scope :alive, -> { where(state:'approved').order("job_code") }
   state_machine :initial => :pending do
     event :approval do
       transition all =>:approved
