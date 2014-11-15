@@ -14,9 +14,12 @@ class User < ActiveRecord::Base
   has_many  :bookings
   has_many  :personalcharges
   has_many  :projects, through: :bookings
-  belongs_to :GMU,        class_name: "Dict", foreign_key: "GMU_id",        :conditions => "category ='GMU'" 
-  belongs_to :status,     class_name: "Dict", foreign_key: "status_id",     :conditions => "category = 'person_status'"
-  belongs_to :department, class_name: "Dict", foreign_key: "department_id", :conditions => "category = 'department'"
+  # belongs_to :GMU,        class_name: "Dict", foreign_key: "GMU_id",        :conditions => "category ='GMU'" 
+  belongs_to :GMU,        -> { where category: 'GMU' },               class_name: "Dict", foreign_key: "GMU_id"
+  # belongs_to :status,     class_name: "Dict", foreign_key: "status_id",     :conditions => "category = 'person_status'"
+  belongs_to :status,     ->{ where category:'person_status' } ,      class_name: "Dict", foreign_key: "status_id"   
+  # belongs_to :department, class_name: "Dict", foreign_key: "department_id", :conditions => "category = 'department'"
+  belongs_to :department, ->{ where category:'person_status' } ,      class_name: "Dict", foreign_key: "department_id"
   def self.workings
     includes(:status).where("dicts.title <> 'Resigned' and dicts.category = 'person_status' ").order("english_name")
   end

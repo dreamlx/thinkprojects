@@ -20,11 +20,16 @@ class Project < ActiveRecord::Base
   has_many :users,            through: :bookings
   
   belongs_to :client
-  belongs_to :GMU,          :class_name => "Dict",    :foreign_key => "GMU_id",         :conditions => "category ='GMU'"
-  belongs_to :service_code, :class_name => "Dict",    :foreign_key => "service_id",     :conditions => "category = 'service_code'"
-  belongs_to :PFA_reason,   :class_name => "Dict",    :foreign_key => "PFA_reason_id",  :conditions => "category = 'PFA_reason'"
-  belongs_to :revenue,      :class_name => "Dict",    :foreign_key => "revenue_id",     :conditions => "category = 'revenue_type'"
-  belongs_to :risk,         :class_name => "Dict",    :foreign_key => "risk_id",        :conditions => "category = 'risk'"
+  # belongs_to :GMU,          :class_name => "Dict",    :foreign_key => "GMU_id",         :conditions => "category ='GMU'"
+  belongs_to :GMU,        -> { where category: 'GMU' },               class_name: "Dict", foreign_key: "GMU_id"
+  # belongs_to :service_code, :class_name => "Dict",    :foreign_key => "service_id",     :conditions => "category = 'service_code'"
+  belongs_to :service_code, -> { where category:'service_code' }, :class_name => "Dict",    :foreign_key => "service_id"
+  # belongs_to :PFA_reason,   :class_name => "Dict",    :foreign_key => "PFA_reason_id",  :conditions => "category = 'PFA_reason'"
+  belongs_to :PFA_reason,   -> { where category:'PFA_reason' },   :class_name => "Dict",    :foreign_key => "PFA_reason_id"
+  # belongs_to :revenue,      :class_name => "Dict",    :foreign_key => "revenue_id",     :conditions => "category = 'revenue_type'"
+  belongs_to :revenue,      -> { where category:'revenue_type' }, :class_name => "Dict",    :foreign_key => "revenue_id"
+  # belongs_to :risk,         :class_name => "Dict",    :foreign_key => "risk_id",        :conditions => "category = 'risk'"
+  belongs_to :risk,         -> { where category:'risk'},          :class_name => "Dict",    :foreign_key => "risk_id"
   belongs_to :manager,      :class_name => "User",    :foreign_key => "manager_id"
 
   scope :alive, :conditions =>"state = 'approved'", :order=>'job_code'
