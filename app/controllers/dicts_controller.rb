@@ -18,7 +18,8 @@ class DictsController < ApplicationController
   end
 
   def create
-    @dict = Dict.new(params[:dict])
+    # @dict = Dict.new(params[:dict])
+    @dict = Dict.new(dict_params)
     if @dict.save      
       redirect_to @dict, notice: 'dict was successfully created.'
     else
@@ -28,7 +29,8 @@ class DictsController < ApplicationController
 
   def update
     @dict = Dict.find(params[:id])
-    if @dict.update_attributes(params[:dict])
+    # if @dict.update_attributes(params[:dict])
+    if @dict.update_attributes(dict_params)
       redirect_to @dict, notice: 'Dict was successfully updated.'
     else
       ender "edit"
@@ -39,4 +41,9 @@ class DictsController < ApplicationController
     Dict.find(params[:id]).destroy
     redirect_to dicts_path
   end
+
+  private
+    def dict_params
+      params.require(:dict).permit(:category, :code, :title)
+    end
 end

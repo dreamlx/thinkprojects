@@ -18,5 +18,5 @@ class Personalcharge < ActiveRecord::Base
     end
   end
 
-  attr_accessible :user_id, :period_id, :charge_date, :hours, :ot_hours, :desc, :project_id
+  # attr_accessible :user_id, :period_id, :charge_date, :hours, :ot_hours, :desc, :project_id
 end

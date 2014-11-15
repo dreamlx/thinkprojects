@@ -39,7 +39,8 @@ class BillingsController < ApplicationController
   end
 
   def create
-    @billing = Billing.new(params[:billing])
+    # @billing = Billing.new(params[:billing])
+    @billing = Billing.new(belling_params)
     @billing_number = Dict.where(category: 'billing_number').first
     @number = @billing_number.code.to_i + 1
     @billing_number.code = @number.to_s
@@ -62,7 +63,8 @@ class BillingsController < ApplicationController
 
   def update
     @billing = Billing.find(params[:id])
-    if @billing.update_attributes(params[:billing])
+    # if @billing.update_attributes(params[:billing])
+    if @billing.update_attributes(billing_params)
       flash[:notice] = @billing.project.job_code + ' -- Billing was successfully updated.'
       get_tax
       get_amount
@@ -129,5 +131,9 @@ class BillingsController < ApplicationController
       when
         @str_number = @number.to_s
       end
+    end
+
+    def billing_params
+      params.require(:billing).permit(:outstanding, :status, :project_id, :period_id, :user_id, :number, :billing_date, :service_billing, :expense_billing, :days_of_ageing, :business_tax, :write_off, :provision, :collection_days)
     end
 end

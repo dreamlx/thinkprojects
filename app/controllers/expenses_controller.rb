@@ -25,7 +25,8 @@ class ExpensesController < ApplicationController
   end
 
   def create
-    @expense = Expense.new(params[:expense])
+    # @expense = Expense.new(params[:expense])
+    @expense = Expense.new(expense_params)
 
     if @expense.save
       redirect_to @expense, notice: 'Expense was successfully created.'
@@ -37,7 +38,8 @@ class ExpensesController < ApplicationController
   def update
     @expense = Expense.find(params[:id])
     @expense.reset
-    if @expense.update_attributes(params[:expense])
+    # if @expense.update_attributes(params[:expense])
+    if @expense.update_attributes(expense_params)
       redirect_to @expense, notice: 'Expense was successfully updated.'
     else
       render  "edit"
@@ -91,4 +93,10 @@ class ExpensesController < ApplicationController
     redirect_to expense_url(@expense) 
 
   end
+
+  private
+    def expense_params
+      params.require(:expense).permit(:charge_date, :approved_by, :billable, :expense_category, :fee, :desc, :person_id, :project_id, :user_id)
+    end
+    
 end

@@ -18,7 +18,8 @@ class ClientsController < ApplicationController
   end
   
   def create
-    @client = Client.new(params[:client])
+    # @client = Client.new(params[:client])
+    @client = Client.new(client_params)
     if @client.save
       redirect_to(@client, :notice => 'Client was successfully created.')
     else
@@ -28,7 +29,8 @@ class ClientsController < ApplicationController
 
   def update
     @client = Client.find(params[:id])
-    if @client.update_attributes(params[:client])
+    # if @client.update_attributes(params[:client])
+    if @client.update_attributes(client_params)
       redirect_to(@client, :notice => 'Client was successfully updated.')
     else
       render "edit"
@@ -39,4 +41,10 @@ class ClientsController < ApplicationController
     Client.find(params[:id]).destroy
     redirect_to(clients_url)
   end
+
+  private
+    def client_params
+      params.require(:client).permit(:client_code, :chinese_name, :english_name, :user_id, 
+                  :industry_id, :category_id, :status_id, :region_id, :contacts_attributes)
+    end
 end

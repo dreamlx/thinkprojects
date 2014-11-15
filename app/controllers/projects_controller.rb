@@ -91,4 +91,10 @@ class ProjectsController < ApplicationController
     def notice_message(job_code, state)
       "Project <#{job_code}> state was changed, current state is '#{state}'"
     end
+
+    def project_params
+      params.require(:project).permit(:job_code, :state, :client_id, :manager_id,
+                                      :GMU_id, :description, :service_id, :starting_date, :ending_date, 
+                                      :estimated_annual_fee, :estimated_hours, :budgeted_service_fee, :budgeted_expense)
+    end
 end

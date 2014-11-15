@@ -7,7 +7,7 @@ class Expense < ActiveRecord::Base
   belongs_to :period
   belongs_to :user
 
-  attr_accessible :charge_date, :approved_by, :billable, :expense_category, :fee, :desc, :person_id, :project_id, :user_id
+  # attr_accessible :charge_date, :approved_by, :billable, :expense_category, :fee, :desc, :person_id, :project_id, :user_id
   
   state_machine :initial => :pending do
     event :approval do

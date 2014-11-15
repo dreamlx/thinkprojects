@@ -8,7 +8,7 @@ class Period < ActiveRecord::Base
     number
   end
 
-  attr_accessible :number, :work_hours, :starting_date, :ending_date
+  # attr_accessible :number, :work_hours, :starting_date, :ending_date
 
   def self.today_period
     today = Time.now.to_date

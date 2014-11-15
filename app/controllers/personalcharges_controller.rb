@@ -21,7 +21,8 @@ class PersonalchargesController < ApplicationController
   end
 
   def create
-    @personalcharge = current_user.personalcharges.build(params[:personalcharge])
+    # @personalcharge = current_user.personalcharges.build(params[:personalcharge])
+    @personalcharge = current_user.personalcharges.build(personalcharge_params)
     @personalcharge.service_fee = @personalcharge.hours * @personalcharge.user.charge_rate if @personalcharge.user.charge_rate
     if @personalcharge.save
       redirect_to @personalcharge
@@ -36,7 +37,8 @@ class PersonalchargesController < ApplicationController
 
   def update
     @personalcharge = Personalcharge.find(params[:id])
-    if @personalcharge.update_attributes(params[:personalcharge])
+    # if @personalcharge.update_attributes(params[:personalcharge])
+    if @personalcharge.update_attributes(personalcharge_params)
       @personalcharge.reload
       @personalcharge.service_fee = @personalcharge.hours * @personalcharge.user.charge_rate if @personalcharge.user.charge_rate
       @personalcharge.save
@@ -96,4 +98,9 @@ class PersonalchargesController < ApplicationController
     @period_hours =  params[:period_hours]
     @users = User.workings
   end
+
+  private
+    def personalcharge_params
+      params.require(:personalcharge).permit(:user_id, :period_id, :charge_date, :hours, :ot_hours, :desc, :project_id)
+    end
 end

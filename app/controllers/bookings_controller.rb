@@ -2,7 +2,8 @@ class BookingsController < ApplicationController
   load_and_authorize_resource
   before_filter :find_project
   def create
-    @booking = @project.bookings.build(params[:booking])
+    # @booking = @project.bookings.build(params[:booking])
+    @booking = @project.bookings.build(booking_params)
     if @booking.save
       redirect_to(@project, :notice => 'Booking was successfully created.')
     else
@@ -34,5 +35,9 @@ class BookingsController < ApplicationController
       else
         redirect_to projects_url
       end
+    end
+
+    def booking_params
+      params.require(:booking).permit(:user_id, :hours, :project_id)
     end
 end

@@ -18,7 +18,8 @@ class PeriodsController < ApplicationController
   end
 
   def create
-    @period = Period.new(params[:period])
+    # @period = Period.new(params[:period])
+    @period = Period.new(period_params)
 
     if @period.save
       redirect_to @period, notice: 'Period was successfully created.'
@@ -30,7 +31,8 @@ class PeriodsController < ApplicationController
   def update
     @period = Period.find(params[:id])
 
-    if @period.update_attributes(params[:period])
+    # if @period.update_attributes(params[:period])
+    if @period.update_attributes(period_params)
       redirect_to @period, notice: 'Period was successfully updated.'
     else
       render "edit"
@@ -41,4 +43,9 @@ class PeriodsController < ApplicationController
     Period.find(params[:id]).destroy
     redirect_to periods_url
   end
+
+  private
+    def period_params
+      params.require(:period).permit(:number, :work_hours, :starting_date, :ending_date)
+    end
 end

@@ -8,9 +8,9 @@ class Project < ActiveRecord::Base
   validates :budgeted_expense, numericality: true
   validates :budgeted_service_fee, numericality: true
   
-  attr_accessible :job_code, :state, :client_id, :manager_id,
-                  :GMU_id, :description, :service_id, :starting_date, :ending_date, 
-                  :estimated_annual_fee, :estimated_hours, :budgeted_service_fee, :budgeted_expense
+  # attr_accessible :job_code, :state, :client_id, :manager_id,
+                  # :GMU_id, :description, :service_id, :starting_date, :ending_date, 
+                  # :estimated_annual_fee, :estimated_hours, :budgeted_service_fee, :budgeted_expense
 
   has_many :billings,         :dependent => :destroy
   has_many :expenses,         :dependent => :destroy
