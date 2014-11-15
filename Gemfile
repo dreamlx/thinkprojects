@@ -1,13 +1,15 @@
 source 'https://ruby.taobao.org'
 
-gem 'rails', '3.2.19'
+# gem 'rails', '3.2.19'
+gem 'rails', '4.1.5'
 gem 'sqlite3'
 gem 'json'
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'coffee-rails', '~> 3.2.1'
+  # gem 'coffee-rails', '~> 3.2.1'
+  gem 'coffee-rails'
   gem 'uglifier', '>= 1.0.3'
 end
 
