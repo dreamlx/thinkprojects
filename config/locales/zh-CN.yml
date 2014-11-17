@@ -314,7 +314,7 @@ zh-CN:
   tel: '电话'
   extension: '分机'
   gender: '性别'
-  client_code_or_chinese_name_or_english_name_cont: '客服代码、中文名或者英文名中的字符'
+  client_code_or_chinese_name_or_english_name_cont: '客户代码、中文名或者英文名中的字符'
   new_client: '新建客户'
   client_code: '客户代码'
   account_owner: '负责人'
