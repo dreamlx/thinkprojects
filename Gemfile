@@ -28,6 +28,8 @@ gem 'jquery-rails'
 # gem 'capistrano'
 
 gem 'byebug'
+gem 'state_machine'  #xianjie_add
+gem 'ruby-graphviz', :require => 'graphviz'  #xianjie_add
 
 gem 'acts_as_commentable', '3.0.1'
 gem 'will_paginate'

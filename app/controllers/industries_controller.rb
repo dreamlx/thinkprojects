@@ -14,7 +14,7 @@ class IndustriesController < ApplicationController
   end
 
   def create
-    @industry = Industry.new(params[:industry])
+    @industry = Industry.new(industry_params)
     if @industry.save
       redirect_to industries_path, notice: 'Industry was successfully created.'
     else
@@ -28,7 +28,7 @@ class IndustriesController < ApplicationController
 
   def update
     @industry = Industry.find(params[:id])
-    if @industry.update_attributes(params[:industry])
+    if @industry.update_attributes(industry_params)
       redirect_to @industry, notice: 'Industry was successfully updated.'
     else
       render 'edit'
@@ -39,4 +39,9 @@ class IndustriesController < ApplicationController
     Industry.find(params[:id]).destroy
     redirect_to industries_path
   end
+
+  private
+    def industry_params
+      params.require(:industry).permit(:code, :title)
+    end
 end
