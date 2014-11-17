@@ -69,5 +69,6 @@
 <!-- comments -->
 <h3><%= t('disapproved_desc') %></h3>
 <% @project.comments.each do |comment| %>
-  <%= comment.user.english_name + " " + comment.comment + ' at ' + comment.created_at.to_s %></p>
+  <%# <%= comment.user.english_name + " " + comment.comment + ' at ' + comment.created_at.to_s %></p>%> 
+  <%= "#{comment.user.english_name} #{comment.comment} at #{comment.created_at.to_s}" %></p>
 <% end %>
