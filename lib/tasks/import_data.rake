@@ -119,4 +119,7 @@ namespace :data do
       User.create!(row.to_hash)
     end
   end
+
+  desc "import all"
+  task :all => [:billings, :clients, :deductions, :dicts, :expenses, :industries, :initialfees, :people, :periods, :personalcharges, :prj_expense_logs, :projects, :receive_amounts, :ufafees, :users]
 end
