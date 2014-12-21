@@ -1,16 +1,21 @@
 class Project < ActiveRecord::Base
   acts_as_commentable
-  validates :job_code, uniqueness: true
-  validates :manager_id, presence: true
-  validates :client_id, presence: true
-  validates :estimated_hours, numericality: true
-  validates :estimated_annual_fee, numericality: true
-  validates :budgeted_expense, numericality: true
-  validates :budgeted_service_fee, numericality: true
+  # validates :job_code, uniqueness: true
+  # validates :manager_id, presence: true
+  # validates :client_id, presence: true
+  # validates :estimated_hours, numericality: true
+  # validates :estimated_annual_fee, numericality: true
+  # validates :budgeted_expense, numericality: true
+  # validates :budgeted_service_fee, numericality: true
   
   attr_accessible :job_code, :state, :client_id, :manager_id,
                   :GMU_id, :description, :service_id, :starting_date, :ending_date, 
-                  :estimated_annual_fee, :estimated_hours, :budgeted_service_fee, :budgeted_expense
+                  :estimated_annual_fee, :estimated_hours, :budgeted_service_fee, :budgeted_expense,
+                  :id, :created_on, :updated_on, :contract_number, :risk_id, :status_id, 
+                  :partner_id, :referring_id, :billing_partner_id, :billing_manager_id, 
+                  :contracted_service_fee, :estimated_commision, :estimated_outsorcing, 
+                  :service_PFA, :expense_PFA, :contracted_expense, :PFA_reason_id, 
+                  :revenue_id
 
   has_many :billings,         :dependent => :destroy
   has_many :expenses,         :dependent => :destroy

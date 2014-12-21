@@ -1,13 +1,15 @@
 class Expense < ActiveRecord::Base
   acts_as_commentable
-  validates :charge_date, :user_id, presence: true
-  validates :fee, numericality: true
+  # validates :charge_date, :user_id, presence: true
+  # validates :fee, numericality: true
 
   belongs_to :project
   belongs_to :period
   belongs_to :user
 
-  attr_accessible :charge_date, :approved_by, :billable, :expense_category, :fee, :desc, :person_id, :project_id, :user_id
+  attr_accessible :charge_date, :approved_by, :billable, :expense_category, :fee, :desc, :person_id, :project_id, :user_id,
+                  :id, :created_on, :updated_on, :commission, :outsourcing, :tickets, :courrier, 
+                  :postage, :stationery, :report_binding, :cash_advance, :period_id, :payment_on_be_half, :memo
   
   state_machine :initial => :pending do
     event :approval do
