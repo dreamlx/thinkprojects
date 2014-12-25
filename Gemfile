@@ -1,7 +1,6 @@
 source 'https://ruby.taobao.org'
 
-# gem 'rails', '3.2.19'
-gem 'rails', '4.1.5'
+gem 'rails', '4.1.8'
 gem 'sqlite3'
 
 gem 'coffee-rails'
