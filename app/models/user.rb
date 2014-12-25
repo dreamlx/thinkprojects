@@ -3,12 +3,9 @@ require 'digest/sha1'
 class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :encryptable, :encryptor => :restful_authentication_sha1
 
-  # attr_accessible :email, :password, :password_confirmation, :remember_me, :login, :name, :roles,
-                  # :english_name, :employee_number, :charge_rate, :employment_date, 
-                  # :address, :postalcode, :mobile, :tel, :gender, :department_id, :status_id
-  validates :login, presence: true, length: {in: 3..40}
-  validates :name,  length:   {maximum: 100}
-  validates :email, presence: true, uniqueness: true, length: {in: 6..100}
+  # validates :login, presence: true, length: {in: 3..40}
+  # validates :name,  length:   {maximum: 100}
+  # validates :email, presence: true, uniqueness: true, length: {in: 6..100}
   has_many  :clients
   has_many  :expenses
   has_many  :bookings

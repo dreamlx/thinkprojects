@@ -1,8 +1,8 @@
 class Personalcharge < ActiveRecord::Base
   acts_as_commentable
 
-  validates :hours, numericality: true
-  validates :ot_hours, numericality: true
+  # validates :hours, numericality: true
+  # validates :ot_hours, numericality: true
   belongs_to :project
   belongs_to :period 
   belongs_to :user
@@ -17,6 +17,4 @@ class Personalcharge < ActiveRecord::Base
       transition all => :pending
     end
   end
-
-  # attr_accessible :user_id, :period_id, :charge_date, :hours, :ot_hours, :desc, :project_id
 end

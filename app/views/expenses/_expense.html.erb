@@ -1,12 +1,12 @@
 <tr>
   <td><%= expense.id %></td>
-  <td><%= expense.charge_date %>(<%= expense.charge_date.to_date.strftime("%a") %>)</td>
+  <td><%= expense.charge_date %>(<%= expense.charge_date.to_date.strftime("%a") if expense.charge_date%>)</td>
   <td><%= expense.user.english_name if expense.user %></td>
   <td><%= expense.billable ? 'Billable' : 'Non-billable' %></td>
   <td><%= expense.expense_category %></td>
   <td><%= expense.project.client.english_name if expense.project %></td>
   <td><%= expense.project.job_code if expense.project %></td>
-  <td><%= format("%.2f",expense.fee)%></td>
+  <td><%= format("%.2f",expense.fee) if expense.fee%></td>
   <td><%= expense.state.humanize %></td>
   <td><%= link_to t('show'), expense %></td>
   <td><%= link_to t('edit'), edit_expense_path(expense) %></td>

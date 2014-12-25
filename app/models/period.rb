@@ -8,8 +8,6 @@ class Period < ActiveRecord::Base
     number
   end
 
-  # attr_accessible :number, :work_hours, :starting_date, :ending_date
-
   def self.today_period
     today = Time.now.to_date
     period_sql = " 1 and '#{today}' <= ending_date and '#{today}' >= starting_date"

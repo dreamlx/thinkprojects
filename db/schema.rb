@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141117022230) do
+ActiveRecord::Schema.define(version: 20141221063618) do
 
   create_table "billings", force: true do |t|
     t.datetime "created_on",                                                        null: false
@@ -24,13 +24,14 @@ ActiveRecord::Schema.define(version: 20141117022230) do
     t.decimal  "expense_billing",            precision: 10, scale: 2, default: 0.0, null: false
     t.integer  "days_of_ageing",  limit: 11
     t.decimal  "business_tax",               precision: 10, scale: 2, default: 0.0, null: false
-    t.string   "status",          limit: 1,                           default: "0", null: false
+    t.string   "status",          limit: 1,                           default: "0"
     t.integer  "collection_days", limit: 11
     t.integer  "project_id",      limit: 11,                          default: 0,   null: false
     t.integer  "period_id",       limit: 11,                          default: 0,   null: false
     t.integer  "write_off",       limit: 10,                                        null: false
     t.integer  "provision",       limit: 10,                                        null: false
     t.integer  "user_id"
+    t.integer  "person_id"
   end
 
   create_table "bookings", force: true do |t|
@@ -54,6 +55,38 @@ ActiveRecord::Schema.define(version: 20141117022230) do
     t.datetime "created_on",                           null: false
     t.datetime "updated_on",                           null: false
     t.integer  "user_id"
+    t.integer  "person_id"
+    t.string   "address_1"
+    t.string   "person1"
+    t.string   "person2"
+    t.string   "address_2"
+    t.string   "city_1"
+    t.string   "city_2"
+    t.string   "state_1"
+    t.string   "state_2"
+    t.string   "country_1"
+    t.string   "country_2"
+    t.string   "postalcode_1"
+    t.string   "postalcode_2"
+    t.string   "title_1"
+    t.string   "title_2"
+    t.string   "gender1_id"
+    t.string   "gender2_id"
+    t.string   "mobile_1"
+    t.string   "mobile_2"
+    t.string   "tel_1"
+    t.string   "tel_2"
+    t.string   "fax_1"
+    t.string   "fax_2"
+    t.string   "email_1"
+    t.string   "email_2"
+    t.string   "person3"
+    t.string   "title_3"
+    t.string   "gender3_id"
+    t.string   "mobile_3"
+    t.string   "tel_3"
+    t.string   "fax_3"
+    t.string   "email_3"
   end
 
   create_table "comments", force: true do |t|
@@ -102,6 +135,18 @@ ActiveRecord::Schema.define(version: 20141117022230) do
     t.datetime "updated_on",                                                       null: false
   end
 
+  create_table "deductions", force: true do |t|
+    t.datetime "created_on"
+    t.datetime "updated_on"
+    t.decimal  "service_PFA"
+    t.decimal  "service_UFA"
+    t.decimal  "service_billing"
+    t.decimal  "expense_PFA"
+    t.decimal  "expense_UFA"
+    t.decimal  "expense_billing"
+    t.integer  "project_id"
+  end
+
   create_table "dicts", force: true do |t|
     t.string "category", limit: 50
     t.string "code",     limit: 50
@@ -114,13 +159,25 @@ ActiveRecord::Schema.define(version: 20141117022230) do
     t.integer  "project_id"
     t.date     "charge_date"
     t.string   "state"
-    t.string   "desc",             default: ""
+    t.string   "desc",               default: ""
     t.integer  "period_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "billable",         default: true
+    t.boolean  "billable",           default: true
     t.integer  "approved_by"
     t.integer  "user_id"
+    t.datetime "created_on"
+    t.datetime "updated_on"
+    t.decimal  "commission"
+    t.decimal  "outsourcing"
+    t.decimal  "tickets"
+    t.decimal  "courrier"
+    t.decimal  "postage"
+    t.decimal  "stationery"
+    t.decimal  "report_binding"
+    t.decimal  "cash_advance"
+    t.decimal  "payment_on_be_half"
+    t.string   "memo"
   end
 
   create_table "incomes", force: true do |t|
@@ -139,6 +196,46 @@ ActiveRecord::Schema.define(version: 20141117022230) do
     t.string "title",            default: "", null: false
   end
 
+  create_table "initialfees", force: true do |t|
+    t.datetime "created_on"
+    t.datetime "updated_on"
+    t.decimal  "service_fee"
+    t.decimal  "commission"
+    t.decimal  "outsourcing"
+    t.decimal  "reimbursement"
+    t.decimal  "meal_allowance"
+    t.decimal  "travel_allowance"
+    t.decimal  "business_tax"
+    t.decimal  "tickets"
+    t.decimal  "courrier"
+    t.decimal  "postage"
+    t.decimal  "stationery"
+    t.decimal  "report_binding"
+    t.decimal  "payment_on_be_half"
+    t.integer  "project_id"
+    t.decimal  "cash_advance"
+  end
+
+  create_table "people", force: true do |t|
+    t.datetime "created_on"
+    t.datetime "updated_on"
+    t.string   "chinese_name"
+    t.string   "english_name"
+    t.string   "employee_number"
+    t.integer  "department_id"
+    t.string   "grade"
+    t.decimal  "charge_rate"
+    t.date     "employeement_date"
+    t.string   "address"
+    t.string   "postalcode"
+    t.string   "mobile"
+    t.string   "tel"
+    t.string   "extension"
+    t.integer  "gender_id"
+    t.integer  "status_id"
+    t.integer  "GMU_id"
+  end
+
   create_table "periods", force: true do |t|
     t.string   "number",        limit: 50, default: "0", null: false
     t.date     "starting_date",                          null: false
@@ -148,34 +245,38 @@ ActiveRecord::Schema.define(version: 20141117022230) do
   end
 
   create_table "personalcharges", force: true do |t|
-    t.datetime "created_on",                                 null: false
-    t.datetime "updated_on",                                 null: false
-    t.decimal  "hours",                  default: 0.0,       null: false
-    t.decimal  "service_fee",            default: 0.0,       null: false
-    t.integer  "project_id",  limit: 11, default: 0,         null: false
-    t.integer  "period_id",   limit: 11, default: 0,         null: false
+    t.datetime "created_on",                                      null: false
+    t.datetime "updated_on",                                      null: false
+    t.decimal  "hours",                       default: 0.0,       null: false
+    t.decimal  "service_fee",                 default: 0.0,       null: false
+    t.integer  "project_id",       limit: 11, default: 0,         null: false
+    t.integer  "period_id",        limit: 11, default: 0,         null: false
     t.text     "desc"
-    t.string   "state",                  default: "pending", null: false
+    t.string   "state",                       default: "pending", null: false
     t.date     "charge_date"
-    t.decimal  "ot_hours",               default: 0.0
+    t.decimal  "ot_hours",                    default: 0.0
     t.integer  "user_id"
+    t.decimal  "reimbursement"
+    t.decimal  "meal_allowance"
+    t.decimal  "travel_allowance"
+    t.integer  "person_id"
   end
 
   create_table "prj_expense_logs", force: true do |t|
     t.integer "prj_id",     limit: 11
     t.integer "expense_id", limit: 11
     t.integer "period_id",  limit: 11
-    t.string  "other",                 null: false
+    t.string  "other"
   end
 
   create_table "projects", force: true do |t|
     t.datetime "created_on",                                            null: false
     t.datetime "updated_on",                                            null: false
-    t.string   "contract_number",        limit: 50, default: "",        null: false
+    t.string   "contract_number",        limit: 50, default: ""
     t.integer  "client_id",              limit: 11, default: 0,         null: false
     t.integer  "GMU_id",                 limit: 11, default: 0,         null: false
     t.integer  "service_id",             limit: 11, default: 0,         null: false
-    t.string   "job_code",               limit: 20, default: "",        null: false
+    t.string   "job_code",               limit: 20, default: ""
     t.string   "description",                       default: ""
     t.date     "starting_date"
     t.date     "ending_date"
@@ -194,6 +295,11 @@ ActiveRecord::Schema.define(version: 20141117022230) do
     t.integer  "revenue_id",             limit: 11, default: 0,         null: false
     t.integer  "estimated_hours",        limit: 11, default: 0
     t.string   "state",                             default: "pending", null: false
+    t.integer  "status_id"
+    t.integer  "partner_id"
+    t.integer  "referring_id"
+    t.integer  "billing_partner_id"
+    t.integer  "billing_manager_id"
   end
 
   create_table "receive_amounts", force: true do |t|
@@ -204,6 +310,19 @@ ActiveRecord::Schema.define(version: 20141117022230) do
     t.string   "receive_date",   limit: 30,                           default: ""
     t.decimal  "receive_amount",             precision: 10, scale: 2, default: 0.0,  null: false
     t.string   "job_code",       limit: 20
+  end
+
+  create_table "ufafees", force: true do |t|
+    t.datetime "created_on"
+    t.datetime "updated_on"
+    t.string   "number"
+    t.decimal  "amount"
+    t.integer  "project_id"
+    t.string   "period_id"
+    t.decimal  "service_UFA"
+    t.decimal  "expense_UFA"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "users", force: true do |t|
@@ -240,6 +359,10 @@ ActiveRecord::Schema.define(version: 20141117022230) do
     t.string   "gender"
     t.integer  "status_id"
     t.integer  "GMU_id"
+    t.string   "hashed_password"
+    t.string   "auth"
+    t.string   "other1"
+    t.string   "other2"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

@@ -13,9 +13,6 @@ class Client < ActiveRecord::Base
 
   accepts_nested_attributes_for :contacts, :allow_destroy => :true, :reject_if => proc { |attrs| attrs.all? { |k, v| v.blank? } }
 
-  # attr_accessible :client_code, :chinese_name, :english_name, :user_id, 
-                  # :industry_id, :category_id, :status_id, :region_id, :contacts_attributes
-
   def self.selected_clients
     order("english_name").map {|c| ["#{c.client_code} || #{c.english_name}", c.id ] }
   end
