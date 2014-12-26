@@ -1,12 +1,18 @@
 source 'https://ruby.taobao.org'
 
-gem 'rails', '4.1.8'
+gem 'rails', '4.2.0'
 gem 'sqlite3'
 
 gem 'coffee-rails'
-gem 'uglifier', '>= 1.0.3'
+gem 'uglifier'
 
 gem 'jquery-rails'
+
+group :development do
+  gem 'web-console', '~> 2.0'
+end
+
+gem 'responders', '~> 2.0'
 
 gem 'byebug'
 gem 'state_machine'  #xianjie_add
