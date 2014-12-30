@@ -1,17 +1,20 @@
 <%= render 'search' %>
-<%= link_to t('export_data'), expenses_path(format: "xls") %> ||
-<%= link_to t('new_expense'), new_expense_path %>
+<p>
+  <%= link_to t('export_data'), expenses_path(format: "xls") %> ||
+  <%= link_to t('new_expense'), new_expense_path %>
+</p>
+<%= will_paginate @expenses %>
 <table class="table table-bordered">
   <tr>
-    <th>ID</th>
-    <th><%= t('charge_date') %></th>
-    <th><%= t('user') %></th>
-    <th><%= t('billable') %></th>
-    <th><%= t('category') %></th>
-    <th><%= t('client_name') %></th>
-    <th><%= t('job_code') %></th>
-    <th><%= t('amount') %></th>
-    <th><%= t('state') %></th>
+    <th><%= sort_link(@q, :id, t('id')) %></th>
+    <th><%= sort_link(@q, :charge_date, t('charge_date')) %></th>
+    <th><%= sort_link(@q, :user_id, t('user')) %></th>
+    <th><%= sort_link(@q, :billable, t('billable')) %></th>
+    <th><%= sort_link(@q, :expense_category, t('category')) %></th>
+    <th><%= sort_link(@q, :project_id, t('client_name')) %></th>
+    <th><%= sort_link(@q, :project_id, t('job_code')) %></th>
+    <th><%= sort_link(@q, :fee, t('amount')) %></th>
+    <th><%= sort_link(@q, :state, t('state')) %></th>
     <th colspan="3"><%= t('operations') %></th>
   </tr>
   <%= render @expenses %>

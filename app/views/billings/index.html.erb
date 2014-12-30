@@ -3,10 +3,10 @@
 <%= link_to t('new_billing'), new_billing_path %>
 <table class="table table-bordered">
   <tr>
-    <th><%= t('job_code') %></th>
+    <th><%= sort_link(@q, :project_id, t('job_code')) %></th>
     <% Billing.content_columns.each do |column| %>
       <% next if column.human_name =='Created on' or column.human_name =='Updated on'%>
-      <th><%= column.human_name %></th>
+      <th><%= sort_link(@q, column.name, column.human_name) %></th>
     <% end %>
     <th colspan=3><%= t('operations') %></th>
   </tr>

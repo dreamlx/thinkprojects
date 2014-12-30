@@ -1,7 +1,8 @@
 class PrjExpenseLogsController < ApplicationController
   load_and_authorize_resource
   def index
-    @prj_expense_logs  = PrjExpenseLog.paginate(page: params[:page])
+    @q = PrjExpenseLog.search(params[:q])
+    @prj_expense_logs  = @q.result.paginate(page: params[:page])
   end
 
   def show

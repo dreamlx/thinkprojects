@@ -1,5 +1,5 @@
 <tr>
-  <td><%=billing.project.job_code%></td>
+  <td><%= billing.project.job_code if billing.project %></td>
 
   <% Billing.content_columns.each do |column| %>
     <% next if column.human_name == 'Created on' || column.human_name =='Updated on'%>

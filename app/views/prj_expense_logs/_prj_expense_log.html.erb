@@ -1,6 +1,6 @@
 <tr>
   <% for column in PrjExpenseLog.content_columns %>
-    <td><%=h prj_expense_log.send(column.name) %></td>
+    <td><%=h prj_expense_log.send(column.name) if prj_expense_log.send(column.name) %></td>
   <% end %>
   <td><%= link_to t('show'), prj_expense_log %></td>
   <td><%= link_to t('edit'), edit_prj_expense_log_path(prj_expense_log) %></td>

@@ -1,6 +1,6 @@
 <tr>
   <% Dict.content_columns.each do |column| %>
-    <td><%=h dict.send(column.name).humanize %></td>
+    <td><%=h dict.send(column.name).humanize if dict.send(column.name) %></td>
   <% end %>
   <td><%= link_to t('show'), dict %></td>
   <td><%= link_to t('edit'), edit_dict_path(dict) %></td>
