@@ -1,11 +1,13 @@
-<%= search_form_for @q do |f| %>
+<%= search_form_for(@q, html: {class: 'form-inline'}) do |f| %>
   <%= f.input :job_code_cont, 
               as: :search, 
-              label: t('job_code_cont'), 
+              label: false,
+              placeholder: t('job_code_cont'), 
               required: false %>
   <%= f.input :client_english_name_cont, 
               as: :search, 
-              label: t('client_english_name_cont'), 
+              label: false,
+              placeholder: t('client_english_name_cont'), 
               required: false %>
   <%= f.input :bookings_user_id_eq, 
               collection: User.selected_users, 

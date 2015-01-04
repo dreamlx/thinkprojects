@@ -1,5 +1,5 @@
 <!-- search -->
-<%= search_form_for(@q) do |f| %>
+<%= search_form_for(@q, html: {class: 'form-inline'}) do |f| %>
   <%= f.input :employee_number_or_english_name_or_name_cont, 
               as: :search,
               label: t('employee_number_or_english_name_or_name_cont'),
@@ -8,8 +8,8 @@
 <% end %>
 <!-- end of search -->
 
-<table class="table table-bordered">
-  <tbody>
+<table class="table table-striped">
+  <thead>
     <tr>
       <th><%= sort_link(@q, :login, t('login')) %></th>
       <th><%= sort_link(@q, :roles, t('role')) %></th>
@@ -20,6 +20,8 @@
       <th><%= sort_link(@q, :position, t('position')) %></th>
       <th colspan="3"><%= t('operations') %></th>
     </tr>
+  </thead>
+  <tbody>
     <%= render @users %>
   </tbody>
 </table>

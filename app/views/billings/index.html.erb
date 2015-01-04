@@ -1,6 +1,12 @@
-<%= render 'search' %>
+<div class="row">
+  <div class="col-md-10">
+    <%= render 'search' %>
+  </div>
+  <div class="col-md-2">
+    <%= link_to t('new_billing'), new_billing_path, class: 'btn btn-danger' %>
+  </div>
+</div>
 
-<%= link_to t('new_billing'), new_billing_path %>
 <table class="table table-bordered">
   <tr>
     <th><%= sort_link(@q, :project_id, t('job_code')) %></th>

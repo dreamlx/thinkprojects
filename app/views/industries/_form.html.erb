@@ -1,5 +1,11 @@
 <%= simple_form_for(@industry) do |f| %>
-  <%= f.input 'code' %></p>
-  <%= f.input 'title' %></p>
-  <%= f.button :submit %>
+  <div class="col-md-3">
+    <%= f.input 'code' %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input 'title' %>
+  </div>
+  <div class="col-md-12">
+    <%= f.button :submit %>
+  </div>
 <% end %>

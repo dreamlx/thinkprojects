@@ -1,23 +1,34 @@
-<%= render 'search' %>
-<p>
-  <%= link_to t('export_data'), expenses_path(format: "xls") %> ||
-  <%= link_to t('new_expense'), new_expense_path %>
-</p>
+<div class="row">
+  <div class="col-md-9">
+    <%= render 'search' %>
+  </div>
+  <div class="col-md-3">
+    <div class="btn-group" role="group" aria-label="...">
+      <%= link_to t('new_expense'), new_expense_path, class: 'btn btn-danger' %>
+      <%= link_to t('export_data'), expenses_path(format: "xls"), class: 'btn btn-default' %>
+    </div>
+  </div>
+</div>
+
 <%= will_paginate @expenses %>
-<table class="table table-bordered">
-  <tr>
-    <th><%= sort_link(@q, :id, t('id')) %></th>
-    <th><%= sort_link(@q, :charge_date, t('charge_date')) %></th>
-    <th><%= sort_link(@q, :user_id, t('user')) %></th>
-    <th><%= sort_link(@q, :billable, t('billable')) %></th>
-    <th><%= sort_link(@q, :expense_category, t('category')) %></th>
-    <th><%= sort_link(@q, :project_id, t('client_name')) %></th>
-    <th><%= sort_link(@q, :project_id, t('job_code')) %></th>
-    <th><%= sort_link(@q, :fee, t('amount')) %></th>
-    <th><%= sort_link(@q, :state, t('state')) %></th>
-    <th colspan="3"><%= t('operations') %></th>
-  </tr>
-  <%= render @expenses %>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= sort_link(@q, :id, t('id')) %></th>
+      <th><%= sort_link(@q, :charge_date, t('charge_date')) %></th>
+      <th><%= sort_link(@q, :user_id, t('user')) %></th>
+      <th><%= sort_link(@q, :billable, t('billable')) %></th>
+      <th><%= sort_link(@q, :expense_category, t('category')) %></th>
+      <th><%= sort_link(@q, :project_id, t('client_name')) %></th>
+      <th><%= sort_link(@q, :project_id, t('job_code')) %></th>
+      <th><%= sort_link(@q, :fee, t('amount')) %></th>
+      <th><%= sort_link(@q, :state, t('state')) %></th>
+      <th colspan="3"><%= t('operations') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render @expenses %>
+  </tbody>
   <tr>
     <td colspan="7"><%= t('total') %></td>
     <td><%= format("%.2f",@sum_amount) %></td>

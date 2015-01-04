@@ -1,19 +1,30 @@
-<%= search_form_for(@q) do |f| %>
-  <%= f.input :client_code_or_chinese_name_or_english_name_cont, 
-              as: :search,
-              label: t('client_code_or_chinese_name_or_english_name_cont'),
-              required: false %>
-  <%= f.button :submit, t('search') %>
-<% end %>
-<%= link_to t('new_client'), new_client_path %>
-<table class="table table-bordered">
-  <tr>
-    <th><%= sort_link(@q, :chinese_name, t('chinese_name')) %></th>
-    <th><%= sort_link(@q, :english_name, t('english_name')) %></th>
-    <th><%= sort_link(@q, :client_code, t('client_code')) %></th>
-    <th><%= sort_link(@q, :user_id, t('account_owner')) %></th>
-    <th colspan="3"><%= t('operations') %></th>
-  </tr>
-  <%= render @clients %>
+<div class="row">
+  <div class="col-md-10">
+    <%= search_form_for(@q, html: {class: 'form-inline'}) do |f| %>
+      <%= f.input :client_code_or_chinese_name_or_english_name_cont, 
+                  as: :search,
+                  label: t('client_code_or_chinese_name_or_english_name_cont'),
+                  required: false %>
+      <%= f.button :submit, t('search') %>
+    <% end %>
+  </div>
+  <div class="col-md-2">
+    <%= link_to t('new_client'), new_client_path, class: 'btn btn-danger' %>
+  </div>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= sort_link(@q, :chinese_name, t('chinese_name')) %></th>
+      <th><%= sort_link(@q, :english_name, t('english_name')) %></th>
+      <th><%= sort_link(@q, :client_code, t('client_code')) %></th>
+      <th><%= sort_link(@q, :user_id, t('account_owner')) %></th>
+      <th colspan="3"><%= t('operations') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render @clients %>
+  </tbody>
 </table>
 <%= will_paginate @clients %>

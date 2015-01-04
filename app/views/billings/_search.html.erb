@@ -1,4 +1,4 @@
-<%= search_form_for(@q) do |f| %>
+<%= search_form_for(@q, html: {class: 'form-inline'}) do |f| %>
   <%= f.input :number_or_project_job_code_cont,
               label: t('number_or_project_job_code_cont'),
               required: false %>

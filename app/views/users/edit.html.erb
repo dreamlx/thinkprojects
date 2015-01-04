@@ -1,23 +1,62 @@
 <%= simple_form_for(@user) do |f| %>
-  <%= f.input :login  %>
-  <%= f.input :email %>
-  <%= f.input :name  %>
-  <%= f.input :english_name  %>
-  <%= f.input :employee_number  %>
-  <%= f.input :charge_rate %>
-  <%= f.input :employment_date  %>
-  <%= f.input :address  %>
-  <%= f.input :postalcode  %>
-  <%= f.input :mobile  %>
-  <%= f.input :tel  %>
-  <%= f.input :gender, collection: [:male, :female]  %>
-  <%= f.input :department_id, collection: Dict.selected_deps %>
-  <%= f.input :status_id,  collection: Dict.selected_person_status %> 
-  <%= f.input :password %>
-  <%= f.input :password_confirmation %>
+  <div class="col-md-3">
+    <%= f.input :login  %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :email %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :name  %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :english_name  %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :employment_date  %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :employee_number  %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :charge_rate %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :address %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :postalcode %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :mobile %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :tel %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :gender, collection: [:male, :female] %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :department_id, collection: Dict.selected_deps %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :status_id,  collection: Dict.selected_person_status %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :password %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :password_confirmation %>
+  </div>
+  
   <% if current_user.roles == 'providence_breaker' %>
-    <%= f.input :roles, collection: User.selected_roles %>
+    <div class="col-md-3">
+      <%= f.input :roles, collection: User.selected_roles %>
+    </div>
   <% end %>
-  <%= f.button :submit %>
+  <div class="col-md-12">
+    <%= f.button :submit %>
+  </div>
 <% end %>
-<%= link_to "返回", users_path %>
+<div class="col-md-12">
+  <%= link_to "返回", users_path %>
+</div>

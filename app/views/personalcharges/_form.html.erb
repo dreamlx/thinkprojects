@@ -1,10 +1,26 @@
 <%= simple_form_for(@personalcharge) do |f| %>
-  <%= f.association :user, colletion: User.order('name'), selected: current_user.id %>
-  <%= f.input :project_id, collection: Project.all %>
-  <%= f.input :period_id, collection: Period.all %>
-  <%= f.input :charge_date %>
-  <%= f.input :hours %>
-  <%= f.input :ot_hours %>
-  <%= f.input :desc, as: :text %>
-  <%= f.button :submit %>
+  <div class="col-md-3">
+    <%= f.association :user, colletion: User.order('name'), selected: current_user.id %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :project_id, collection: Project.all %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :period_id, collection: Period.all %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :hours %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :charge_date %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :ot_hours %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :desc, as: :text %>
+  </div>
+  <div class="col-md-12">
+    <%= f.button :submit %>
+  </div>
 <% end %>

@@ -1,13 +1,21 @@
-<h1>Listing prj_expense_logs</h1>
-<%= link_to 'New prj_expense_log',  new_prj_expense_log_path %>
-<table class="table table-bordered">
+<div class="row">
+  <div class="col-md-3 col-md-offset-9">
+    <%= link_to 'New prj_expense_log',  new_prj_expense_log_path, class: 'btn btn-danger' %>
+  </div>
+</div>
+
+<table class="table table-striped">
+  <thead>
   <tr>
-  <% for column in PrjExpenseLog.content_columns %>
-    <th><%= sort_link(@q, column.name, column.human_name) %></th>
-    <th colspan="3">Operations</th>
-  <% end %>
-  </tr>
-  <%= render @prj_expense_logs %>
+    <% for column in PrjExpenseLog.content_columns %>
+      <th><%= sort_link(@q, column.name, column.human_name) %></th>
+      <th colspan="3">Operations</th>
+    <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render @prj_expense_logs %>
+  </tbody>
 </table>
 
 <%= will_paginate @prj_expense_log_pages %>

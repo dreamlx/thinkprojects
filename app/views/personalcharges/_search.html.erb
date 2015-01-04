@@ -1,4 +1,4 @@
-<%= search_form_for @q do |f| %>
+<%= search_form_for(@q, html: {class: 'form-inline'}) do |f| %>
   <%= f.input :project_manager_id_eq, 
               collection: User.selected_users, 
               label: t('project_manager_id_eq'),

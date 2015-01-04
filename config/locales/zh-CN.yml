@@ -210,7 +210,7 @@ zh-CN:
   projects: '项目'
   job_code_cont: '项目代码中的字符'
   client_english_name_cont: '客户英文名中的字符'
-  bookings_user_id_eq: '选择参与的用户名'
+  bookings_user_id_eq: '参与用户'
   search: '搜索'
   state: '状态'
   new_project: '新建项目'
@@ -278,7 +278,7 @@ zh-CN:
   user_id_eq: '请选择用户'
   period_number_eq: '请选择时期'
   export_data: '导出数据'
-  new_personalcharge: '新增个人费用'
+  new_personalcharge: '新建个人费用'
   period: '时期'
   including_ot_hours: '包含加班小时数'
   charge_date: '付款日期'
@@ -331,7 +331,7 @@ zh-CN:
   new_client: '新建客户'
   client_info: '客户信息'
   client: '客户'
-  number_cont: '数值中的字符'
+  number_cont: '时期数值中的字符'
   new_period: '新建时期'
   period_number: '时期数值'
   work_hours: '工作时数'
@@ -442,6 +442,7 @@ zh-CN:
       period: '时期'
       dict: '字典'
       industry: '工业领域'
+      billing: '单据'
   will_paginate:
     previous_label: "&#8592; 前一页"
     next_label: "后一页 &#8594;"

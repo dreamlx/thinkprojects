@@ -10,7 +10,7 @@
 </p>
 <p>
   <b>Prepared by</b>
-<td><%=@billing.user.english_name%></td>
+<td><%= @billing.user.english_name if @billing.user%></td>
 </p>
 <%= link_to t('edit'), edit_billing_path(@billing) if @billing.status == '0'%> |
 <%= link_to t('back'), billings_path %>

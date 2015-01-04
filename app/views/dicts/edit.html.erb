@@ -1,4 +1,6 @@
 <h1><%= "#{t('edit')}#{t('dict')}" %></h1>
 <%= render 'form' %>
-<%= link_to t('show'), @dict %> |
-<%= link_to t('back'), dicts_path %>
+<div class="col-md-12">
+  <%= link_to t('show'), @dict %> |
+  <%= link_to t('back'), dicts_path %>
+</div>

@@ -1,8 +1,16 @@
-<%= render "search" %>
-<%= link_to t('export_data'), personalcharges_path(format: 'xls')  %> ||
-<%= link_to t('new_personalcharge'), new_personalcharge_path  %>
+<div class="row">
+  <div class="col-md-9">
+    <%= render "search" %>
+  </div>
+  <div class="col-md-3">
+    <div class="btn-group" role="group" aria-label="...">
+      <%= link_to t('new_personalcharge'), new_personalcharge_path, class: 'btn btn-danger'  %>
+      <%= link_to t('export_data'), personalcharges_path(format: 'xls'), class: 'btn btn-default'  %>
+    </div>
+  </div>
+</div>
 
-<table  class="table table-bordered">
+<table  class="table table-striped">
   <tr>
   	<th><%= sort_link(@q, :user_id, t('user'))  %></th>  
 	  <th><%= sort_link(@q, :period_id, t('period')) %></th>
@@ -22,10 +30,14 @@
 <div>
   <h3>check&amp; auto insert Self study</h3>
   <p>This action will check all working hours and auto project by self study hours</p>
-  <%= simple_form_for(:project_period, url: auto_complete_hours_personalcharges_path, :html => { :method => :get }) do |f| %>
-    <%= f.input :period_id, collection: Period.order("number desc") %>
-    <%= f.input :prj_id, collection: Project.all %>
-    <%= f.input :period_hours %>
+  <%= simple_form_for(:project_period, url: auto_complete_hours_personalcharges_path, :html => {method: :get, class: 'form-inline' }) do |f| %>
+    <%= f.input :period_id, 
+                collection: Period.order("number desc"),
+                required: false %>
+    <%= f.input :prj_id, collection: Project.all,
+                required: false %>
+    <%= f.input :period_hours,
+                required: false %>
     <%= f.button :submit, '提交' %>
   <% end %>
 </div>

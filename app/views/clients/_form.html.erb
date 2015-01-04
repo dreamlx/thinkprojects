@@ -1,18 +1,36 @@
 <%= simple_nested_form_for(@client) do |f| %>
   <h2><%= t('client_info') %></h2>
-  <%= f.input :client_code %>
-  <%= f.input :chinese_name %>
-  <%= f.input :english_name %>
-  <%= f.input :user_id,     collection: User.selected_users %>
+  <div class="col-md-3">
+    <%= f.input :client_code %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :chinese_name %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :english_name %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :user_id,     collection: User.selected_users %>
+  </div>
 
   <h2><%= t('contacts') %></h2>
   <%= f.fields_for :contacts %>
   <p><%= f.link_to_add t('add_a_contact'), :contacts %></p>
   
   <h2><%= t('general_info') %></h2>
-  <%= f.input :industry_id, collection: Industry.selected_industries %>
-  <%= f.input :category_id, collection: Dict.selected_categories %>
-  <%= f.input :status_id,   collection: Dict.selected_statuses %>
-  <%= f.input :region_id,   collection: Dict.selected_regions %>
-  <%= f.button :submit %>
+  <div class="col-md-3">
+    <%= f.input :industry_id, collection: Industry.selected_industries %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :category_id, collection: Dict.selected_categories %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :status_id,   collection: Dict.selected_statuses %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :region_id,   collection: Dict.selected_regions %>
+  </div>
+  <div class="col-md-12">
+    <%= f.button :submit %>
+  </div>
 <% end %>

@@ -1,5 +1,6 @@
 <h1><%=  "#{t('edit')}#{t('expense')}" %></h1>
 <%= render 'form' %>
-
-<%= link_to t('show'), expense_path(@expense) %> |
-<%= link_to t('back'), expenses_path %>
+<div class="col-md-12">
+  <%= link_to t('show'), expense_path(@expense) %> |
+  <%= link_to t('back'), expenses_path %>
+</div>

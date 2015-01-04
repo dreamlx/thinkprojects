@@ -1,6 +1,14 @@
 <%= simple_form_for(@dict) do |f| %>
-  <%= f.input :category %>
-  <%= f.input :code %>
-  <%= f.input :title %>
-  <%= f.button :submit %>
+  <div class="col-md-3">
+    <%= f.input :category %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :code %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :title %>
+  </div>
+  <div class="col-md-12">
+    <%= f.button :submit %>
+  </div>
 <% end %>

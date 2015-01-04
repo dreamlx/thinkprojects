@@ -1,6 +1,7 @@
 <h1><%= "#{t('edit')}#{t('client')}" %></h1>
 
 <%= render 'form' %>
-
-<%= link_to t('show'), @client %> |
-<%= link_to t('back'), clients_path %>
+<div class="col-md-12">
+  <%= link_to t('show'), @client %> |
+  <%= link_to t('back'), clients_path %>
+</div>
