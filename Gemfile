@@ -16,7 +16,7 @@ gem 'responders', '~> 2.0'
 
 gem 'byebug'
 gem 'state_machine'  #xianjie_add
-gem 'ruby-graphviz', :require => 'graphviz'  #xianjie_add
+# gem 'ruby-graphviz', :require => 'graphviz'  #xianjie_add
 
 gem 'acts_as_commentable'
 gem 'will_paginate'
