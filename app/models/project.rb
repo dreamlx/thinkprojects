@@ -12,7 +12,6 @@ class Project < ActiveRecord::Base
   has_many :expenses,         :dependent => :destroy
   has_many :personalcharges,  :dependent => :destroy
   has_many :bookings,         :dependent => :destroy
-  has_many :members,          :through => :bookings, :source => :person
   has_many :users,            through: :bookings
   
   belongs_to :client
@@ -28,8 +27,7 @@ class Project < ActiveRecord::Base
   belongs_to :risk,         -> { where category:'risk'},          :class_name => "Dict",    :foreign_key => "risk_id"
   belongs_to :manager,      :class_name => "User",    :foreign_key => "manager_id"
 
-  # scope :alive, :conditions =>"state = 'approved'", :order=>'job_code'
-  scope :alive, -> { where(state:'approved').order("job_code") }
+  scope :alive, -> { where(state: 'approved').order("job_code") }
   state_machine :initial => :pending do
     event :approval do
       transition all =>:approved

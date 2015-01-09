@@ -36,23 +36,14 @@
     <%= f.input :gender, collection: [:male, :female] %>
   </div>
   <div class="col-md-3">
-    <%= f.input :department_id, collection: Dict.selected_deps %>
+    <%= f.input :department %>
   </div>
   <div class="col-md-3">
-    <%= f.input :status_id,  collection: Dict.selected_person_status %>
+    <%= f.input :status %>
   </div>
   <div class="col-md-3">
-    <%= f.input :password %>
+    <%= f.input :roles, collection: User.selected_roles if current_user.roles == 'providence_breaker' %>
   </div>
-  <div class="col-md-3">
-    <%= f.input :password_confirmation %>
-  </div>
-  
-  <% if current_user.roles == 'providence_breaker' %>
-    <div class="col-md-3">
-      <%= f.input :roles, collection: User.selected_roles %>
-    </div>
-  <% end %>
   <div class="col-md-12">
     <%= f.button :submit %>
   </div>

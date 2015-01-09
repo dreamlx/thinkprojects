@@ -11,9 +11,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141221063618) do
+ActiveRecord::Schema.define(version: 20150108120812) do
 
-  create_table "billings", force: true do |t|
+  create_table "billings", force: :cascade do |t|
     t.datetime "created_on",                                                        null: false
     t.datetime "updated_on",                                                        null: false
     t.string   "number",          limit: 20
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 20141221063618) do
     t.integer  "person_id"
   end
 
-  create_table "bookings", force: true do |t|
+  create_table "bookings", force: :cascade do |t|
     t.integer  "hours",      limit: 11, default: 0
     t.text     "other"
     t.datetime "created_at"
@@ -43,53 +43,53 @@ ActiveRecord::Schema.define(version: 20141221063618) do
     t.integer  "user_id"
   end
 
-  create_table "clients", force: true do |t|
-    t.string   "chinese_name"
-    t.string   "english_name",            default: ""
-    t.string   "description"
+  create_table "clients", force: :cascade do |t|
+    t.string   "chinese_name", limit: 255
+    t.string   "english_name", limit: 255, default: ""
+    t.string   "description",  limit: 255
     t.integer  "category_id",  limit: 11
     t.integer  "status_id",    limit: 11
     t.integer  "region_id",    limit: 11
     t.integer  "industry_id",  limit: 11
-    t.string   "client_code",  limit: 10, default: "", null: false
-    t.datetime "created_on",                           null: false
-    t.datetime "updated_on",                           null: false
+    t.string   "client_code",  limit: 10,  default: "", null: false
+    t.datetime "created_on",                            null: false
+    t.datetime "updated_on",                            null: false
     t.integer  "user_id"
     t.integer  "person_id"
-    t.string   "address_1"
-    t.string   "person1"
-    t.string   "person2"
-    t.string   "address_2"
-    t.string   "city_1"
-    t.string   "city_2"
-    t.string   "state_1"
-    t.string   "state_2"
-    t.string   "country_1"
-    t.string   "country_2"
-    t.string   "postalcode_1"
-    t.string   "postalcode_2"
-    t.string   "title_1"
-    t.string   "title_2"
-    t.string   "gender1_id"
-    t.string   "gender2_id"
-    t.string   "mobile_1"
-    t.string   "mobile_2"
-    t.string   "tel_1"
-    t.string   "tel_2"
-    t.string   "fax_1"
-    t.string   "fax_2"
-    t.string   "email_1"
-    t.string   "email_2"
-    t.string   "person3"
-    t.string   "title_3"
-    t.string   "gender3_id"
-    t.string   "mobile_3"
-    t.string   "tel_3"
-    t.string   "fax_3"
-    t.string   "email_3"
+    t.string   "address_1",    limit: 255
+    t.string   "person1",      limit: 255
+    t.string   "person2",      limit: 255
+    t.string   "address_2",    limit: 255
+    t.string   "city_1",       limit: 255
+    t.string   "city_2",       limit: 255
+    t.string   "state_1",      limit: 255
+    t.string   "state_2",      limit: 255
+    t.string   "country_1",    limit: 255
+    t.string   "country_2",    limit: 255
+    t.string   "postalcode_1", limit: 255
+    t.string   "postalcode_2", limit: 255
+    t.string   "title_1",      limit: 255
+    t.string   "title_2",      limit: 255
+    t.string   "gender1_id",   limit: 255
+    t.string   "gender2_id",   limit: 255
+    t.string   "mobile_1",     limit: 255
+    t.string   "mobile_2",     limit: 255
+    t.string   "tel_1",        limit: 255
+    t.string   "tel_2",        limit: 255
+    t.string   "fax_1",        limit: 255
+    t.string   "fax_2",        limit: 255
+    t.string   "email_1",      limit: 255
+    t.string   "email_2",      limit: 255
+    t.string   "person3",      limit: 255
+    t.string   "title_3",      limit: 255
+    t.string   "gender3_id",   limit: 255
+    t.string   "mobile_3",     limit: 255
+    t.string   "tel_3",        limit: 255
+    t.string   "fax_3",        limit: 255
+    t.string   "email_3",      limit: 255
   end
 
-  create_table "comments", force: true do |t|
+  create_table "comments", force: :cascade do |t|
     t.string   "title",            limit: 50,  default: ""
     t.text     "comment",          limit: 255, default: ""
     t.integer  "commentable_id",               default: 0
@@ -99,15 +99,15 @@ ActiveRecord::Schema.define(version: 20141221063618) do
     t.datetime "updated_at",                                null: false
   end
 
-  create_table "common_fees", primary_key: "period_id", force: true do |t|
-    t.integer  "id",         limit: 10,                          null: false
-    t.integer  "person_id",  limit: 11,                          null: false
-    t.decimal  "common_fee",            precision: 10, scale: 0, null: false
-    t.datetime "created_on",                                     null: false
-    t.datetime "updated_on",                                     null: false
+  create_table "common_fees", primary_key: "period_id", force: :cascade do |t|
+    t.integer  "id",         limit: 10,                null: false
+    t.integer  "person_id",  limit: 11,                null: false
+    t.decimal  "common_fee",            precision: 10, null: false
+    t.datetime "created_on",                           null: false
+    t.datetime "updated_on",                           null: false
   end
 
-  create_table "contacts", force: true do |t|
+  create_table "contacts", force: :cascade do |t|
     t.integer "client_id",  limit: 11,  default: 0,  null: false
     t.string  "name",       limit: 50,  default: "", null: false
     t.string  "title",      limit: 50,  default: "", null: false
@@ -118,24 +118,24 @@ ActiveRecord::Schema.define(version: 20141221063618) do
     t.string  "email",      limit: 50,  default: "", null: false
     t.string  "other",      limit: 250, default: "", null: false
     t.text    "address"
-    t.string  "city"
-    t.string  "state"
-    t.string  "country"
-    t.string  "postalcode"
+    t.string  "city",       limit: 255
+    t.string  "state",      limit: 255
+    t.string  "country",    limit: 255
+    t.string  "postalcode", limit: 255
   end
 
-  create_table "costs", force: true do |t|
-    t.decimal  "amount",                    precision: 10, scale: 2, default: 0.0, null: false
-    t.integer  "item_id",        limit: 11,                                        null: false
-    t.integer  "project_id",     limit: 11,                                        null: false
-    t.integer  "department_id",  limit: 11,                                        null: false
-    t.integer  "cost_status_id", limit: 11,                                        null: false
-    t.string   "description",                                                      null: false
-    t.datetime "created_on",                                                       null: false
-    t.datetime "updated_on",                                                       null: false
+  create_table "costs", force: :cascade do |t|
+    t.decimal  "amount",                     precision: 10, scale: 2, default: 0.0, null: false
+    t.integer  "item_id",        limit: 11,                                         null: false
+    t.integer  "project_id",     limit: 11,                                         null: false
+    t.integer  "department_id",  limit: 11,                                         null: false
+    t.integer  "cost_status_id", limit: 11,                                         null: false
+    t.string   "description",    limit: 255,                                        null: false
+    t.datetime "created_on",                                                        null: false
+    t.datetime "updated_on",                                                        null: false
   end
 
-  create_table "deductions", force: true do |t|
+  create_table "deductions", force: :cascade do |t|
     t.datetime "created_on"
     t.datetime "updated_on"
     t.decimal  "service_PFA"
@@ -147,23 +147,23 @@ ActiveRecord::Schema.define(version: 20141221063618) do
     t.integer  "project_id"
   end
 
-  create_table "dicts", force: true do |t|
+  create_table "dicts", force: :cascade do |t|
     t.string "category", limit: 50
     t.string "code",     limit: 50
-    t.string "title"
+    t.string "title",    limit: 255
   end
 
-  create_table "expenses", force: true do |t|
-    t.string   "expense_category"
+  create_table "expenses", force: :cascade do |t|
+    t.string   "expense_category",   limit: 255
     t.decimal  "fee"
     t.integer  "project_id"
     t.date     "charge_date"
-    t.string   "state"
-    t.string   "desc",               default: ""
+    t.string   "state",              limit: 255
+    t.string   "desc",               limit: 255, default: ""
     t.integer  "period_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "billable",           default: true
+    t.boolean  "billable",                       default: true
     t.integer  "approved_by"
     t.integer  "user_id"
     t.datetime "created_on"
@@ -177,26 +177,26 @@ ActiveRecord::Schema.define(version: 20141221063618) do
     t.decimal  "report_binding"
     t.decimal  "cash_advance"
     t.decimal  "payment_on_be_half"
-    t.string   "memo"
+    t.string   "memo",               limit: 255
   end
 
-  create_table "incomes", force: true do |t|
-    t.integer  "item_id",        limit: 11,                                        null: false
-    t.integer  "project_id",     limit: 11,                                        null: false
-    t.integer  "department_id",  limit: 11,                                        null: false
-    t.decimal  "amount",                    precision: 10, scale: 2, default: 0.0, null: false
-    t.integer  "cost_status_id", limit: 11,                                        null: false
-    t.string   "description",                                                      null: false
-    t.datetime "created_on",                                                       null: false
-    t.datetime "updated_on",                                                       null: false
+  create_table "incomes", force: :cascade do |t|
+    t.integer  "item_id",        limit: 11,                                         null: false
+    t.integer  "project_id",     limit: 11,                                         null: false
+    t.integer  "department_id",  limit: 11,                                         null: false
+    t.decimal  "amount",                     precision: 10, scale: 2, default: 0.0, null: false
+    t.integer  "cost_status_id", limit: 11,                                         null: false
+    t.string   "description",    limit: 255,                                        null: false
+    t.datetime "created_on",                                                        null: false
+    t.datetime "updated_on",                                                        null: false
   end
 
-  create_table "industries", force: true do |t|
-    t.string "code",  limit: 50, default: "", null: false
-    t.string "title",            default: "", null: false
+  create_table "industries", force: :cascade do |t|
+    t.string "code",  limit: 50,  default: "", null: false
+    t.string "title", limit: 255, default: "", null: false
   end
 
-  create_table "initialfees", force: true do |t|
+  create_table "initialfees", force: :cascade do |t|
     t.datetime "created_on"
     t.datetime "updated_on"
     t.decimal  "service_fee"
@@ -216,27 +216,27 @@ ActiveRecord::Schema.define(version: 20141221063618) do
     t.decimal  "cash_advance"
   end
 
-  create_table "people", force: true do |t|
+  create_table "people", force: :cascade do |t|
     t.datetime "created_on"
     t.datetime "updated_on"
-    t.string   "chinese_name"
-    t.string   "english_name"
-    t.string   "employee_number"
+    t.string   "chinese_name",      limit: 255
+    t.string   "english_name",      limit: 255
+    t.string   "employee_number",   limit: 255
     t.integer  "department_id"
-    t.string   "grade"
+    t.string   "grade",             limit: 255
     t.decimal  "charge_rate"
     t.date     "employeement_date"
-    t.string   "address"
-    t.string   "postalcode"
-    t.string   "mobile"
-    t.string   "tel"
-    t.string   "extension"
+    t.string   "address",           limit: 255
+    t.string   "postalcode",        limit: 255
+    t.string   "mobile",            limit: 255
+    t.string   "tel",               limit: 255
+    t.string   "extension",         limit: 255
     t.integer  "gender_id"
     t.integer  "status_id"
     t.integer  "GMU_id"
   end
 
-  create_table "periods", force: true do |t|
+  create_table "periods", force: :cascade do |t|
     t.string   "number",        limit: 50, default: "0", null: false
     t.date     "starting_date",                          null: false
     t.date     "ending_date",                            null: false
@@ -244,17 +244,17 @@ ActiveRecord::Schema.define(version: 20141221063618) do
     t.integer  "work_hours",    limit: 11, default: 0
   end
 
-  create_table "personalcharges", force: true do |t|
-    t.datetime "created_on",                                      null: false
-    t.datetime "updated_on",                                      null: false
-    t.decimal  "hours",                       default: 0.0,       null: false
-    t.decimal  "service_fee",                 default: 0.0,       null: false
-    t.integer  "project_id",       limit: 11, default: 0,         null: false
-    t.integer  "period_id",        limit: 11, default: 0,         null: false
+  create_table "personalcharges", force: :cascade do |t|
+    t.datetime "created_on",                                       null: false
+    t.datetime "updated_on",                                       null: false
+    t.decimal  "hours",                        default: 0.0,       null: false
+    t.decimal  "service_fee",                  default: 0.0,       null: false
+    t.integer  "project_id",       limit: 11,  default: 0,         null: false
+    t.integer  "period_id",        limit: 11,  default: 0,         null: false
     t.text     "desc"
-    t.string   "state",                       default: "pending", null: false
+    t.string   "state",            limit: 255, default: "pending", null: false
     t.date     "charge_date"
-    t.decimal  "ot_hours",                    default: 0.0
+    t.decimal  "ot_hours",                     default: 0.0
     t.integer  "user_id"
     t.decimal  "reimbursement"
     t.decimal  "meal_allowance"
@@ -262,39 +262,39 @@ ActiveRecord::Schema.define(version: 20141221063618) do
     t.integer  "person_id"
   end
 
-  create_table "prj_expense_logs", force: true do |t|
+  create_table "prj_expense_logs", force: :cascade do |t|
     t.integer "prj_id",     limit: 11
     t.integer "expense_id", limit: 11
     t.integer "period_id",  limit: 11
-    t.string  "other"
+    t.string  "other",      limit: 255
   end
 
-  create_table "projects", force: true do |t|
-    t.datetime "created_on",                                            null: false
-    t.datetime "updated_on",                                            null: false
-    t.string   "contract_number",        limit: 50, default: ""
-    t.integer  "client_id",              limit: 11, default: 0,         null: false
-    t.integer  "GMU_id",                 limit: 11, default: 0,         null: false
-    t.integer  "service_id",             limit: 11, default: 0,         null: false
-    t.string   "job_code",               limit: 20, default: ""
-    t.string   "description",                       default: ""
+  create_table "projects", force: :cascade do |t|
+    t.datetime "created_on",                                             null: false
+    t.datetime "updated_on",                                             null: false
+    t.string   "contract_number",        limit: 50,  default: ""
+    t.integer  "client_id",              limit: 11,  default: 0,         null: false
+    t.integer  "GMU_id",                 limit: 11,  default: 0,         null: false
+    t.integer  "service_id",             limit: 11,  default: 0,         null: false
+    t.string   "job_code",               limit: 20,  default: ""
+    t.string   "description",            limit: 255, default: ""
     t.date     "starting_date"
     t.date     "ending_date"
-    t.decimal  "estimated_annual_fee",              default: 0.0,       null: false
+    t.decimal  "estimated_annual_fee",               default: 0.0,       null: false
     t.integer  "risk_id",                limit: 11
     t.integer  "manager_id",             limit: 11
-    t.decimal  "contracted_service_fee",            default: 0.0,       null: false
-    t.decimal  "estimated_commision",               default: 0.0,       null: false
-    t.decimal  "estimated_outsorcing",              default: 0.0,       null: false
-    t.decimal  "budgeted_service_fee",              default: 0.0,       null: false
-    t.integer  "service_PFA",            limit: 11, default: 0,         null: false
-    t.integer  "expense_PFA",            limit: 11, default: 0,         null: false
-    t.decimal  "contracted_expense",                default: 0.0,       null: false
-    t.decimal  "budgeted_expense",                  default: 0.0,       null: false
+    t.decimal  "contracted_service_fee",             default: 0.0,       null: false
+    t.decimal  "estimated_commision",                default: 0.0,       null: false
+    t.decimal  "estimated_outsorcing",               default: 0.0,       null: false
+    t.decimal  "budgeted_service_fee",               default: 0.0,       null: false
+    t.integer  "service_PFA",            limit: 11,  default: 0,         null: false
+    t.integer  "expense_PFA",            limit: 11,  default: 0,         null: false
+    t.decimal  "contracted_expense",                 default: 0.0,       null: false
+    t.decimal  "budgeted_expense",                   default: 0.0,       null: false
     t.integer  "PFA_reason_id",          limit: 11
-    t.integer  "revenue_id",             limit: 11, default: 0,         null: false
-    t.integer  "estimated_hours",        limit: 11, default: 0
-    t.string   "state",                             default: "pending", null: false
+    t.integer  "revenue_id",             limit: 11,  default: 0,         null: false
+    t.integer  "estimated_hours",        limit: 11,  default: 0
+    t.string   "state",                  limit: 255, default: "pending", null: false
     t.integer  "status_id"
     t.integer  "partner_id"
     t.integer  "referring_id"
@@ -302,7 +302,7 @@ ActiveRecord::Schema.define(version: 20141221063618) do
     t.integer  "billing_manager_id"
   end
 
-  create_table "receive_amounts", force: true do |t|
+  create_table "receive_amounts", force: :cascade do |t|
     t.datetime "created_on",                                                         null: false
     t.datetime "updated_on",                                                         null: false
     t.integer  "billing_id",     limit: 11,                           default: 0,    null: false
@@ -312,20 +312,20 @@ ActiveRecord::Schema.define(version: 20141221063618) do
     t.string   "job_code",       limit: 20
   end
 
-  create_table "ufafees", force: true do |t|
+  create_table "ufafees", force: :cascade do |t|
     t.datetime "created_on"
     t.datetime "updated_on"
-    t.string   "number"
+    t.string   "number",      limit: 255
     t.decimal  "amount"
     t.integer  "project_id"
-    t.string   "period_id"
+    t.string   "period_id",   limit: 255
     t.decimal  "service_UFA"
     t.decimal  "expense_UFA"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "login",                     limit: 40
     t.string   "name",                      limit: 100, default: ""
     t.string   "email",                     limit: 100
@@ -335,34 +335,36 @@ ActiveRecord::Schema.define(version: 20141221063618) do
     t.datetime "updated_at"
     t.string   "remember_token",            limit: 40
     t.datetime "remember_token_expires_at"
-    t.string   "roles",                                 default: "employee"
+    t.string   "roles",                     limit: 255, default: "employee"
     t.integer  "person_id",                 limit: 11
     t.datetime "remember_created_at"
-    t.string   "reset_password_token"
+    t.string   "reset_password_token",      limit: 255
     t.datetime "reset_password_sent_at"
     t.integer  "sign_in_count",                         default: 0,          null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.string   "english_name"
-    t.string   "employee_number"
+    t.string   "current_sign_in_ip",        limit: 255
+    t.string   "last_sign_in_ip",           limit: 255
+    t.string   "english_name",              limit: 255
+    t.string   "employee_number",           limit: 255
     t.integer  "department_id"
-    t.string   "position"
+    t.string   "position",                  limit: 255
     t.decimal  "charge_rate"
     t.date     "employment_date"
-    t.string   "address"
-    t.string   "postalcode"
-    t.string   "mobile"
-    t.string   "tel"
-    t.string   "extension"
-    t.string   "gender"
+    t.string   "address",                   limit: 255
+    t.string   "postalcode",                limit: 255
+    t.string   "mobile",                    limit: 255
+    t.string   "tel",                       limit: 255
+    t.string   "extension",                 limit: 255
+    t.string   "gender",                    limit: 255
     t.integer  "status_id"
     t.integer  "GMU_id"
-    t.string   "hashed_password"
-    t.string   "auth"
-    t.string   "other1"
-    t.string   "other2"
+    t.string   "hashed_password",           limit: 255
+    t.string   "auth",                      limit: 255
+    t.string   "other1",                    limit: 255
+    t.string   "other2",                    limit: 255
+    t.string   "status"
+    t.string   "department"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

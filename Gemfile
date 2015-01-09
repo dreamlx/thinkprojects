@@ -30,6 +30,8 @@ gem 'simple_form'
 gem 'country_select'
 gem "nested_form"
 gem 'ransack'
+gem "best_in_place"
+gem "jquery-ui-rails"
 
 gem 'bootstrap-sass'
 gem 'autoprefixer-rails'

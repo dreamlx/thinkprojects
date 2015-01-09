@@ -36,11 +36,14 @@ class ProjectsController < ApplicationController
   def update
     @project = Project.find(params[:id])
     
-    if @project.update_attributes(params[:project])        
-      @project.reset
-      redirect_to @project, notice: 'Project was successfully updated.'
-    else
-      render "edit"
+    respond_to do |format|
+      if @project.update(project_params)
+        format.html { redirect_to(@project, :notice => 'Project was successfully updated.') }
+        format.json { respond_with_bip(@project) }
+      else
+        format.html { render :action => "edit" }
+        format.json { respond_with_bip(@project) }
+      end
     end
   end
 
