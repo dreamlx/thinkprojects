@@ -1,0 +1,25 @@
+<tr>
+	<td><%= project.id %></td>
+	<td><%= project.job_code%></td>
+	<td><%= project.created_on.to_date %></td>
+	<td><%= project.client.english_name if project.client %></td>
+	<td><%= project.manager.english_name if project.manager %></td>
+	<td><%= truncate(project.description, length: 10) %></td>
+	<td><%= project.state.humanize %></td>
+	<td><%= link_to t('show'), project %></td>
+	<td><%= link_to t('edit'), edit_project_path(project) %></td>
+	<td>
+		<%= button_to t('approval'), approval_project_path(project), confirm: t('are_you_sure') %>
+		<%= button_to t('disapproval'), disapproval_project_path(project), confirm: t('are_you_sure') %>
+		<%= button_to t('close'), close_project_path(project),  confirm: t('are_you_sure') %>
+		<% if project.state =="closed" and current_user.roles == 'providence_breaker' %>
+			<%= button_to t('reopen'), close_project_path(project), confirm: t('are_you_sure') %>
+		<% end %>
+		<% if project.state =="approved" and  !Dict.get_forward(project.job_code).empty? %>
+			<%= select("","select_zy_id",Project.where(state: 'approved').order("job_code").collect {|p| [ p.job_code, p.id ] }, { :include_blank => "Transfer to:" },{ :onChange=>"switch_form(this.value,'#{transform_project_path(project)}',#{project.id}); " })  %>
+		<% end %>
+		<% if current_user.roles == 'providence_breaker' and project.state =="pending" %>
+			<%= button_to t('destroy'), project, confirm: t('are_you_sure'), method: :delete %>
+		<% end %>
+	</td>
+</tr>

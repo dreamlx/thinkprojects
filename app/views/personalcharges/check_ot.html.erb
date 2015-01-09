@@ -1,0 +1,21 @@
+<table class="table table-bordered">
+  <tr>
+    <th>epmloyee</th>
+    <th>personalcharge hours</th> 
+    <th>work hours </th>
+    <th>OT</th>
+  </tr>
+  <% @users.each do|user| %>
+    <% sum_personalcharge = Personalcharge.sum("hours",:conditions=>"period_id =#{@period.id} and user_id = #{user.id}") %>
+    <% if sum_personalcharge > @period_hours.to_f %>
+      <tr>
+        <td><%= user.english_name %></td>
+        <td><%= sum_personalcharge %></td>
+        <td><%= @period_hours.to_f %></td>
+        <td><%= "#{sum_personalcharge} - #{@period_hours.to_f}" %></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
+
+<%= link_to t('back'), personalcharges_path %>

@@ -1,0 +1,6 @@
+<h1><%= "#{t('edit')}#{t('personalcharge')}" %></h1>
+<%= render 'form' %>
+<div class="col-md-12">
+  <%= link_to t('show'), personalcharge_path(@personalcharge) %> |
+  <%= link_to t('back'), personalcharges_path %>
+</div>

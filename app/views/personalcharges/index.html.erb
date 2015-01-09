@@ -1,45 +1,53 @@
-<% form_for(:personalcharge, :url => personalcharges_path, :html => { :method => :get }) do |f| %>
-  <%= render :partial => "search" %>
-<% end %>
-<%= link_to 'Export data', :controller=>"reports", :action => "personalcharges_export"  %>||
-<%= link_to 'New TimeCost', :action => 'new', :id=>params[:id], :person_id => params[:person_id]  %>
+<div class="row">
+  <div class="col-md-9">
+    <%= render "search" %>
+  </div>
+  <div class="col-md-3">
+    <div class="btn-group" role="group" aria-label="...">
+      <%= link_to t('new_personalcharge'), new_personalcharge_path, class: 'btn btn-danger'  %>
+      <%= link_to t('export_data'), personalcharges_path(format: 'xls'), class: 'btn btn-default'  %>
+    </div>
+  </div>
+</div>
 
-<form name="myform" action="personalcharges/batch_actions" method="post">
-  <%= render :partial => 'homepage/all_op' %>
-  <table>
-    <tr>
-      <!--th>ID</th-->
-    	<th>Employee name</th>  
-		<th>Period</th>
-      <th>Charge date</th>
-      <th width="75px">Job code</th>
-      <th>Hours</th>
-      <th>Including OT hours</th>
-      <th>Description</th>
-      <th>State</th>
-      <th colspan="4">OP</th>
-    </tr>
-<% sum_current_person_daily_hours = 0%>
-    <% for personalcharge in @personalcharges %>
-
-		<% @warn_color = warn_ot_hours(personalcharge,@personalcharges) %>
-      <%= render :partial => 'item', :locals => {
-        :personalcharge => personalcharge, :warn_color => @warn_color
-      } unless personalcharge.project.nil?%>
-
-    <%end%>
-
-  </table>
-
-</form><label id="spinner" style="display:none;">please waiting...</label>
-<%= button_to_remote "Get OverTime",
-:url=> {:action=> "get_ot",:approved_personalcharges=> @approved_personalcharges, :effective_hours => @effective_hours}, :method =>:post,
-:update => "the-ot",
-:before=>visual_effect(:appear,'spinner',:duration =>0.5),
-:complete=>"$('spinner').hide();"
- %>
-
-<div id="the-ot"></div>
+<table  class="table table-striped">
+  <tr>
+  	<th><%= sort_link(@q, :user_id, t('user'))  %></th>  
+	  <th><%= sort_link(@q, :period_id, t('period')) %></th>
+    <th><%= sort_link(@q, :charge_date, t('charge_date')) %></th>
+    <th><%= sort_link(@q, :project_id, t('job_code')) %></th>
+    <th><%= sort_link(@q, :hours, t('hours')) %></th>
+    <th><%= sort_link(@q, :ot_hours, t('including_ot_hours')) %></th>
+    <th><%= sort_link(@q, :description, t('desc')) %></th>
+    <th><%= sort_link(@q, :state, t('state')) %></th>
+    <th colspan="4"><%= t('operations') %></th>
+  </tr>
+  <%= render @personalcharges %>
+</table>
 
 <%= will_paginate @personalcharges %>
-<br />
+
+<div>
+  <h3>check&amp; auto insert Self study</h3>
+  <p>This action will check all working hours and auto project by self study hours</p>
+  <%= simple_form_for(:project_period, url: auto_complete_hours_personalcharges_path, :html => {method: :get, class: 'form-inline' }) do |f| %>
+    <%= f.input :period_id, 
+                collection: Period.order("number desc"),
+                required: false %>
+    <%= f.input :prj_id, collection: Project.all,
+                required: false %>
+    <%= f.input :period_hours,
+                required: false %>
+    <%= f.button :submit, '提交' %>
+  <% end %>
+</div>
+<hr/>
+<div>
+  <h3>check OT</h3>
+  <%= form_for(:admin, :url => check_ot_personalcharges_path, :html => { :method => :get }) do |f| %>
+    Period:<%= select("", "period_id",
+      Period.all.order("number desc").collect {|p| [ p.number, p.id ] }, { :include_blank => false }) %>
+    Period hours: <%= text_field_tag "period_hours","0" %>
+    <%= submit_tag '提交' %>
+  <% end %>
+</div>

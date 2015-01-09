@@ -1,8 +1,9 @@
-<% for column in Dict.content_columns %>
-<p>
-  <b><%= column.human_name %>:</b> <%=h @dict.send(column.name) %>
-</p>
+<% Dict.content_columns.each do |column| %>
+  <p>
+    <b><%= t(column.name) %>:</b>
+    <%= @dict.send(column.name) %>
+  </p>
 <% end %>
 
-<%= link_to 'Edit', edit_dict_path(@dict) %>
-<%= link_to 'Back', dicts_path %>
+<%= link_to t('edit'), edit_dict_path(@dict) %> ||
+<%= link_to t('back'), dicts_path %>

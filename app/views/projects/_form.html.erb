@@ -1,0 +1,38 @@
+<%= simple_form_for(@project) do |f| %>
+  <div class="col-md-3">
+    <%= f.input :client_id, collection: Client.selected_clients %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :GMU_id,    collection: Dict.selected_gmus %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :service_id, collection: Dict.selected_service_codes %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :estimated_annual_fee %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :starting_date %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :ending_date %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :estimated_hours %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :budgeted_service_fee %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :budgeted_expense %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :manager_id, collection: User.selected_users %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :description %><br>
+  </div>
+  <div class="col-md-12">
+    <%= f.button :submit %>
+  </div>
+<% end %>

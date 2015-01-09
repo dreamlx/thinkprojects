@@ -1,0 +1,74 @@
+<p>
+  <strong><%= t('job_code') %></strong><br>
+  <%= @project.job_code %>
+</p>
+<p>
+  <strong><%= t('desc') %></strong><br>
+  <%= @project.description ||"--"%>
+</p>
+<p>
+  <strong><%= t('starting_date') %></strong><br>
+  <%= @project.starting_date %>
+</p>
+<p>
+  <strong><%= t('ending_date') %></strong><br>
+  <%= @project.ending_date %>
+</p>
+<p>
+  <strong><%= t('estimated_annual_fee') %></strong><br>
+  <%= @project.estimated_annual_fee||0 %>
+</p>
+<p>
+  <strong><%= t('estimated_hours') %></strong><br>
+  <%= @project.estimated_hours ||0%>
+</p>
+<p>
+  <strong><%= t('budgeted_service_fee') %></strong><br>
+  <%= @project.budgeted_service_fee ||""%>
+</p>
+<p>
+  <strong><%= t('budgeted_expense') %></strong><br>
+  <%= @project.budgeted_expense ||""%>
+</p>
+
+<% if @project.state == "pending" or @project.state == "disapproved" %>
+  <%= link_to t('edit'), edit_project_path(@project) %> |
+<% end %>
+<%= link_to t('back'), projects_path %>
+<hr>
+
+<!-- bookings -->
+<% if current_user.id == @project.manager_id ||
+      current_user.roles == 'providence_breaker' || 
+      current_user.roles == 'hr_admin' %>
+  <div>
+    <% if @project.state !="closed" %>
+      <!-- new booking -->
+      <%= simple_form_for([@project, @booking]) do |f|%>
+        <%  @booking.project_id = @project.id %>
+        <%= f.input :user_id, collection: User.selected_users %>
+        <%= f.input :hours %>
+        <%= f.button :submit %>
+      <% end  %>
+      <!-- end of new booking -->
+    <% end  %>
+    <%= button_to t('book_all'), bookall_project_bookings_path(project_id: @project), confirm: t('are_you_sure_to_book_all_employee') %>
+    <!-- bookings list -->
+    <table class="table table-bordered">
+      <tr>
+        <th><%= t('user') %></th>
+        <th><%= t('charge_rate') %></th>
+        <th><%= t('hours') %></th>
+        <th><%= t('operations') %></th>
+      </tr>
+      <%= render @project.bookings %>
+    </table>
+  </div>
+<% end  %>
+<hr>
+<!-- comments -->
+<h3><%= t('disapproved_desc') %></h3>
+<% @project.comments.each do |comment| %>
+  <%# <%= comment.user.english_name + " " + comment.comment + ' at ' + comment.created_at.to_s %></p>%> 
+  <%= "#{comment.user.english_name} #{comment.comment} at #{comment.created_at.to_s}" %></p>
+<% end %>

@@ -1,0 +1,9 @@
+<% for column in PrjExpenseLog.content_columns %>
+<p>
+  <b><%= column.human_name %>:</b> 
+  <%=h @prj_expense_log.send(column.name) %>
+</p>
+<% end %>
+
+<%= link_to t('edit'), edit_prj_expense_log_path(@prj_expense_log) %> |
+<%= link_to t('back'), prj_expense_logs_path %>

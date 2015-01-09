@@ -1,6 +1,6 @@
 class Booking < ActiveRecord::Base
-  validates_uniqueness_of :person_id, :scope =>"project_id"
-  belongs_to :project
-  belongs_to :person
-
+  validates   :user_id, uniqueness: {scope: :project_id}
+  belongs_to  :project
+  belongs_to  :user
+  # attr_accessible :user_id, :hours, :project_id
 end

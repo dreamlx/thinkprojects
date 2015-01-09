@@ -1,227 +1,65 @@
 <p>
   <b>Id:</b>
-  <%=h @client.id %>
+  <%= @client.id %>
 </p>
 <p>
-<table>
-  <tr>
-    <td><b>client code</b></td>
-    <td><%=@client.client_code%></td>
-  </tr>
-
-  <tr>
-    <td><b>chinese name</b></td>
-    <td><%=@client.chinese_name%></td>
-  </tr>
-
-  <tr>
-    <td><b>English name</b></td>
-    <td><%=@client.english_name%></td>
-  </tr>
-
-  <tr>
-    <td><b>Account Owner</b></td>
-    <td><%=@client.person.english_name unless @client.person.nil? %></td>
-  </tr>
-
-  <tr><td colspan=2><hr></td></tr>
-
-  <tr>
-    <td><b>Contact Person 1</b></td>
-    <td><%=@client.person1%></td>
-  </tr>
-
-  <tr>
-    <td><b>Title</b></td>
-    <td><%=@client.title_1%></td>
-  </tr>
-
-  <tr>
-    <td><b>Gender</b></td>
-    <td><%=@client.gender1.title%></td>
-  </tr>
-
-  <tr>
-    <td><b>Mobile</b></td>
-    <td><%=@client.mobile_1%></td>
-  </tr>
-
-  <tr>
-    <td><b>Tel</b></td>
-    <td><%=@client.tel_1%></td>
-  </tr>
-
-  <tr>
-    <td><b>Fax</b></td>
-    <td><%=@client.fax_1%></td>
-  </tr>
-
-  <tr>
-    <td><b>Email</b></td>
-    <td><%=@client.email_1%></td>
-  </tr>
+  <table class="table table-bordered">
+    <tr>
+      <td><b><%= t('client_code') %></b></td>
+      <td><%=@client.client_code%></td>
+    </tr>
 
     <tr>
-    <td><b>Address1</b></td>
-    <td><%=@client.address_1%></td>
-  </tr>
+      <td><b><%= t('chinese_name') %></b></td>
+      <td><%= @client.chinese_name %></td>
+    </tr>
 
-  <tr>
-    <td><b>City1</b></td>
-    <td><%=@client.city_1%></td>
-  </tr>
+    <tr>
+      <td><b><%= t('english_name') %></b></td>
+      <td><%= @client.english_name %></td>
+    </tr>
 
-  <tr>
-    <td><b>state1</b></td>
-    <td><%=@client.state_1%></td>
-  </tr>
+    <tr>
+      <td><b><%= t('account_owner') %></b></td>
+      <td><%= @client.user.english_name if @client.user %></td>
+    </tr>
 
-  <tr>
-    <td><b>Country1</b></td>
-    <td><%=@client.country_1%></td>
-  </tr>
-  <tr>
-    <td><b>Postalcode1</b></td>
-    <td><%=@client.postalcode_1%></td>
-  </tr>
-<!--=====================person 2====================-->
-  <tr><td colspan=2><hr></td></tr>
+    <tr>
+      <th colspan=2><%= t('contacts') %></th>
+    </tr>
+    <%= render @client.contacts %>
 
-  <tr>
-    <td><b>Contact Person 2</b></td>
-    <td><%=@client.person2%></td>
-  </tr>
+    <tr>
+      <th colspan=2><%= t('general_info') %></th>
+    </tr>
 
-  <tr>
-    <td><b>Title</b></td>
-    <td><%=@client.title_2%></td>
-  </tr>
+    <tr>
+      <td><b><%= t('client_category') %></b></td>
+      <td><%= @client.category.title %></td>
+    </tr>
 
-  <tr>
-    <td><b>Gender</b></td>
-    <td><%=@client.gender2.title%></td>
-  </tr>
+    <tr>
+      <td><b><%= t('client_status') %></b></td>
+      <td><%= @client.status.title %></td>
+    </tr>
 
-  <tr>
-    <td><b>Mobile</b></td>
-    <td><%=@client.mobile_2%></td>
-  </tr>
+    <tr>
+      <td><b><%= t('client_region') %></b></td>
+      <td><%= @client.region.title %></td>
+    </tr>
 
-  <tr>
-    <td><b>Tel</b></td>
-    <td><%=@client.tel_2%></td>
-  </tr>
+    <tr>
+      <td><b><%= t('client_industry') %></b></td>
+      <td><%= @client.industry.title if @client.industry %></td>
+    </tr>
 
-  <tr>
-    <td><b>Fax</b></td>
-    <td><%=@client.fax_2%></td>
-  </tr>
+    <tr>
+      <td><b><%= t('last_modified') %></b></td>
+      <td><%= @client.updated_on %></td>
+    </tr>
 
-  <tr>
-    <td><b>Email</b></td>
-    <td><%=@client.email_2%></td>
-  </tr>
-  <tr>
-    <td><b>Address2</b></td>
-    <td><%=@client.address_2%></td>
-  </tr>
-
-  <tr>
-    <td><b>City2</b></td>
-    <td><%=@client.city_2%></td>
-  </tr>
-
-  <tr>
-    <td><b>state2</b></td>
-    <td><%=@client.state_2%></td>
-  </tr>
-
-  <tr>
-    <td><b>Country2</b></td>
-    <td><%=@client.country_2%></td>
-  </tr>
-  <tr>
-    <td><b>Postalcode2</b></td>
-    <td><%=@client.postalcode_2%></td>
-  </tr>
-
-<!--=====================person 3====================-->
-  <tr><td colspan=2><hr></td></tr>
-
-  <tr>
-    <td><b>Contact Person 3</b></td>
-    <td><%=@client.person3%></td>
-  </tr>
-
-  <tr>
-    <td><b>Title</b></td>
-    <td><%=@client.title_3%></td>
-  </tr>
-
-  <tr>
-    <td><b>Gender</b></td>
-    <td><%=@client.gender3.title%></td>
-  </tr>
-
-  <tr>
-    <td><b>Mobile</b></td>
-    <td><%=@client.mobile_3%></td>
-  </tr>
-
-  <tr>
-    <td><b>Tel</b></td>
-    <td><%=@client.tel_3%></td>
-  </tr>
-
-  <tr>
-    <td><b>Fax</b></td>
-    <td><%=@client.fax_3%></td>
-  </tr>
-
-  <tr>
-    <td><b>Email</b></td>
-    <td><%=@client.email_3%></td>
-  </tr>
-
-  <tr><td colspan=2><hr></td></tr>
-
-  <tr>
-    <th colspan=2>General Information</th>
-  </tr>
-
-  <tr>
-    <td><b>Client category</b></td>
-    <td><%=@client.category.title%></td>
-  </tr>
-
-  <tr>
-    <td><b>Client status</b></td>
-    <td><%=@client.status.title%></td>
-  </tr>
-
-  <tr>
-    <td><b>Client Region of origin</b></td>
-    <td><%=@client.region.title%></td>
-  </tr>
-
-  <tr>
-    <td><b>Industry</b></td>
-    <td><%=@client.industry.title%></td>
-  </tr>
-
-  <tr>
-    <td><b>Client code</b></td>
-    <td><%=@client.client_code%></td>
-  </tr>
-
-  <tr>
-    <td><b>Last modiffied</b></td>
-    <td><%=@client.updated_on%></td>
-  </tr>
-
-</table>
+  </table>
 </p>
 
-
-<%= link_to 'Edit', edit_client_path(@client) %> |
-<%= link_to 'Back', clients_path %>
+<%= link_to t('edit'), edit_client_path(@client) %> |
+<%= link_to t('back'), clients_path %>

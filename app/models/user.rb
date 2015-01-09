@@ -1,56 +1,20 @@
+#coding: utf-8
 require 'digest/sha1'
-
 class User < ActiveRecord::Base
-  include Authentication
-  include Authentication::ByPassword
-  include Authentication::ByCookieToken
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :encryptable, :encryptor => :restful_authentication_sha1
 
-  validates_presence_of     :login
-  validates_length_of       :login,    :within => 3..40
-  validates_uniqueness_of   :login
-  validates_format_of       :login,    :with => Authentication.login_regex, :message => Authentication.bad_login_message
+  scope :workings, -> { where.not(status: 'resigned')}
+  has_many  :clients
+  has_many  :expenses
+  has_many  :bookings
+  has_many  :personalcharges
+  has_many  :projects, through: :bookings
 
-  validates_format_of       :name,     :with => Authentication.name_regex,  :message => Authentication.bad_name_message, :allow_nil => true
-  validates_length_of       :name,     :maximum => 100
-
-  validates_presence_of     :email
-  validates_length_of       :email,    :within => 6..100 #r@a.wk
-  validates_uniqueness_of   :email
-  validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
-
-  has_one :person
-  
-
-  # HACK HACK HACK -- how to do attr_accessible from here?
-  # prevents a user from submitting a crafted form that bypasses activation
-  # anything else you want your user to change should be added here.
-
-attr_accessible :login, :email, :name, :password, :password_confirmation,:roles, :person_id
-
-
-
-  # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
-  #
-  # uff.  this is really an authorization, not authentication routine.  
-  # We really need a Dispatch Chain here or something.
-  # This will also let us return a human error message.
-  #
-  def self.authenticate(login, password)
-    return nil if login.blank? || password.blank?
-    u = find_by_login(login.downcase) # need to get the salt
-    u && u.authenticated?(password) ? u : nil
+  def self.selected_roles
+    [['staff','staff'],['senior','senior'],['manager','manager'],['partner','partner'],['hr_admin','hr_admin'],['超级管理员','providence_breaker']]
   end
 
-  def login=(value)
-    write_attribute :login, (value ? value.downcase : nil)
+  def self.selected_users
+    order("english_name").map {|p| [ "#{p.english_name} || #{p.employee_number}", p.id ]}
   end
-
-  def email=(value)
-    write_attribute :email, (value ? value.downcase : nil)
-  end
-
-   def role_symbols
-    @role_symbols ||= (roles || []).map {|r| r.to_sym}
- end
-
 end

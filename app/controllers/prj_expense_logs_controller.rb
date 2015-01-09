@@ -1,15 +1,8 @@
 class PrjExpenseLogsController < ApplicationController
+  load_and_authorize_resource
   def index
-    list
-    render :action => 'list'
-  end
-
-  # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
-  verify :method => :post, :only => [ :destroy, :create, :update ],
-         :redirect_to => { :action => :list }
-
-  def list
-    @prj_expense_logs  = PrjExpenseLog.paginate :page => params[:page], :per_page => 10
+    @q = PrjExpenseLog.search(params[:q])
+    @prj_expense_logs  = @q.result.paginate(page: params[:page])
   end
 
   def show
@@ -21,12 +14,12 @@ class PrjExpenseLogsController < ApplicationController
   end
 
   def create
-    @prj_expense_log = PrjExpenseLog.new(params[:prj_expense_log])
+    # @prj_expense_log = PrjExpenseLog.new(params[:prj_expense_log])
+    @prj_expense_log = PrjExpenseLog.new(prj_expense_log_params)
     if @prj_expense_log.save
-      flash[:notice] = 'PrjExpenseLog was successfully created.'
-      redirect_to :action => 'list'
+      redirect_to @prj_expense_log, notice: 'PrjExpenseLog was successfully created.'
     else
-      render :action => 'new'
+      render 'new'
     end
   end
 
@@ -36,16 +29,21 @@ class PrjExpenseLogsController < ApplicationController
 
   def update
     @prj_expense_log = PrjExpenseLog.find(params[:id])
-    if @prj_expense_log.update_attributes(params[:prj_expense_log])
-      flash[:notice] = 'PrjExpenseLog was successfully updated.'
-      redirect_to :action => 'show', :id => @prj_expense_log
+    # if @prj_expense_log.update_attributes(params[:prj_expense_log])
+    if @prj_expense_log.update_attributes(prj_expense_log_params)
+      redirect_to @prj_expense_log, notice: 'PrjExpenseLog was successfully updated.'
     else
-      render :action => 'edit'
+      render 'edit'
     end
   end
 
   def destroy
     PrjExpenseLog.find(params[:id]).destroy
-    redirect_to :action => 'list'
+    redirect_to prj_expense_logs_path
   end
+
+  private
+    def prj_expense_log_params
+      params.require(:prj_expense_log).permit(:other)
+    end
 end

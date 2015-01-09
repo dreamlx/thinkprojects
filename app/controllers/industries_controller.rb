@@ -1,12 +1,8 @@
 class IndustriesController < ApplicationController
+  load_and_authorize_resource
   def index
-    list
-    render :action => 'list'
-  end
-
-
-  def list
-    @industries  = Industry.paginate :page => params[:page], :per_page => 10
+    @q = Industry.search(params[:q])
+    @industries  = @q.result.paginate :page => params[:page]
   end
 
   def show
@@ -18,12 +14,11 @@ class IndustriesController < ApplicationController
   end
 
   def create
-    @industry = Industry.new(params[:industry])
+    @industry = Industry.new(industry_params)
     if @industry.save
-      flash[:notice] = 'Industry was successfully created.'
-      redirect_to :action => 'list'
+      redirect_to industries_path, notice: 'Industry was successfully created.'
     else
-      render :action => 'new'
+      render 'new'
     end
   end
 
@@ -33,16 +28,20 @@ class IndustriesController < ApplicationController
 
   def update
     @industry = Industry.find(params[:id])
-    if @industry.update_attributes(params[:industry])
-      flash[:notice] = 'Industry was successfully updated.'
-      redirect_to :action => 'show', :id => @industry
+    if @industry.update_attributes(industry_params)
+      redirect_to @industry, notice: 'Industry was successfully updated.'
     else
-      render :action => 'edit'
+      render 'edit'
     end
   end
 
   def destroy
     Industry.find(params[:id]).destroy
-    redirect_to :action => 'list'
+    redirect_to industries_path
   end
+
+  private
+    def industry_params
+      params.require(:industry).permit(:code, :title)
+    end
 end

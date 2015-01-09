@@ -1,230 +1,36 @@
-  <%= f.error_messages %>
-<p><h>Contact Information</h><p>
-  <hr>
-  <p><b>Client code</b><br>
-  <input id=" client_client_code" name="client[client_code]" size="50"
-         type="text" value="<%= @client.client_code %>" />
-  </p>
-  <p><b>Chinese name</b><br>
-  <input id=" client_chinese_name" name="client[chinese_name]" size="50"
-         type="text" value="<%= @client.chinese_name %>" />
-  </p>
-  <p><b>English name</b><br>
-  <input id=" client_english_name" name="client[english_name]" size="50"
-         type="text" value="<%= @client.english_name %>" />
-  </p>
+<%= simple_nested_form_for(@client) do |f| %>
+  <h2><%= t('client_info') %></h2>
+  <div class="col-md-3">
+    <%= f.input :client_code %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :chinese_name %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :english_name %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :user_id,     collection: User.selected_users %>
+  </div>
 
-  <p>
-  <b>Account Owner:</b><br>
-   <select name="client[person_id]">
-    <% @account_owners.each do |person| %>
-       <option value="<%= person.id %>"
-         <%= ' selected' if person.id == @client.person_id %>>
-         <%=person.english_name+"--"+person.employee_number %>
-       </option>
-    <% end %>
-   </select>
-  </p>
-<!---------------------------------------------------------------------------------->
-  <hr>
-  <p><b>Contact person1</b><br>
-  <input id=" client_person1" name="client[person1]" size="50"
-         type="text" value="<%= @client.person1 %>" />
-  </p>
-  <p><b>Title</b><br>
-  <input id=" client_title_1" name="client[title_1]" size="50"
-         type="text" value="<%= @client.title_1 %>" />
-  </p>
-  <p><b>Mobile_1</b><br>
-  <input id=" client_mobile_1" name="client[mobile_1]" size="50"
-         type="text" value="<%= @client.mobile_1 %>" />
-  </p>
-  <p><b>Tel_1</b><br>
-  <input id=" client_tel_1" name="client[tel_1]" size="50"
-         type="text" value="<%= @client.tel_1 %>" />
-  </p>
-  <p><b>Fax_1</b><br>
-  <input id=" client_fax_1" name="client[fax_1]" size="50"
-         type="text" value="<%= @client.fax_1 %>" />
-  </p>
-  <p><b>Email_1</b><br>
-  <input id=" client_email_1" name="client[email_1]" size="50"
-         type="text" value="<%= @client.email_1 %>" />
-  </p>
-  <p>
-  <b>Gender:</b><br>
-   <select name="client[gender1_id]">
-    <% @gender.each do |dict| %>
-       <option value="<%= dict.id %>"
-         <%= ' selected' if dict.id == @client.gender1_id %>>
-         <%=dict.title.capitalize %>
-       </option>
-    <% end %>
-   </select>
-  </p>
-  <p><b>Address</b><br>
-  <input id=" client_address_1" name="client[address_1]" size="50"
-         type="text" value="<%= @client.address_1 %>" />
-  </p>
-  <p><b>City</b><br>
-  <input id=" client_city_1" name="client[city_1]" size="50"
-         type="text" value="<%= @client.city_1 %>" />
-  </p>
-  <p><b>State</b><br>
-  <input id=" client_state_1" name="client[state_1]" size="50"
-         type="text" value="<%= @client.state_1 %>" />
-  </p>
-   <p><b>Country</b><br>
-  <input id=" client_country_1" name="client[country_1]" size="50"
-         type="text" value="<%= @client.country_1 %>" />
-  </p>
-   <p><b>Postalcode</b><br>
-  <input id=" client_postalcode_1" name="client[postalcode_1]" size="50"
-         type="text" value="<%= @client.postalcode_1 %>" />
-  </p>
-<!---------------------------------------------------------------------------------->
-  <hr>
-  <p><b>Contact person2</b><br>
-  <input id=" client_person2" name="client[person2]" size="50"
-         type="text" value="<%= @client.person2 %>" />
-  </p>
-  <p><b>Title2</b><br>
-  <input id=" client_title_2" name="client[title_2]" size="50"
-         type="text" value="<%= @client.title_2 %>" />
-  </p>
-  <p><b>Mobile_2</b><br>
-  <input id=" client_mobile_2" name="client[mobile_2]" size="50"
-         type="text" value="<%= @client.mobile_2 %>" />
-  </p>
-  <p><b>Tel_2</b><br>
-  <input id=" client_tel_2" name="client[tel_2]" size="50"
-         type="text" value="<%= @client.tel_2 %>" />
-  </p>
-  <p><b>fax_2</b><br>
-  <input id=" client_fax_2" name="client[fax_2]" size="50"
-         type="text" value="<%= @client.fax_2 %>" />
-  </p>
-  <p><b>Email_2</b><br>
-  <input id=" client_email_2" name="client[email_2]" size="50"
-         type="text" value="<%= @client.email_2 %>" />
-  </p>
-  <p>
-  <b>Gender:</b><br>
-   <select name="client[gender2_id]">
-    <% @gender.each do |dict| %>
-       <option value="<%= dict.id %>"
-         <%= ' selected' if dict.id == @client.gender2_id %>>
-         <%=dict.title.capitalize %>
-       </option>
-    <% end %>
-   </select>
-  </p>
-
-  <p><b>Address</b><br>
-  <input id=" client_address_2" name="client[address_2]" size="50"
-         type="text" value="<%= @client.address_2 %>" />
-  </p>
-  <p><b>City</b><br>
-  <input id=" client_city_2" name="client[city_2]" size="50"
-         type="text" value="<%= @client.city_2 %>" />
-  </p>
-  <p><b>State</b><br>
-  <input id=" client_state_2" name="client[state_2]" size="50"
-         type="text" value="<%= @client.state_2 %>" />
-  </p>
-  <p><b>Country</b><br>
-  <input id=" client_country_2" name="client[country_2]" size="50"
-         type="text" value="<%= @client.country_2 %>" />
-  </p>
-  <p><b>Postalcode</b><br>
-  <input id=" client_postalcode_2" name="client[postalcode_2]" size="50"
-         type="text" value="<%= @client.postalcode_2 %>" />
-  </p>
-  <!------------------------>
-    <hr>
-  <p><b>Contact person3</b><br>
-  <input id=" client_person3" name="client[person3]" size="50"
-         type="text" value="<%= @client.person3 %>" />
-  </p>
-  <p><b>Title3</b><br>
-  <input id=" client_title_3" name="client[title_3]" size="50"
-         type="text" value="<%= @client.title_3 %>" />
-  </p>
-  <p><b>Mobile_3</b><br>
-  <input id=" client_mobile_3" name="client[mobile_3]" size="50"
-         type="text" value="<%= @client.mobile_3 %>" />
-  </p>
-  <p><b>Tel_3</b><br>
-  <input id=" client_tel_3" name="client[tel_3]" size="50"
-         type="text" value="<%= @client.tel_3 %>" />
-  </p>
-  <p><b>Fax_3</b><br>
-  <input id=" client_fax_3" name="client[fax_3]" size="50"
-         type="text" value="<%= @client.fax_3 %>" />
-  </p>
-  <p><b>email_3</b><br>
-  <input id=" client_email_3" name="client[email_3]" size="50"
-         type="text" value="<%= @client.email_3 %>" />
-  </p>
-  <p>
-  <b>Gender:</b><br>
-   <select name="client[gender3_id]">
-    <% @gender.each do |dict| %>
-       <option value="<%= dict.id %>"
-         <%= ' selected' if dict.id == @client.gender3_id %>>
-         <%=dict.title.capitalize %>
-       </option>
-    <% end %>
-   </select>
-  </p>
-
-  <!------------------------>
-  <hr>
-  <p><h>General Informaiton</h></p>
-  <p>
-  <b>Industry:</b><br>
-   <select name="client[industry_id]">
-    <% @industries.each do |industry| %>
-       <option value="<%= industry.id %>"
-         <%= ' selected' if industry.id == @client.industry_id %>>
-         <%=industry.code+"||"+industry.title %>
-       </option>
-    <% end %>
-   </select>
-  </p>
-
-  <p>
-  <b>Category:</b><br>
-   <select name="client[category_id]">
-    <% @categories.each do |dict| %>
-       <option value="<%= dict.id %>"
-         <%= ' selected' if dict.id == @client.category_id %>>
-         <%=dict.code+" "+dict.title %>
-       </option>
-    <% end %>
-   </select>
-  </p>
-
-   <p>
-  <b>Status:</b><br>
-   <select name="client[status_id]">
-    <% @statuses.each do |dict| %>
-       <option value="<%= dict.id %>"
-         <%= ' selected' if dict.id == @client.status_id %>>
-         <%=dict.code+" "+dict.title %>
-       </option>
-    <% end %>
-   </select>
-  </p>
-
-  <p>
-  <b>Region:</b><br>
-   <select name="client[region_id]">
-    <% @regions.each do |dict| %>
-       <option value="<%= dict.id %>"
-         <%= ' selected' if dict.id == @client.region_id %>>
-         <%=dict.code+" "+dict.title %>
-       </option>
-    <% end %>
-   </select>
-  </p>
+  <h2><%= t('contacts') %></h2>
+  <%= f.fields_for :contacts %>
+  <p><%= f.link_to_add t('add_a_contact'), :contacts %></p>
+  
+  <h2><%= t('general_info') %></h2>
+  <div class="col-md-3">
+    <%= f.input :industry_id, collection: Industry.selected_industries %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :category_id, collection: Dict.selected_categories %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :status_id,   collection: Dict.selected_statuses %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :region_id,   collection: Dict.selected_regions %>
+  </div>
+  <div class="col-md-12">
+    <%= f.button :submit %>
+  </div>
+<% end %>

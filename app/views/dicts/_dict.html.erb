@@ -1,0 +1,8 @@
+<tr>
+  <% Dict.content_columns.each do |column| %>
+    <td><%=h dict.send(column.name).humanize if dict.send(column.name) %></td>
+  <% end %>
+  <td><%= link_to t('show'), dict %></td>
+  <td><%= link_to t('edit'), edit_dict_path(dict) %></td>
+  <td><%= link_to t('destroy'), dict, confirm: t('are_you_sure'), method: :deletee %></td>
+</tr>

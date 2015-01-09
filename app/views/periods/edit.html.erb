@@ -1,0 +1,6 @@
+<h1><%=  "#{t('edit')}#{t('period')}" %></h1>
+<%= render 'form' %>
+<div class="col-md-12">
+  <%= link_to t('show'), @period %> |
+  <%= link_to t('back'), periods_path %>
+</div>

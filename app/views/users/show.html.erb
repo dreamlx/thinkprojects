@@ -1,9 +1,68 @@
-<% title "用户中心" %>
-<table>
-  <tbody>
-    <tr><th>帐号：</th><td><%=link_to @user.login ,[:edit,@user] %></td></tr>
-    <tr><th>邮箱：</th><td><%= @user.email %></td></tr>
-    <tr><th>角色</th><td><%= h @user.roles.map(&:to_s) * ',' if @user.roles  %></td></tr>
-  </tbody>
+<table class="table table-bordered">
+  <tr>
+    <th><%= t('login') %></th>
+    <td><%= @user.login %></td>
+  </tr>
+  <tr>
+    <th><%= t('name') %></th>
+    <td><%= @user.name %></td>
+  </tr>
+  <tr>
+    <th><%= t('roles') %></th>
+    <td><%= @user.roles %></td>
+  </tr>
+  <tr>
+    <th><%= t('english_name') %></th>
+    <td><%= @user.english_name %></td>
+  </tr>
+  <tr>
+    <th><%= t('employee_number') %></th>
+    <td><%= @user.employee_number %></td>
+  </tr>
+  <tr>
+    <th><%= t('position') %></th>
+    <td><%= @user.position %></td>
+  </tr>
+  <tr>
+    <th><%= t('charge_rate') %></th>
+    <td><%= @user.charge_rate %></td>
+  </tr>
+  <tr>
+    <th><%= t('employment_date') %></th>
+    <td><%= @user.employment_date %></td>
+  </tr>
+  <tr>
+    <th><%= t('gender') %></th>
+    <td><%= @user.gender %></td>
+  </tr>
+  <tr>
+    <th><%= t('department') %></th>
+    <td><%= @user.department %></td>
+  </tr>
+  <tr>
+    <th><%= t('state') %></th>
+    <td><%= @user.status %></td>
+  </tr>
+  <tr>
+    <th><%= t('address') %></th>
+    <td><%= @user.address %></td>
+  </tr>
+  <tr>
+    <th><%= t('postalcode') %></th>
+    <td><%= @user.postalcode %></td>
+  </tr>
+  <tr>
+    <th><%= t('mobile') %></th>
+    <td><%= @user.mobile %></td>
+  </tr>
+  <tr>
+    <th><%= t('tel') %></th>
+    <td><%= @user.tel %></td>
+  </tr>
+  <tr>
+    <th><%= t('extension') %></th>
+    <td><%= @user.extension %></td>
+  </tr>
 </table>
-<%= link_to '编辑', [:edit,@user]  if permitted_to? :update, @user %>||<%= link_to "返回",:controller=>:homepage %>
+<%= link_to t('edit'), edit_user_path(@user) %> ||
+<%= link_to t('back'), users_path %>

@@ -1,25 +1,22 @@
-
-<% form_for(:project, :url => projects_path, :html => { :method => :get }) do |f| %>
-
-  <table>
-    <tr>
-      <td>Job_code:<%= text_field_with_auto_complete :project,:job_code,{:size=>12},
-          {:skip_style=>true}  %>
-      </td>
-      <td><%= Project.human_attribute_name("client_name") %>
-        <%= text_field_with_auto_complete :client,:english_name,{:size=>20},
-          {:skip_style=>true}  %>
-      </td>
-      <td>
-        Member:
-<%= select("", "booking_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => "All" }) %>
-      </td>
-      <td>Status:<%= select("", "state", ["pending","approved","disapproved","closed"].collect {|p| [p.humanize,p] }, { :include_blank => "All" }) %>
-</td>
-<td> Order by:<%= select("","order_by",["job_code","created_on","client_name"].collect{|p| [p,p]},{ :include_blank => "All" }) %></td>
-
-<td><%= submit_tag '查询' %></td>
-    </tr>
-  </table>
-
+<%= search_form_for(@q, html: {class: 'form-inline'}) do |f| %>
+  <%= f.input :job_code_cont, 
+              as: :search, 
+              label: false,
+              placeholder: t('job_code_cont'), 
+              required: false %>
+  <%= f.input :client_english_name_cont, 
+              as: :search, 
+              label: false,
+              placeholder: t('client_english_name_cont'), 
+              required: false %>
+  <%= f.input :bookings_user_id_eq, 
+              collection: User.selected_users, 
+              as: :select, 
+              label: t('bookings_user_id_eq'), 
+              required: false %>
+  <%= f.input :state_eq, 
+              collection: ["pending","approved","disapproved","closed"], 
+              label: t('state'), 
+              required: false %>
+  <%= f.button :submit, t('search') %>
 <% end %>

@@ -1,155 +1,84 @@
+#coding: utf-8
 class ProjectsController < ApplicationController
-  # GET /projects
-  # GET /projects.xml
-  #
-  auto_complete_for :client,:english_name
-  auto_complete_for :project,:job_code
-
-  #filter_access_to :all
-  
+  load_and_authorize_resource
   def index
-    @project = Project.new(params[:project])
-    @client = Client.new(params[:client])
-
-    sql = ' 1 '
-    sql += " and clients.english_name like '%#{@client.english_name}%' " if @client.english_name.present?
-    sql += " and bookings.person_id = #{params[:booking_id]} " if params[:booking_id].present?
-    sql += " and job_code like '%#{@project.job_code}%' " if @project.job_code.present?
-    sql += " and state = '#{params[:state]}'" if params[:state].present?
-  
-    case params[:order_by]
-    when "job_code":
-        order_str = "projects.job_code"
-    when "created_on":
-        order_str =" projects.created_on desc"
-    when "client_name":
-        order_str ="clients.english_name"
-    else
-      order_str = "projects.created_on desc"
-    end
-    
-    projects = Project.my_projects(current_user,sql,order_str)
-    @projects = projects.paginate(:page=>params[:page]||1)
-    
-    respond_to do |format|
-      format.html # index.rhtml
-      format.xml  { render :xml => @projects.to_xml }
-    end
+    @q = Project.search(params[:q])
+    @projects = @q.result.includes(:client).paginate(:page => params[:page])
   end
 
-  # GET /projects/1
-  # GET /projects/1.xml
   def show
     @project = Project.find(params[:id])
     @booking = Booking.new
-    #check_sum_hours
-
     @bookings=@project.bookings
-
-    respond_to do |format|
-      format.html # show.rhtml
-      format.xml  { render :xml => @project.to_xml }
-    end
   end
 
-  # GET /projects/new
   def new
     @project = Project.new
   end
 
-  # GET /projects/1;edit
   def edit
     @project = Project.find(params[:id])
   end
 
-  # POST /projects
-  # POST /projects.xml
   def create
     @project = Project.new(params[:project])
-    @project = format_jobcode(@project)
+    @project.job_code = @project.client.client_code + 
+                        Dict.find(@project.GMU_id).code + 
+                        @project.service_code.code
+    @project.bookings.build(user_id: current_user.id)
+    if @project.save
+      redirect_to @project, notice: 'Project was successfully created.'
+    else
+      render "new"
+    end
+  end
+
+  def update
+    @project = Project.find(params[:id])
     
     respond_to do |format|
-      if @project.save
-        @booking = Booking.new #项目创建者就是默认booking人员
-        @booking.person_id = @project.manager_id
-        @booking.project_id = @project.id
-        @project.bookings<<@booking
-        flash[:notice] = 'Project was successfully created.'
-        #is_approval
-        format.html { redirect_to project_url(@project) }
-        format.xml  { head :created, :location => project_url(@project) }
+      if @project.update(project_params)
+        format.html { redirect_to(@project, :notice => 'Project was successfully updated.') }
+        format.json { respond_with_bip(@project) }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @project.errors.to_xml }
+        format.html { render :action => "edit" }
+        format.json { respond_with_bip(@project) }
       end
     end
   end
 
-  # PUT /projects/1
-  # PUT /projects/1.xml
-  def update
+  def destroy
     @project = Project.find(params[:id])
-    @project = format_jobcode(@project)
-    
-    respond_to do |format|
-      if @project.update_attributes(params[:project])        
-        @project.reset
-        flash[:notice] = 'Project was successfully updated.'
-        format.html { redirect_to project_url(@project) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @project.errors.to_xml }
-      end
-    end
+    @project.destroy if @project.state == "pending"
+    redirect_to projects_url
   end
 
   def approval
     project = Project.find(params[:id])
+    project.comments.create(comment: 'approve the project', user_id: current_user.id)
     project.approval
-
-    flash[:notice] = "Project <#{project.job_code}> state was changed, current state is '#{project.state}'"
-    render :update do |page|
-      page.replace_html "item_#{project.id}", :partial => "item",:locals => { :project => project } 
-    end
+    redirect_to project, notice: notice_message(project.job_code, project.state)
   end
 
   def disapproval
     project = Project.find(params[:id])
+    project.comments.create(comment: 'disapprove the project', user_id: current_user.id)
     project.disapproval
-    flash[:notice] = "Project <#{project.job_code}> state was changed, current state is '#{project.state}'"
-    render :update do |page|
-      page.replace_html "item_#{project.id}", :partial => "item",:locals => { :project => project }
-      page.insert_html :after, "item_#{project.id}",:partial => "add_comment",:locals => { :item => project }
-    end
+    redirect_to project, notice: notice_message(project.job_code, project.state)
   end
   
   def close
     project = Project.find(params[:id])
-    #需要判断balance是否为0，如果有结余！=0 则无法close
-   
-    #allow_closed = check_closed(params[:id])
-    if project.state == 'approved'
-      project.close
-    else
-      project.approval
-    end
-
-    flash[:notice] = "Project <#{project.job_code}> state was changed, current state is '#{project.state}'"
-    render :update do |page|
-      page.replace_html "item_#{project.id}", :partial => "item",:locals => { :project => project }
-    end
-
+    project.comments.create(comment: 'close the project', user_id: current_user.id)
+    project.close
+    redirect_to project, notice: notice_message(project.job_code, project.state)
   end
   
   def transform
-
-    project =    Project.find(params[:source_id])
+    project = Project.find(params[:source_id])
     if params[:target_id].present?
       @zy_project = Project.find(params[:target_id])
-
       @t_message ="|Promotion code from: <#{project.job_code}> to: <#{@zy_project.job_code}>"
-
       project.description += @t_message
       @zy_project.description += @t_message
       project.save
@@ -158,101 +87,17 @@ class ProjectsController < ApplicationController
     else
       @zy_project = nil
     end
-    respond_to do |format|
-        flash[:notice] = 'Project was successfully forward.'
-        format.html { redirect_to projects_url }
-        format.xml  { head :ok }
-    end
-    
+    redirect_to projects_url, notice: 'Project was successfully forward.'
   end
 
-
-
-  # DELETE /projects/1
-  # DELETE /projects/1.xml
-  def destroy
-    @project = Project.find(params[:id])
-    @project.destroy if @project.state == "pending"
-    
-    #respond_to do |format|
-    #  format.html { redirect_to projects_url }
-    #  format.xml  { head :ok }
-    #end
-    render :update do |page|
-      page.remove "item_#{params[:id]}"
-      #page.replace_html 'flash_notice', "project was deleted"
-    end
-  end
-  
-
-  def batch_actions
-    items = params[:check_items]
-    unless items.nil?
-      items.each{|key,value|
-        project = Project.find(value)
-        case params[:do_action]
-        when "approval":
-            project.approval if project.state == "pending"
-        when "disapproval":
-            project.disapproval if project.state == "pending"
-        when "destroy":
-            project.destroy if project.state == "pending"
-        when "close":
-            project.close if project.state == "approved"
-        else
-    
-        end
-      }
-    end
-
-     redirect_to(request.env['HTTP_REFERER'] )
-  end
-
-  def addcomment
-    project = Project.find(params[:id])
-    comment = Comment.new(params[:comment])
-    project.add_comment comment unless comment.nil?
-    redirect_to project_url(project)
-
-  end
-  
   private
-
-  def is_approval
-    costing = @project.estimated_annual_fee - @project.budgeted_service_fee - @project.budgeted_expense
-
-    @project.approval if costing> @project.estimated_annual_fee*25/100
-  end
-
-  def check_allow(project_id)
-
-    billings = Billing.find(:all,:conditions => "project_id = #{project_id}")
-    billing_number= "<br/>|need close billings --"
-    for item in billings
-      billing_number = (billing_number + item.number + " |") if item.status.to_s == 0.to_s
-    end
-  end
-
-  def check_sum_hours
-    sum_hours = @project.bookings.sum('hours')
-    sum_fee = 0
-    for booking in @project.bookings
-      unless booking.person.nil?
-        sum_fee += (booking.hours * booking.person.charge_rate||0)
-      end
-    end
-    if @project.estimated_hours.to_i < sum_hours.to_i or @project.estimated_annual_fee.to_i < sum_fee.to_i
-      flash[:notice] = 'booking超过预算请检查'
-    end
-  end
-
-  def format_jobcode(project)
-    unless project.job_code.present?
-      project.job_code =project.client.client_code+project.GMU.code+project.service_code.code
+    def notice_message(job_code, state)
+      "Project <#{job_code}> state was changed, current state is '#{state}'"
     end
 
-    project.job_code = project.job_code.upcase
-
-    return project
-  end
+    def project_params
+      params.require(:project).permit(:job_code, :state, :client_id, :manager_id,
+                                      :GMU_id, :description, :service_id, :starting_date, :ending_date, 
+                                      :estimated_annual_fee, :estimated_hours, :budgeted_service_fee, :budgeted_expense)
+    end
 end

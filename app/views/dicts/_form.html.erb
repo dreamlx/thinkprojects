@@ -1,13 +1,14 @@
-<%= error_messages_for 'dict' %>
-
-<!--[form:dict]-->
-<p><label for="dict_category">Category</label><br/>
-<%= text_field 'dict', 'category'  %></p>
-
-<p><label for="dict_code">Code</label><br/>
-<%= text_field 'dict', 'code'  %></p>
-
-<p><label for="dict_title">Title</label><br/>
-<%= text_field 'dict', 'title'  %></p>
-<!--[eoform:dict]-->
-
+<%= simple_form_for(@dict) do |f| %>
+  <div class="col-md-3">
+    <%= f.input :category %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :code %>
+  </div>
+  <div class="col-md-3">
+    <%= f.input :title %>
+  </div>
+  <div class="col-md-12">
+    <%= f.button :submit %>
+  </div>
+<% end %>

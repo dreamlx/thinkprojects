@@ -1,0 +1,14 @@
+<%= search_form_for(@q, html: {class: 'form-inline'}) do |f| %>
+  <%= f.input :number_or_project_job_code_cont,
+              label: t('number_or_project_job_code_cont'),
+              required: false %>
+  <%= f.input :status_eq, 
+              collection: Billing.selected_status,
+              label: t('state'),
+              required: false %>
+<!--   <label for="period_starting_date">Starting date</label>
+  <%= text_field 'period','starting_date', 'size'=>"15" %><br>
+  <label for="period_ending_date">Ending date</label>
+  <%= text_field 'period','ending_date', 'size'=>"15" %><br> -->
+  <%= f.button :submit, t('search') %>
+<% end %>

@@ -1,20 +1,43 @@
 class Dict < ActiveRecord::Base
-   
-  has_many :people
-  has_many :clients
-  has_many :projects
-  has_many :overtimes
-
-  named_scope :GMU,           :conditions => "category ='GMU'", :order=>'code'
-  named_scope :department,    :conditions => "category = 'department'", :order=>'code'
-  named_scope :expense_types, :conditions => "category = 'expense_type'", :order=>'code'
-
-  def self.search_by_sql(search,page = 1)
-    paginate :per_page => 20, :page => page,
-      :conditions=>search
-  end
+  has_many :users
 
   def self.get_forward(code='')
-    self.find(:all, :conditions => " code like '#{code}%'")
+    where(" code like '#{code}%'")
+  end
+
+  def self.selected_expense_types
+    where(category: 'expense_type').order('code').map {|p| [ p.title, p.title ] }
+  end
+
+  def self.selected_categories
+    where(category: 'client_category').order("code").map {|d| ["#{d.code}||#{d.title}", d.id]}
+  end
+
+  def self.selected_statuses
+    where(category: 'client_status').order("code").map {|d| ["#{d.code}||#{d.title}", d.id]}
+  end
+
+  def self.selected_regions
+    where(category: 'region').order("code").map {|d| ["#{d.code}||#{d.title}", d.id]}
+  end
+
+  def self.selected_genders
+    where(category: 'gender').order("code")
+  end
+
+  def self.selected_gmus
+    where(category: 'GMU').order("code").map {|p| [ "#{p.code} || #{p.title}", p.id ] }
+  end
+
+  def self.selected_deps
+    where(category: 'department').order("code").map {|p| [ "#{p.code} || #{p.title}", p.id ] }
+  end
+
+  def self.selected_service_codes
+    where(category: 'service_code').order("code").map {|p| [ "#{p.code} || #{p.title}", p.id ] }
+  end
+
+  def self.selected_person_status
+    where(category: 'person_status').map {|p| [ p.title, p.id ] }
   end
 end

@@ -1,0 +1,34 @@
+<table  class="table table-bordered">
+  <tr>
+    <th>epmloyee</th>
+    <th>personalcharge hours</th>
+    <th>work hours - charge hours</th>
+  </tr>
+  <% @users.each do|user| %>
+
+    <% Personalcharge.where("period_id =#{@period.id} and user_id = #{user.id} and desc like '%auto complete by admin%'").delete_all %>
+    <% sum_personalcharge = Personalcharge.sum("hours",:conditions=>"period_id =#{@period.id} and user_id = #{user.id}") %>
+    <% sum_ot_hours = Personalcharge.sum("ot_hours",:conditions=>"period_id =#{@period.id} and user_id = #{user.id}") %>
+    <% sum_self_study = Personalcharge.sum("hours",:conditions=>"period_id =#{@period.id} and user_id = #{user.id} and project_id = #{params[:project_period][:prj_id]}") %>
+    <% self_study = Personalcharge.new %>
+    <% self_study.project_id = params[:project_period][:prj_id] %>
+  
+    <% self_study.hours= @period_hours.to_f - (sum_personalcharge - sum_ot_hours) - sum_self_study %>
+    <% self_study.period_id = @period.id %>
+    <% self_study.user_id = user.id %>
+    <% self_study.desc=" auto complete by admin" %>
+    <% self_study.ot_hours =0 %>
+    <% self_study.charge_date = Time.now %>
+    <% self_study.service_fee=0 %>
+    <tr>
+      <td><%= user.english_name %></td>
+      <td><%= sum_personalcharge %></td>
+      <td><%= self_study.hours %></td>
+    </tr>
+    <% if  self_study.hours > 0 %>
+      <% self_study.save %>
+      <% self_study.approval %>
+    <% end %>
+  <% end %>
+</table>
+<%= link_to t('back'), personalcharges_path %>

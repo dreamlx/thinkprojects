@@ -1,0 +1,39 @@
+<div class="col-md-3">
+  <%= f.input :name %>
+</div>
+<div class="col-md-3">
+  <%= f.input :title %>
+</div>
+<div class="col-md-3">
+  <%= f.input :mobile %>
+</div>
+<div class="col-md-3">
+  <%= f.input :tel %>
+</div>
+<div class="col-md-3">
+  <%= f.input :fax %>
+</div>
+<div class="col-md-3">
+  <%= f.input :email, as: :email %>
+</div>
+<div class="col-md-3">
+  <%= f.input :gender, collection: [:male, :female] %>
+</div>
+<div class="col-md-3">
+  <%= f.input :address %>
+</div>
+<div class="col-md-3">
+  <%= f.input :city %>
+</div>
+<div class="col-md-3">
+  <%= f.input :state %>
+</div>
+<div class="col-md-3">
+  <%= f.input :country %>
+</div>
+<div class="col-md-3">
+  <%= f.input :postalcode %>
+</div>
+<div class="col-md-12">
+  <%= f.link_to_remove t('remove_this_contact') %> 
+</div>

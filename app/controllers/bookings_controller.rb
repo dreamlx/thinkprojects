@@ -1,106 +1,43 @@
 class BookingsController < ApplicationController
-  # GET /bookings
-  # GET /bookings.xml
+  load_and_authorize_resource
   before_filter :find_project
-
-  def index
-    @bookings = Booking.find(:all,:conditions=>["project_id = ? ",params[:project_id]])
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @bookings }
-    end
-  end
-
-  # GET /bookings/1
-  # GET /bookings/1.xml
-  def show
-    @booking = Booking.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @booking }
-    end
-  end
-
-  # GET /bookings/new
-  # GET /bookings/new.xml
-  def new
-    @booking = Booking.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @booking }
-    end
-  end
-
-  # GET /bookings/1/edit
-  def edit
-    @booking = Booking.find(params[:id])
-  end
-
-  # POST /bookings
-  # POST /bookings.xml
   def create
-    @booking = Booking.new(params[:booking])
+    # @booking = @project.bookings.build(params[:booking])
+    @booking = @project.bookings.build(booking_params)
+    if @booking.save
+      redirect_to(@project, :notice => 'Booking was successfully created.')
+    else
+      redirect_to(@project, :notice => 'employee already exist, please destroy record first.')
+    end
+  end
 
-    respond_to do |format|
-      if (@project.bookings <<@booking)
-        format.html { redirect_to(project_url(@project), :notice => 'Booking was successfully created.') }
-        format.xml  { render :xml => @booking, :status => :created, :location => @booking }
-        format.js
-      else
-        format.html { redirect_to(project_url(@project), :notice => '<font color=red>employee already exist, please destroy record first.</font>') }
-        format.xml  { render :xml => @booking.errors, :status => :unprocessable_entity }
-        format.js
-      end
+  def destroy
+    @booking = @project.bookings.find(params[:id])
+    if @booking.user_id != @project.manager_id
+      @booking.destroy
+      redirect_to @project, notice: "Success"
+    else
+      redirect_to @project, notice: "The user is manager"
     end
   end
 
   def bookall
-    employees = Person.workings
-    
-    for employee in employees
-      book= Booking.new
-      book.person_id = employee.id
-      book.hours = 0
-      @project.bookings << book
+    User.workings.each do |employee|
+      @project.bookings.create(user_id: employee.id, hours: 0)
     end
-    respond_to do |format|
-      format.html { redirect_to(project_url(@project), :notice => 'Booking was successfully created.') }
-    end
-  end
-  # PUT /bookings/1
-  # PUT /bookings/1.xml
-  def update
-    @booking = Booking.find(params[:id])
-
-    respond_to do |format|
-      if @booking.update_attributes(params[:booking])
-        format.html { redirect_to(@booking, :notice => 'Booking was successfully updated.') }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @booking.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /bookings/1
-  # DELETE /bookings/1.xml
-  def destroy
-    @booking = @project.bookings.find(params[:id])
-    @project.bookings.delete(@booking) unless @booking.id == @project.manager_id
-
-     render :update do |page|
-      page.remove "item_#{params[:id]}"
-    end
+    redirect_to(@project, :notice => 'Booking was successfully created.')
   end
 
   private
-  def find_project
-    @project_id = params[:project_id]
-    redirect_to projects_url unless @project_id
-    @project= Project.find(@project_id)
-  end
+    def find_project
+      if params[:project_id]
+        @project= Project.find(params[:project_id])
+      else
+        redirect_to projects_url
+      end
+    end
+
+    def booking_params
+      params.require(:booking).permit(:user_id, :hours, :project_id)
+    end
 end

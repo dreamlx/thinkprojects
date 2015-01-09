@@ -1,68 +1,39 @@
+#coding: utf-8
 class UsersController < ApplicationController
-  # Be sure to include AuthenticationSystem in Application Controller instead
-  #include AuthenticatedSystem
-  before_filter :load_user, :only => [:show, :edit, :update, :destroy]
-  before_filter :new_user, :only => :new
-  filter_access_to :all
-  filter_access_to [:show, :edit, :update], :attribute_check => true
-
+  load_and_authorize_resource
   def index
-    @users= User.all
+    @q = User.search(params[:q])
+    @users= @q.result.paginate(:page => params[:page])
+    authorize! :read, @users
   end
 
-  # render new.rhtml
-  def new
-    new_user
-  end
- 
-  def create
-    #logout_keeping_session!
-    @user = User.new(params[:user])
-    success = @user && @user.save
-    if success && @user.errors.empty?
-      # Protects against session fixation attacks, causes request forgery
-      # protection if visitor resubmits an earlier form using back
-      # button. Uncomment if you understand the tradeoffs.
-      # reset session
-      #self.current_user = @user # !! now logged in
-      redirect_back_or_default('/')
-      flash[:notice] = "注册成功"
-    else
-      flash[:error]  = "注册失败"
-      render :action => 'new'
-    end
+  def show
+    @user = User.find(params[:id])
   end
 
-  def show;end
-
-  def edit;end
+  def edit
+    @user = User.find(params[:id])
+  end
 
   def update
-    if @user.update_attributes(params[:user])
+    @user = User.find(params[:id])
+    if @user.update(user_params)
       flash[:notice] = "更新用户成功。"
       redirect_to @user
     else
-      render :action => 'edit'
+      render 'edit'
     end
   end
 
-
   def destroy
-    @user.destroy
+    User.find(params[:id]).destroy
     flash[:notice] = "删除用户成功。"
-    redirect_to users_url
+    redirect_to users_path
   end
 
-  protected
-  def load_user
-    @user = User.find params[:id]
+  def user_params
+    params.require(:user).permit(:email, :password, :password_confirmation, :remember_me, :login, :name, :roles,
+                                :english_name, :employee_number, :charge_rate, :employment_date, 
+                                :address, :postalcode, :mobile, :tel, :gender, :department_id, :status_id, :status)
   end
-
-  def new_user
-    @user = User.new
-  end
-
-
-
-
 end

@@ -1,5 +1,0 @@
-#page.insert_html :bottom, :reviews, :partial => 'review', :object => @review
-page.replace_html :booking_list, :partial =>'booking'
-#page[:review_form].reset
-page.replace_html :notice, flash[:notice]
-flash.discard  

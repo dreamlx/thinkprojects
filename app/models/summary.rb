@@ -1,4 +1,4 @@
-class Summary
+class Summary < ActiveRecord::Base
   attr_accessor :id,          :GMU,   
                 :job_code,    :clien_name,  
                 :job_Ref,     :job_Ptr,

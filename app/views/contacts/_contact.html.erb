@@ -1,0 +1,6 @@
+<% Contact.content_columns.each do |column| %>
+<tr>
+  <td><b><%= column.human_name %>:</b></td>
+  <td><%= contact.send(column.name) %></td>
+</tr>
+<% end %>

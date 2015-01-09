@@ -1,34 +1,20 @@
-
-<table style="text-align: left">
-  <tr>
-    <td>
-      <p>Project:
-        <%= select_my_projects("", "prj_id") %>
-      </p>
-    </td>
-    <td>
-      <p>Person:
-        <%= select("", "person_id", Person.my_teams(current_user).collect {|p| [ p.english_name, p.id ] }, { :include_blank => "All", :selected => params[:person_id]||current_user.person_id }) %>
-      </p>
-    </td>
-
-    <td>
-       <p>Period from:
-        <%= select_period("","period_from",params[:period_from]) %>
-        to:
-        <%= select_period("","period_to",params[:period_to]) %>
-      </p>
-    </td>
-    <td>
-      <p>Status :
-        <%= select("", "state", ["pending","approved","disapproved"].collect {|p| [p.humanize,p] }, { :include_blank => "All", :selected => "#{params[:state]}"||"pending"}) %>
-      </p>
-    </td>
-
-    <td>
-      <input type="submit" value="Search" />
-    </td>
-
-
-  </tr>
-</table>
+<%= search_form_for(@q, html: {class: 'form-inline'}) do |f| %>
+  <%= f.input :project_manager_id_eq, 
+              collection: User.selected_users, 
+              label: t('project_manager_id_eq'),
+              required: false %>
+  <%= f.input :user_id_eq, 
+              collection: User.selected_users,
+              label: t('user_id_eq'),
+              required: false %>
+  <!-- #todo should have a time range for period number -->
+  <%= f.input :period_id_eq, 
+              collection: Period.all,
+              label: t('period_number_eq'),
+              required: false %>
+  <%= f.input :state_eq, 
+              collection: ["pending","approved","disapproved"],
+              label: t('state'),
+              required: false %>
+  <%= f.button :submit, t('search') %>
+<% end %>

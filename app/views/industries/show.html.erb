@@ -1,0 +1,8 @@
+<% Industry.content_columns.each do |column| %>
+<p>
+  <b><%= t(column.name) %>:</b> <%= @industry.send(column.name) %>
+</p>
+<% end %>
+
+<%= link_to t('edit'), edit_industry_path(@industry) %> |
+<%= link_to t('back'), industries_path %>

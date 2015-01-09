@@ -1,0 +1,252 @@
+<!-- head -->
+<div class="row">
+
+  <!-- Employee signature -->
+  <div class="col-md-4">
+    <table border="1">
+      <tr>
+        <td style="width: 370px; height: 60px; vertical-align: top">
+          <strong>
+            (1) Employee signature and statement
+          </strong>
+        </td>
+      </tr>
+    </table>
+    <br/>
+    <table border="1">
+      <tr>
+        <td style="width: 370px; height: 126px; vertical-align: top">
+          <font size="1">
+            By signing this time report you are affirming the following statement: "I am familiar with the provisions of the firm's Book, Ethical Standards, regarding professional ethics, including specifically independence, and have complied with those provisions as they relate to any of the clients involved in any engagements included in this time report and in all respects."
+          </font>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- report head -->
+  <div class="col-md-4 text-center">
+    <h3>Time and Expense Report(F-102)</h3>
+    <%= image_tag('tb.png', size: "257x47") %>
+    <br/>
+    <br/>
+    <div class="row">
+      <div class="col-xs-6">
+      <table border="1">
+        <tr>
+          <td style="width: 150px; height: 55px; vertical-align: top; horizotal-align: left ">
+            <strong>Approved</strong>
+          </td>
+        </tr>
+      </table>
+      </div>
+      <div class="col-xs-6">
+      <table border="1">
+        <tr>
+          <td style="width: 150px; height: 55px; vertical-align: top; horizotal-align: left ">
+            <strong>Chargeable Hours</strong>
+          </td>
+        </tr>
+      </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <br/>
+    <div class="row">
+      <div class="col-xs-8">
+        <table border="1">
+          <tr>
+            <td style="width: 350px; height: 48px; vertical-align: top; horizotal-align: left ">
+              <strong>(4) Period End Date</strong>
+              <p><%= @period.ending_date %></p>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-xs-4">
+        <table border="1">
+          <tr>
+            <td style="width: 150px; height: 48px; vertical-align: top; align: center ">
+              (3)  Page<br/>1 of 1
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <br />
+
+    <div class="row">
+      <div class="col-xs-12">
+        <table border="1">
+          <tr>
+            <td style="width: 480px; height: 48px; vertical-align: top; horizotal-align: left ">
+              <strong>(2) Employee Name</strong>
+              <p><%= current_user.name %></p>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <br/>
+    <div class="row">
+      <div class="col-xs-12">
+        <table border="1">
+          <tr>
+            <td style="width: 480px; height: 48px; vertical-align: top; horizotal-align: left ">
+              <strong>(5) Personnel Number</strong>
+              <p><%= current_user.employee_number %></p>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br />
+<div class="row">
+  <div class="col-md-8">
+    <table border="1">
+      <!-- head -->
+      <tr>
+        <td rowspan="3" style="width: 300px">
+          <strong>
+            (6) Client Name and<br/>Description of Work
+          </strong>
+        </td>
+        <td colspan="17" style="height: 60px">
+          <strong>
+            (7) Time Distribution for Period
+          </strong>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <% 15.times  do |n| %>
+          <td><%= (@period.ending_date.to_date.day > 15) ? "-" : n + 1%></td>
+        <% end %>
+        <td></td>
+      </tr>
+      <tr>
+        <td>ADJ</td>
+        <% 16.times  do |n| %>
+          <% if @period.ending_date.to_date.day < n + 16 %>
+            <td>-</td>
+          <% else %>
+            <td><%= (@period.ending_date.to_date.day > 15) ? n + 16 : "-" %></td>
+          <% end %>
+        <% end %>
+      </tr>
+
+      <!-- body -->
+      <% 20.times do |row| %>
+        <tr>
+          <td>(<%= row + 1%>)</td>
+          <% 17.times  do |col| %>
+
+          <td><%= "" %></td>
+        <% end %>
+        </tr>
+      <% end %>
+
+      <% items = [  "Public Holiday", 
+                    "Regular Vacation",
+                    "Overtime Vacation Taken",
+                    "Approved Absence",
+                    "Illness",
+                    "Statutory Leave",
+                    "No-pay Leave",
+                    "(12) TOTAL HOURS",
+                    "(13) OVERTIME"
+                     ] %>
+      <% items.each do |row| %>
+        <tr>
+          <td>
+            <small>
+              <%= row %>
+            </small>
+          </td>
+          <% 17.times  do |col| %>
+
+          <td style="width: 50px"><%= "" %></td>
+        <% end %>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+
+  <div class="col-md-4">
+    <table border="1">
+      <tr>
+        <td rowspan="3">
+          <strong>
+            (8)<br/>
+            Total <br/>
+            Hours
+          </strong>
+        </td>
+        <td rowspan="1" colspan="4" style="height: 60px">
+          <strong>
+            (9) Exp RMB
+          </strong>
+        </td>
+
+        <td rowspan="3">
+          (10) Job<br/>
+          Number
+        </td>
+        <td rowspan="3">
+          (11) PM Approval
+        </td>
+      </tr>
+
+      <tr>
+        <td rowspan="1" colspan="2">
+          <small>
+            Meal Allowance
+          </small>
+        </td>
+        <td rowspan="1">
+          Traveling
+        </td>
+        <td>
+          Total
+        </td rowspan="1">
+      </tr>
+      <tr>
+        <td rowspan="1"><small>RMB20</small></td>
+        <td rowspan="1"><small>RMB120</small></td>
+        <td rowspan="1"><small>Expenses</small></td>
+        <td rowspan="1"><small>Expenses</small></td>
+      </tr>
+
+      <% 29.times do |row| %>
+        <tr>
+          <td>
+            <%= "price" %>
+          </td>
+          <td>
+            <%= "1" %>
+          </td>
+          <td>
+            <%= "1" %>
+          </td>
+          <td>
+            <%= "1" %>
+          </td>
+          <td>
+            <%= "1" %>
+          </td>
+          <td>
+            <%= "code" %>
+          </td>
+          <td>
+            <%= "approved" %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
